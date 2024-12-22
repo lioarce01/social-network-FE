@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import { userApi } from "./api/userApi";
 
 const createNoopStorage = () => {
   return {
@@ -24,11 +25,11 @@ const storage =
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: [""],
+  whitelist: ["user"],
 };
 
 const rootReducer = combineReducers({
-  // Add your reducers here
+  [userApi.reducerPath]: userApi.reducer,
 });
 
 const localStorage = persistReducer(persistConfig, rootReducer);
@@ -48,7 +49,7 @@ export const store = configureStore({
         ],
       },
       //concat api middlewares
-    }).concat(),
+    }).concat(userApi.middleware),
 });
 
 export const persistor = persistStore(store);
