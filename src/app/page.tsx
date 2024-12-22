@@ -1,3 +1,4 @@
+import LoginButton from "@/components/auth/LoginButton";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Code, Users, Zap } from "lucide-react";
 import Link from "next/link";
@@ -45,13 +46,7 @@ export default function LandingPage() {
         <h2 className="text-3xl font-bold mb-6 text-gray-800">
           Ready to Take Your Career to the Next Level?
         </h2>
-        <Button
-          size="lg"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
-        >
-          <Link href="/signup">Join TechConnect Now</Link>
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
+        <LoginButton text={"Join TechConnect Today"} />
       </section>
 
       {/* Animated Background */}

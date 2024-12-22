@@ -4,7 +4,11 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@/components/ui/button";
 
-const LoginButton = () => {
+interface LoginButtonProps {
+  text: string;
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ text }) => {
   const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
   const handleLogin = async () => {
@@ -17,7 +21,7 @@ const LoginButton = () => {
     <div>
       {!isAuthenticated && (
         <Button disabled={isLoading} onClick={handleLogin}>
-          Login
+          {text}
         </Button>
       )}
     </div>

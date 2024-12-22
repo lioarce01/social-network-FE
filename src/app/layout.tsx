@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { persistor, store } from "@/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Auth0Provider } from "@auth0/auth0-react";
+import AuthSyncWrapper from "@/components/auth/AuthSyncWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 

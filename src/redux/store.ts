@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { userApi } from "./api/userApi";
+import { postApi } from "./api/postApi";
 
 const createNoopStorage = () => {
   return {
@@ -30,6 +31,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
+  [postApi.reducerPath]: postApi.reducer,
 });
 
 const localStorage = persistReducer(persistConfig, rootReducer);
@@ -49,7 +51,7 @@ export const store = configureStore({
         ],
       },
       //concat api middlewares
-    }).concat(userApi.middleware),
+    }).concat(userApi.middleware, postApi.middleware),
 });
 
 export const persistor = persistStore(store);
