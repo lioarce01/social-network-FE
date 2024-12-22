@@ -1,3 +1,4 @@
+"use client";
 import { useAuth0 } from "@auth0/auth0-react";
 import useAuthSync from "@/hooks/useAuthSync";
 import { ReactNode } from "react";
