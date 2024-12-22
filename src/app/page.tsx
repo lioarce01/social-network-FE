@@ -1,7 +1,5 @@
 import LoginButton from "@/components/auth/LoginButton";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Code, Users, Zap } from "lucide-react";
-import Link from "next/link";
+import { Code, Users, Zap } from "lucide-react";
 
 export default function LandingPage() {
   return (
