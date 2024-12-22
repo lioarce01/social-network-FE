@@ -5,6 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => "/users",
@@ -20,6 +21,7 @@ export const userApi = createApi({
     }),
     getUserBySub: builder.query({
       query: (id) => `/users/${id}`,
+      providesTags: (result, error, id) => [{ type: "User", id }],
     }),
     //PROFILE SETTINGS
     updateUser: builder.mutation({

@@ -7,6 +7,7 @@ import { persistor, store } from "@/redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Auth0Provider } from "@auth0/auth0-react";
 import Navbar from "@/components/navbar/navbar";
+import { useRouter } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,13 @@ export default function RootLayout({
   const redirectUri =
     typeof window !== "undefined" ? window.location.origin : "";
 
+  const router = useRouter();
+
+  const onRedirectCallback = (appState: any) => {
+    console.log("Redirecting to:", appState?.returnTo || "/");
+    router.push(appState?.returnTo?.toLowerCase() || "/");
+  };
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -38,6 +46,7 @@ export default function RootLayout({
                     audience: process.env.NEXT_PUBLIC_AUTH_AUDIENCE,
                     scope: "openid profile email",
                   }}
+                  onRedirectCallback={onRedirectCallback}
                   cacheLocation="localstorage"
                 >
                   {children}
