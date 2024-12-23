@@ -1,13 +1,11 @@
 "use client";
 
-import { Provider } from "react-redux";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { persistor, store } from "@/redux/store";
-import { PersistGate } from "redux-persist/integration/react";
 import { Auth0Provider } from "@auth0/auth0-react";
-import Navbar from "@/components/navbar/navbar";
 import { useRouter } from "next/navigation";
+import { Providers } from "@/lib/providers";
+import AuthSyncWrapper from "@/components/auth/AuthSyncWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,23 +34,19 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen">
           <main>
-            <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <Auth0Provider
-                  domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
-                  clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
-                  authorizationParams={{
-                    redirect_uri: redirectUri,
-                    audience: process.env.NEXT_PUBLIC_AUTH_AUDIENCE,
-                    scope: "openid profile email",
-                  }}
-                  onRedirectCallback={onRedirectCallback}
-                  cacheLocation="localstorage"
-                >
-                  {children}
-                </Auth0Provider>
-              </PersistGate>
-            </Provider>
+            <Auth0Provider
+              domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
+              clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
+              authorizationParams={{
+                redirect_uri: redirectUri,
+                audience: process.env.NEXT_PUBLIC_AUTH_AUDIENCE,
+                scope: "openid profile email",
+              }}
+              onRedirectCallback={onRedirectCallback}
+              cacheLocation="localstorage"
+            >
+              <Providers>{children}</Providers>
+            </Auth0Provider>
           </main>
         </div>
       </body>

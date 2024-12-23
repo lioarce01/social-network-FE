@@ -10,18 +10,17 @@ export const userApi = createApi({
     getUsers: builder.query({
       query: () => "/users",
     }),
-    registerUser: builder.mutation({
-      query: (user) => {
-        return {
-          url: "/users",
-          method: "POST",
-          body: user,
-        };
-      },
+    registerUser: builder.mutation<any, any>({
+      query: (userData) => ({
+        url: "/users",
+        method: "POST",
+        body: userData,
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
     getUserBySub: builder.query({
       query: (id) => `/users/${id}`,
-      providesTags: (result, error, id) => [{ type: "User", id }],
+      providesTags: (result, error, sub) => [{ type: "User", id: sub }],
     }),
     //PROFILE SETTINGS
     updateUser: builder.mutation({
