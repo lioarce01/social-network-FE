@@ -9,20 +9,26 @@ const NavbarLinksComponent = () => {
       <nav className="hidden md:flex items-center space-x-4">
         <Link href="/jobs">
           <Button variant="ghost">
-            <Briefcase className="mr-2 h-4 w-4" />
-            Jobs
+            <div className="flex flex-col items-center">
+              <Briefcase className="h-4 w-4" />
+              <p>Jobs</p>
+            </div>
           </Button>
         </Link>
         <Link href="/services">
           <Button variant="ghost">
-            <User className="mr-2 h-4 w-4" />
-            Services
+            <div className="flex flex-col items-center">
+              <User className="h-4 w-4" />
+              <p>Services</p>
+            </div>
           </Button>
         </Link>
         <Link href="/meetings">
           <Button variant="ghost">
-            <Video className="mr-2 h-4 w-4" />
-            Meetings
+            <div className="flex flex-col items-center">
+              <Video className="h-4 w-4" />
+              <p>Meetings</p>
+            </div>
           </Button>
         </Link>
       </nav>
