@@ -28,7 +28,7 @@ const PostSettingsComponent = ({ post }: any) => {
             <DropdownMenuItem>
               <EditPost postId={post.id} />
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <DeletePost postId={post.id} />
             </DropdownMenuItem>
           </DropdownMenuContent>
