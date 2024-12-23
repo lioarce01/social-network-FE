@@ -38,11 +38,12 @@ export const postApi = createApi({
       invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
     deletePost: builder.mutation({
-      query: (id) => ({
-        url: `/posts/${id}`,
+      query: (postId) => ({
+        url: `/posts/delete`,
         method: "DELETE",
+        body: postId,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Post", id }],
+      invalidatesTags: [{ type: "Post", id: "LIST" }],
     }),
     getUserPosts: builder.query({
       query: (id) => `/posts/user/${id}`,
@@ -73,4 +74,13 @@ export const postApi = createApi({
   }),
 });
 
-export const { useGetPostsQuery } = postApi;
+export const {
+  useGetPostsQuery,
+  useGetPostByIdQuery,
+  useCreatePostMutation,
+  useDeletePostMutation,
+  useUpdatePostMutation,
+  useLikePostMutation,
+  useUnlikePostMutation,
+  useGetUserPostsQuery,
+} = postApi;

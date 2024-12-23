@@ -11,8 +11,8 @@ const CardFooterComponent = ({ post }: any) => {
           <ThumbsUp className="mr-2 h-4 w-4" /> {post.likeCount} Likes
         </Button>
         <Button variant="ghost" size="sm">
-          <MessageSquare className="mr-2 h-4 w-4" /> {post.comments?.length}{" "}
-          Comments
+          <MessageSquare className="mr-2 h-4 w-4" />
+          Comment
         </Button>
         <Button variant="ghost" size="sm">
           <Share2 className="mr-2 h-4 w-4" /> Share
