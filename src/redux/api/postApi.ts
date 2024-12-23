@@ -61,7 +61,7 @@ export const postApi = createApi({
         method: "PUT",
         body,
       }),
-      invalidatesTags: [{ type: "Post", id: "LIST" }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
     unlikePost: builder.mutation({
       query: (body) => ({
@@ -69,7 +69,7 @@ export const postApi = createApi({
         method: "PUT",
         body,
       }),
-      invalidatesTags: [{ type: "Post", id: "LIST" }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
   }),
 });

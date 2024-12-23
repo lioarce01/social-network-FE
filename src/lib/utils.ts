@@ -34,11 +34,11 @@ export function formatDate(dateString: string): string {
     timeAgo = `${seconds}s`;
   }
 
-  const formattedDate = `${datePosted.toLocaleString("default", {
-    month: "long",
-  })} ${datePosted.getDate()}, ${datePosted.getFullYear()}, ${datePosted.getHours()}:${String(
-    datePosted.getMinutes(),
-  ).padStart(2, "0")}`;
-
   return `${timeAgo}`;
+}
+
+export function userLikedAPost(post: any | undefined, userId: string): boolean {
+  if (!post || !post.likes || post.likes.length === 0) return false;
+
+  return post.likes.some((like: any) => like.userId === userId);
 }
