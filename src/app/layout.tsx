@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col min-h-screen">
+        <div>
           <main>
             <Auth0Provider
               domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
