@@ -24,7 +24,19 @@ export const jobPostingApi = createApi({
       query: (id: string) => `/jobpostings/${id}`,
       providesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
+    createJob: builder.mutation({
+      query: (body) => ({
+        url: "/jobpostings",
+        method: "POST",
+        body,
+        invalidateTags: [{ type: "JobPosting", id: "LIST" }],
+      }),
+    }),
   }),
 });
 
-export const { useGetJobsQuery, useGetJobByIdQueryQuery } = jobPostingApi;
+export const {
+  useGetJobsQuery,
+  useGetJobByIdQueryQuery,
+  useCreateJobMutation,
+} = jobPostingApi;

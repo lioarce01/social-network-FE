@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const SearchBarComponent = () => {
   return (
@@ -27,6 +28,9 @@ const SearchBarComponent = () => {
           <SelectItem value="hybrid">Hybrid</SelectItem>
         </SelectContent>
       </Select>
+      <Link href="/createJobPosting">
+        <Button>Create Job Posting</Button>
+      </Link>
       <Button className="w-full md:w-auto">Search</Button>
     </div>
   );
