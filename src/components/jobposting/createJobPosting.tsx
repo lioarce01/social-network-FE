@@ -15,11 +15,18 @@ import {
 import { format } from "date-fns";
 import { CalendarIcon, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
 const CreateJobPosting = () => {
-  const [createJob, { isLoading }] = useCreateJobMutation();
   const { currentUser } = useCurrentUser();
+  const [createJob, { isLoading }] = useCreateJobMutation();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -27,6 +34,8 @@ const CreateJobPosting = () => {
     deadline: new Date(),
     techRequired: [] as string[],
     category: "",
+    location: "",
+    mode: "REMOTE" as "REMOTE" | "HYBRID" | "ONSITE",
   });
   const [techInput, setTechInput] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -64,6 +73,10 @@ const CreateJobPosting = () => {
     }));
   };
 
+  const handleModeChange = (value: "REMOTE" | "HYBRID" | "ONSITE") => {
+    setFormData((prev) => ({ ...prev, mode: value }));
+  };
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (formData.title.length < 5)
@@ -82,6 +95,10 @@ const CreateJobPosting = () => {
       newErrors.techRequired = "At least one technology is required";
     if (formData.category.length === 0)
       newErrors.category = "Category is required";
+    if (formData.location.length === 0)
+      newErrors.location = "Location is required";
+    if (!["REMOTE", "HYBRID", "ONSITE"].includes(formData.mode))
+      newErrors.mode = "Invalid job mode";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -102,6 +119,8 @@ const CreateJobPosting = () => {
           deadline: new Date(),
           techRequired: [],
           category: "",
+          location: "",
+          mode: "REMOTE",
         });
       } catch (error) {
         console.error("Failed to create job posting:", error);
@@ -256,6 +275,51 @@ const CreateJobPosting = () => {
             </div>
             {errors.techRequired && (
               <p className="mt-1 text-sm text-red-500">{errors.techRequired}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="location"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Location
+            </label>
+            <Input
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              placeholder='Example: "Texas, US"'
+              className={errors.location ? "border-red-500" : ""}
+            />
+            {errors.location && (
+              <p className="mt-1 text-sm text-red-500">{errors.location}</p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="mode"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Job Mode
+            </label>
+            <Select
+              onValueChange={handleModeChange}
+              defaultValue={formData.mode}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select job mode" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="REMOTE">Remote</SelectItem>
+                <SelectItem value="HYBRID">Hybrid</SelectItem>
+                <SelectItem value="ONSITE">Onsite</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.mode && (
+              <p className="mt-1 text-sm text-red-500">{errors.mode}</p>
             )}
           </div>
 
