@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useGetJobByIdQueryQuery } from "@/redux/api/jobPostingApi";
+import { formatDate, formatDateTime } from "@/lib/utils";
 
 export default function JobDetails() {
   const params = useParams();
@@ -42,14 +43,6 @@ export default function JobDetails() {
       </div>
     );
   }
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   return (
     <div className="w-full p-4">
@@ -88,7 +81,7 @@ export default function JobDetails() {
                   </span>
                   <span className="flex items-center">
                     <CalendarDays className="mr-1 h-4 w-4" /> Deadline:{" "}
-                    {formatDate(jobDetails.deadline)}
+                    {formatDateTime(jobDetails.deadline)}
                   </span>
                   <span className="flex items-center">
                     <Clock className="mr-1 h-4 w-4" /> Posted:{" "}
