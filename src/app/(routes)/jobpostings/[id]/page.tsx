@@ -10,10 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, DollarSign, Clock, Tag } from "lucide-react";
+import {
+  CalendarDays,
+  DollarSign,
+  Clock,
+  Tag,
+  MapPin,
+  Briefcase,
+} from "lucide-react";
 import Link from "next/link";
 import { useGetJobByIdQueryQuery } from "@/redux/api/jobPostingApi";
-import { formatDateTime } from "@/lib/utils";
 
 export default function JobDetails() {
   const params = useParams();
@@ -36,6 +42,14 @@ export default function JobDetails() {
       </div>
     );
   }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <div className="w-full p-4">
@@ -69,16 +83,27 @@ export default function JobDetails() {
               <CardContent className="space-y-6">
                 <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-muted-foreground">
                   <span className="flex items-center">
-                    <DollarSign className="mr-1 h-4 w-4" /> Budget:{" "}
+                    <DollarSign className="mr-1 h-4 w-4" /> Budget: $
                     {jobDetails.budget}
                   </span>
                   <span className="flex items-center">
                     <CalendarDays className="mr-1 h-4 w-4" /> Deadline:{" "}
-                    {formatDateTime(jobDetails.deadline)}
+                    {formatDate(jobDetails.deadline)}
                   </span>
                   <span className="flex items-center">
                     <Clock className="mr-1 h-4 w-4" /> Posted:{" "}
-                    {formatDateTime(jobDetails.createdAt)}
+                    {formatDate(jobDetails.createdAt)}
+                  </span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-muted-foreground">
+                  <span className="flex items-center">
+                    <MapPin className="mr-1 h-4 w-4" /> Location:{" "}
+                    {jobDetails.location}
+                  </span>
+                  <span className="flex items-center">
+                    <Briefcase className="mr-1 h-4 w-4" /> Mode:{" "}
+                    {jobDetails.mode}
                   </span>
                 </div>
 
@@ -94,15 +119,17 @@ export default function JobDetails() {
                     Required Technologies
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {jobDetails.techRequired.map((tech: any, index: any) => (
-                      <Badge
-                        key={index}
-                        variant="outline"
-                        className="flex items-center"
-                      >
-                        <Tag className="mr-1 h-3 w-3" /> {tech}
-                      </Badge>
-                    ))}
+                    {jobDetails.techRequired.map(
+                      (tech: string, index: number) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="flex items-center"
+                        >
+                          <Tag className="mr-1 h-3 w-3" /> {tech}
+                        </Badge>
+                      ),
+                    )}
                   </div>
                 </div>
               </CardContent>

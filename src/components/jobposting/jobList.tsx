@@ -23,6 +23,7 @@ const JobListComponent = () => {
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>{job.title}</span>
+                <p className="text-sm text-neutral-500">{job.mode}</p>
                 {job.featured && <Badge variant="secondary">Featured</Badge>}
               </CardTitle>
             </CardHeader>
