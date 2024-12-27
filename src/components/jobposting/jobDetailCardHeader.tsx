@@ -8,22 +8,19 @@ interface JobDetails {
   category: string;
   status: "OPEN" | "CLOSED";
   jobAuthorId: string;
+  id: string;
 }
 
 interface JobDetailCardHeaderProps {
   jobDetails: JobDetails;
-  onEdit?: () => void;
-  onDelete?: () => void;
-  onChangeStatus?: (status: "OPEN" | "CLOSED") => void;
   currentUserId?: string;
+  jobId: string;
 }
 
 const JobDetailCardHeader: React.FC<JobDetailCardHeaderProps> = ({
   jobDetails,
-  onEdit,
-  onDelete,
-  onChangeStatus,
   currentUserId,
+  jobId,
 }) => {
   return (
     <CardHeader>
@@ -34,11 +31,7 @@ const JobDetailCardHeader: React.FC<JobDetailCardHeaderProps> = ({
               {jobDetails.title}
             </CardTitle>
             <div className="sm:hidden">
-              <CardHeaderDropdown
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onChangeStatus={onChangeStatus}
-              />
+              <CardHeaderDropdown jobDetails={jobDetails} jobId={jobId} />
             </div>
           </div>
           <p className="text-lg text-muted-foreground">{jobDetails.category}</p>
@@ -51,11 +44,7 @@ const JobDetailCardHeader: React.FC<JobDetailCardHeaderProps> = ({
           </Badge>
           {jobDetails.jobAuthorId === currentUserId && (
             <div className="hidden sm:block">
-              <CardHeaderDropdown
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onChangeStatus={onChangeStatus}
-              />
+              <CardHeaderDropdown jobDetails={jobDetails} jobId={jobId} />
             </div>
           )}
         </div>

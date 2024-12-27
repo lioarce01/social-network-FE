@@ -29,23 +29,25 @@ export const jobPostingApi = createApi({
         url: "/jobpostings",
         method: "POST",
         body,
-        invalidateTags: [{ type: "JobPosting", id: "LIST" }],
       }),
+      invalidatesTags: (result, error, id) => [
+        { type: "JobPosting", id: "LIST" },
+      ],
     }),
     updateJobPosting: builder.mutation({
       query: ({ id, body }) => ({
         url: `/jobpostings/${id}/update`,
         method: "PUT",
         body,
-        invalidateTags: [{ type: "JobPosting", id: "LIST" }],
       }),
+      invalidatesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
     switchStatus: builder.mutation({
       query: (id) => ({
         url: `/jobpostings/${id}/change-status`,
         method: "PUT",
-        invalidateTags: [{ type: "JobPosting", id }],
       }),
+      invalidatesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
     deleteJobPosting: builder.mutation({
       query: (id) => ({
@@ -69,4 +71,8 @@ export const {
   useGetJobsQuery,
   useGetJobByIdQueryQuery,
   useCreateJobMutation,
+  useUpdateJobPostingMutation,
+  useSwitchStatusMutation,
+  useDeleteJobPostingMutation,
+  useApplyJobMutation,
 } = jobPostingApi;

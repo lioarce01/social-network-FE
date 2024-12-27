@@ -2,11 +2,16 @@ import React from "react";
 import { CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 
-const ApplyButtonComponent = () => {
+const ApplyButtonComponent = ({ jobDetails }: any) => {
   return (
     <>
       <CardFooter>
-        <Button className="w-full sm:w-auto">Apply Now</Button>
+        <Button
+          disabled={jobDetails?.status === "CLOSED"}
+          className="w-full sm:w-auto"
+        >
+          Apply Now
+        </Button>
       </CardFooter>
     </>
   );

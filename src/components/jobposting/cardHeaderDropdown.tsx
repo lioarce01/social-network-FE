@@ -11,17 +11,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import DeleteJobPosting from "./deleteJobPosting";
+import SwitchJobPostingStatus from "./switchJobPostingStatus";
+import EditJobPosting from "./editJobPosting";
 
 interface CardHeaderDropdownProps {
-  onEdit?: () => void;
-  onDelete?: () => void;
-  onChangeStatus?: (status: "OPEN" | "CLOSED") => void;
+  jobDetails: any;
+  jobId: string;
 }
 
 const CardHeaderDropdown: React.FC<CardHeaderDropdownProps> = ({
-  onEdit,
-  onDelete,
-  onChangeStatus,
+  jobDetails,
+  jobId,
 }) => {
   return (
     <DropdownMenu>
@@ -33,22 +34,18 @@ const CardHeaderDropdown: React.FC<CardHeaderDropdownProps> = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuItem onClick={onEdit}>
-          <Edit className="mr-2 h-4 w-4" />
-          <span>Edit</span>
+        <DropdownMenuItem>
+          {/* EDIT JOB POSTING */}
+          <EditJobPosting />
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onChangeStatus?.("OPEN")}>
-          <Eye className="mr-2 h-4 w-4" />
-          <span>Mark as Open</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onChangeStatus?.("CLOSED")}>
-          <XCircle className="mr-2 h-4 w-4" />
-          <span>Mark as Closed</span>
+        <DropdownMenuItem>
+          {/* SWITCH STATUS JOB POSTING */}
+          <SwitchJobPostingStatus jobId={jobId} jobDetails={jobDetails} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onDelete} className="text-red-600">
-          <Trash className="mr-2 h-4 w-4" />
-          <span>Delete</span>
+        <DropdownMenuItem className="text-red-600">
+          {/* DELETE JOB POSTING */}
+          <DeleteJobPosting />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
