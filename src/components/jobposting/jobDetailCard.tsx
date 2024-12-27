@@ -6,12 +6,16 @@ import JobDetailCardContent from "./jobDetailCardComponent";
 import ApplyButtonComponent from "./jobDetailApplyButton";
 import { useParams } from "next/navigation";
 import { useGetJobByIdQueryQuery } from "@/redux/api/jobPostingApi";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 const JobDetailCardComponent = () => {
   const params = useParams();
   const jobId = params.id as string;
+  const { currentUser } = useCurrentUser();
 
   const { data: jobDetails, isLoading, error } = useGetJobByIdQueryQuery(jobId);
+  console.log("job author:", jobDetails);
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -30,7 +34,10 @@ const JobDetailCardComponent = () => {
   return (
     <>
       <Card>
-        <JobDetailCardHeader jobDetails={jobDetails && jobDetails} />
+        <JobDetailCardHeader
+          jobDetails={jobDetails && jobDetails}
+          currentUserId={currentUser?.id}
+        />
         <JobDetailCardContent jobDetails={jobDetails && jobDetails} />
         <ApplyButtonComponent />
       </Card>
