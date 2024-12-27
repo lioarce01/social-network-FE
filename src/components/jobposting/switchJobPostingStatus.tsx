@@ -1,6 +1,6 @@
 import { useSwitchStatusMutation } from "@/redux/api/jobPostingApi";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { Button } from "@/components/ui/button";
 
 interface SwitchJobPostingStatusProps {
   jobId: string;
@@ -12,6 +12,8 @@ const SwitchJobPostingStatus: React.FC<SwitchJobPostingStatusProps> = ({
   jobDetails,
 }) => {
   const [switchStatus, { isLoading }] = useSwitchStatusMutation();
+
+  const router = useRouter();
 
   const handleSwitchStatus = async () => {
     try {

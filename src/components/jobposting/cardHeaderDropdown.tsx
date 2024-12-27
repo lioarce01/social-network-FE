@@ -43,9 +43,12 @@ const CardHeaderDropdown: React.FC<CardHeaderDropdownProps> = ({
           <SwitchJobPostingStatus jobId={jobId} jobDetails={jobDetails} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-red-600">
+        <DropdownMenuItem
+          onSelect={(e) => e.preventDefault()}
+          className="text-red-600"
+        >
           {/* DELETE JOB POSTING */}
-          <DeleteJobPosting />
+          <DeleteJobPosting jobId={jobId} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
