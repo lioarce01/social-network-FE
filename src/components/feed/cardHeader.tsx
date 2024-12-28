@@ -11,7 +11,7 @@ const CardHeaderComponent = ({ post }: any) => {
         <div className="flex flex-row items-center space-x-4">
           <Avatar>
             <AvatarImage
-              src={post.author?.profile_pic}
+              src={post.author.profile_pic}
               alt={post.author?.name}
             />
           </Avatar>

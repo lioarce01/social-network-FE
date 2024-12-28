@@ -11,7 +11,6 @@ export function formatDate(dateString: string): string {
 
   const diff = now.getTime() - datePosted.getTime();
 
-  // Time constants
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -35,6 +34,14 @@ export function formatDate(dateString: string): string {
   }
 
   return `${timeAgo}`;
+}
+
+export function formatDateTime(dateString: string) {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 export function userLikedAPost(post: any | undefined, userId: string): boolean {

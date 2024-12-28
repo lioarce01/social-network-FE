@@ -6,7 +6,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogClose, // Asegúrate de importar el componente DialogClose
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -14,7 +13,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 const EditPost = ({
   postId,
   initialContent,
-  onClose, // Callback para cerrar el modal
+  onClose,
 }: {
   postId: string;
   initialContent: string;
@@ -30,7 +29,7 @@ const EditPost = ({
     try {
       await updatePost({ id: postId, content }).unwrap();
       console.log("Post updated successfully:", postId);
-      onClose(); // Cerrar el modal después de actualizar el post
+      onClose();
     } catch (error) {
       console.error("Error updating post:", error);
     }
@@ -55,7 +54,6 @@ const EditPost = ({
               </div>
             </div>
           </DialogTitle>
-          {/* No es necesario agregar la cruz manualmente si ya existe una */}
         </DialogHeader>
 
         <textarea

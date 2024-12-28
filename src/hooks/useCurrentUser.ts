@@ -13,7 +13,7 @@ const useCurrentUser = () => {
     skip: !isAuthenticated || !sub,
   });
 
-  return { currentUser, isLoading, error };
+  return { currentUser, isLoading, error, isAuthenticated };
 };
 
 export default useCurrentUser;

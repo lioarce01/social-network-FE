@@ -15,10 +15,12 @@ import LogoutButton from "../auth/LogoutButton";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
 const DropdownMenuComponent = () => {
-  const { currentUser } = useCurrentUser();
+  const { currentUser, isLoading } = useCurrentUser();
+  if (isLoading) return <div>loading user...</div>;
 
   return (
     <>
+      {/* {isLoading && ( */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -48,6 +50,7 @@ const DropdownMenuComponent = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      {/* )} */}
     </>
   );
 };

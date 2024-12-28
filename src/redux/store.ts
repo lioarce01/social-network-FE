@@ -4,6 +4,7 @@ import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { userApi } from "./api/userApi";
 import { postApi } from "./api/postApi";
 import authReducer from "./slices/authSlice";
+import { jobPostingApi } from "./api/jobPostingApi";
 
 const createNoopStorage = () => {
   return {
@@ -33,6 +34,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [postApi.reducerPath]: postApi.reducer,
+  [jobPostingApi.reducerPath]: jobPostingApi.reducer,
   auth: authReducer,
 });
 
@@ -53,7 +55,7 @@ export const store = configureStore({
         ],
       },
       //concat api middlewares
-    }).concat(userApi.middleware, postApi.middleware),
+    }).concat(userApi.middleware, postApi.middleware, jobPostingApi.middleware),
 });
 
 export const persistor = persistStore(store);
