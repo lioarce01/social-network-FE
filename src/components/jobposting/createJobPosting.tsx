@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useCreateJobMutation } from "@/redux/api/jobPostingApi";
+import React from "react";
+import { useJobPostingForm } from "@/hooks/useJobPostingForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,111 +22,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useCurrentUser from "@/hooks/useCurrentUser";
 
-const CreateJobPosting = () => {
-  const { currentUser } = useCurrentUser();
-  const [createJob, { isLoading }] = useCreateJobMutation();
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    budget: "",
-    deadline: new Date(),
-    techRequired: [] as string[],
-    category: "",
-    location: "",
-    mode: "REMOTE" as "REMOTE" | "HYBRID" | "ONSITE",
-  });
-  const [techInput, setTechInput] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
-
-  const handleDateChange = (date: Date | undefined) => {
-    if (date) {
-      setFormData((prev) => ({ ...prev, deadline: date }));
-      setErrors((prev) => ({ ...prev, deadline: "" }));
-    }
-  };
-
-  const addTech = () => {
-    if (techInput.trim() !== "") {
-      setFormData((prev) => ({
-        ...prev,
-        techRequired: [...prev.techRequired, techInput.trim()],
-      }));
-      setTechInput("");
-      setErrors((prev) => ({ ...prev, techRequired: "" }));
-    }
-  };
-
-  const removeTech = (tech: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      techRequired: prev.techRequired.filter((t) => t !== tech),
-    }));
-  };
-
-  const handleModeChange = (value: "REMOTE" | "HYBRID" | "ONSITE") => {
-    setFormData((prev) => ({ ...prev, mode: value }));
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-    if (formData.title.length < 5)
-      newErrors.title = "Title must be at least 5 characters long";
-    if (formData.description.length < 20)
-      newErrors.description = "Description must be at least 20 characters long";
-    if (
-      !formData.budget ||
-      isNaN(Number(formData.budget)) ||
-      Number(formData.budget) <= 0
-    )
-      newErrors.budget = "Budget must be a positive number";
-    if (formData.deadline < new Date())
-      newErrors.deadline = "Deadline must be in the future";
-    if (formData.techRequired.length === 0)
-      newErrors.techRequired = "At least one technology is required";
-    if (formData.category.length === 0)
-      newErrors.category = "Category is required";
-    if (formData.location.length === 0)
-      newErrors.location = "Location is required";
-    if (!["REMOTE", "HYBRID", "ONSITE"].includes(formData.mode))
-      newErrors.mode = "Invalid job mode";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      try {
-        await createJob({
-          userId: currentUser?.id,
-          ...formData,
-          budget: Number(formData.budget),
-        }).unwrap();
-        setFormData({
-          title: "",
-          description: "",
-          budget: "",
-          deadline: new Date(),
-          techRequired: [],
-          category: "",
-          location: "",
-          mode: "REMOTE",
-        });
-      } catch (error) {
-        console.error("Failed to create job posting:", error);
-      }
-    }
-  };
+const CreateJobPosting: React.FC = () => {
+  const {
+    formData,
+    techInput,
+    errors,
+    isLoading,
+    handleInputChange,
+    handleDateChange,
+    setTechInput,
+    addTech,
+    removeTech,
+    handleModeChange,
+    handleSubmit,
+  } = useJobPostingForm();
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -135,6 +45,7 @@ const CreateJobPosting = () => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Job Title */}
           <div>
             <label
               htmlFor="title"
@@ -155,6 +66,7 @@ const CreateJobPosting = () => {
             )}
           </div>
 
+          {/* Job Description */}
           <div>
             <label
               htmlFor="description"
@@ -175,6 +87,7 @@ const CreateJobPosting = () => {
             )}
           </div>
 
+          {/* Budget */}
           <div>
             <label
               htmlFor="budget"
@@ -196,6 +109,7 @@ const CreateJobPosting = () => {
             )}
           </div>
 
+          {/* Deadline */}
           <div>
             <label
               htmlFor="deadline"
@@ -236,6 +150,7 @@ const CreateJobPosting = () => {
             )}
           </div>
 
+          {/* Required Technologies */}
           <div>
             <label
               htmlFor="techRequired"
@@ -278,6 +193,7 @@ const CreateJobPosting = () => {
             )}
           </div>
 
+          {/* Location */}
           <div>
             <label
               htmlFor="location"
@@ -298,6 +214,7 @@ const CreateJobPosting = () => {
             )}
           </div>
 
+          {/* Job Mode */}
           <div>
             <label
               htmlFor="mode"
@@ -323,6 +240,7 @@ const CreateJobPosting = () => {
             )}
           </div>
 
+          {/* Category */}
           <div>
             <label
               htmlFor="category"

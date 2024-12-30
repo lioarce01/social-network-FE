@@ -10,7 +10,7 @@ const ApplyButtonComponent = ({ jobDetails }: any) => {
           disabled={jobDetails?.status === "CLOSED"}
           className="w-full sm:w-auto"
         >
-          Apply Now
+          {jobDetails?.status === "CLOSED" ? "Job Closed" : "Apply Now"}
         </Button>
       </CardFooter>
     </>

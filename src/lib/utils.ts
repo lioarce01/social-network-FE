@@ -49,3 +49,30 @@ export function userLikedAPost(post: any | undefined, userId: string): boolean {
 
   return post.likes.some((like: any) => like.userId === userId);
 }
+
+import { JobPostingFormData } from "@/hooks/useJobPostingForm";
+
+export function validateForm(formData: JobPostingFormData) {
+  const errors: Record<string, string> = {};
+
+  if (formData.title.length < 5)
+    errors.title = "Title must be at least 5 characters long";
+  if (formData.description.length < 20)
+    errors.description = "Description must be at least 20 characters long";
+  if (
+    !formData.budget ||
+    isNaN(Number(formData.budget)) ||
+    Number(formData.budget) <= 0
+  )
+    errors.budget = "Budget must be a positive number";
+  if (formData.deadline < new Date())
+    errors.deadline = "Deadline must be in the future";
+  if (formData.techRequired.length === 0)
+    errors.techRequired = "At least one technology is required";
+  if (formData.category.length === 0) errors.category = "Category is required";
+  if (formData.location.length === 0) errors.location = "Location is required";
+  if (!["REMOTE", "HYBRID", "ONSITE"].includes(formData.mode))
+    errors.mode = "Invalid job mode";
+
+  return errors;
+}
