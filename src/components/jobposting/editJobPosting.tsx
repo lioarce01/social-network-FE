@@ -42,10 +42,6 @@ const EditJobPosting: React.FC<EditJobPostingProps> = ({ jobId }) => {
     handleSubmit,
   } = useEditJobPostingForm(jobId);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
