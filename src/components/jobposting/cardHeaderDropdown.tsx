@@ -14,6 +14,7 @@ import {
 import DeleteJobPosting from "./deleteJobPosting";
 import SwitchJobPostingStatus from "./switchJobPostingStatus";
 import EditJobPosting from "./editJobPosting";
+import Link from "next/link";
 
 interface CardHeaderDropdownProps {
   jobDetails: any;
@@ -36,7 +37,9 @@ const CardHeaderDropdown: React.FC<CardHeaderDropdownProps> = ({
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem>
           {/* EDIT JOB POSTING */}
-          <EditJobPosting />
+          <Link className="w-full" href={`${jobId}/update`}>
+            Edit
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           {/* SWITCH STATUS JOB POSTING */}

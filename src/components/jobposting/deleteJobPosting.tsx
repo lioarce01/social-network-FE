@@ -31,7 +31,7 @@ const DeleteJobPosting = ({ jobId }: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full text-left">Delete post</button>
+        <button className="w-full text-left">Delete</button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
