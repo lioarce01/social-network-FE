@@ -24,13 +24,12 @@ export const userApi = createApi({
     }),
     //PROFILE SETTINGS
     updateUser: builder.mutation({
-      query: ({ id, user }) => {
-        return {
-          url: `/users/${id}`,
-          method: "PUT",
-          body: user,
-        };
-      },
+      query: ({ id, data }) => ({
+        url: `/users/${id}/update`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "User", id }],
     }),
     //PROFILE SETTINGS
     deleteUser: builder.mutation({

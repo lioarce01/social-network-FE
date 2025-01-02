@@ -36,7 +36,7 @@ const DropdownMenuComponent = () => {
           <DropdownMenuLabel>{currentUser?.email}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link className="w-full" href="/profile">
+            <Link className="w-full" href={`/profile/${currentUser?.id}`}>
               Profile
             </Link>
           </DropdownMenuItem>
