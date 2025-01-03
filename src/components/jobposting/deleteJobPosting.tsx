@@ -1,4 +1,3 @@
-import { useDeletePostMutation } from "@/redux/api/postApi";
 import React from "react";
 import {
   Dialog,

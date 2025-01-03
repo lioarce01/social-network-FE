@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  useGetUserBySubQuery,
-  useUpdateUserMutation,
-  useDeleteUserMutation,
-} from "@/redux/api/userApi";
-import { useToast } from "@/hooks/use-toast";
+import { useUpdateUserMutation } from "@/redux/api/userApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,12 +16,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2 } from "lucide-react";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import DeleteAccount from "./deleteAccount";
 
-const ProfilePage = ({ userId }: { userId: string }) => {
+const ProfilePage = ({ userId }: any) => {
   const { currentUser } = useCurrentUser();
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
-  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
-  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -54,39 +48,8 @@ const ProfilePage = ({ userId }: { userId: string }) => {
     try {
       const updateData = { name: formData.name };
       await updateUser({ id: userId, data: updateData }).unwrap();
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully updated.",
-      });
     } catch (error) {
-      toast({
-        title: "Update Failed",
-        description: "There was an error updating your profile.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete your account? This action cannot be undone.",
-      )
-    ) {
-      try {
-        await deleteUser(currentUser.id).unwrap();
-        toast({
-          title: "Account Deleted",
-          description: "Your account has been successfully deleted.",
-        });
-        // Redirect to home page or login page after deletion
-      } catch (error) {
-        toast({
-          title: "Deletion Failed",
-          description: "There was an error deleting your account.",
-          variant: "destructive",
-        });
-      }
+      console.log("Error updating user");
     }
   };
 
@@ -150,20 +113,7 @@ const ProfilePage = ({ userId }: { userId: string }) => {
         </form>
       </CardContent>
       <CardFooter>
-        <Button
-          variant="destructive"
-          onClick={handleDeleteAccount}
-          disabled={isDeleting}
-        >
-          {isDeleting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Deleting...
-            </>
-          ) : (
-            "Delete Account"
-          )}
-        </Button>
+        <DeleteAccount userId={userId} />
       </CardFooter>
     </Card>
   );

@@ -1,7 +1,5 @@
-"use client";
 import React from "react";
 import ProfilePage from "@/components/profile/profilePage";
-import useCurrentUser from "@/hooks/useCurrentUser";
 
 export default function Profile({
   params,
