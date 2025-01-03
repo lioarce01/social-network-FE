@@ -37,14 +37,10 @@ const DropdownMenuComponent = () => {
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link className="w-full" href={`/profile/${currentUser?.id}`}>
-              Profile
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link className="w-full" href="/settings">
               Settings
             </Link>
           </DropdownMenuItem>
+
           <DropdownMenuItem>
             <LogoutButton />
           </DropdownMenuItem>
