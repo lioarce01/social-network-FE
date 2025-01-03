@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { useGetJobsQuery } from "@/redux/api/jobPostingApi";
+import ApplyJob from "./applyJob";
 
 const JobListComponent = () => {
   const { data: jobs, isLoading, error } = useGetJobsQuery({});
@@ -48,7 +49,7 @@ const JobListComponent = () => {
                   <Button asChild>
                     <Link href={`/jobpostings/${job.id}`}>View Details</Link>
                   </Button>
-                  <Button>Apply Now</Button>
+                  <ApplyJob />
                 </CardFooter>
               </Card>
             ))

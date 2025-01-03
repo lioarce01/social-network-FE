@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import EditJobPosting from "@/components/jobposting/editJobPosting";
 import { Button } from "@/components/ui/button";
