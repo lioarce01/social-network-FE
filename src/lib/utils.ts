@@ -76,3 +76,11 @@ export function validateForm(formData: JobPostingFormData) {
 
   return errors;
 }
+
+export function hasApplied(userId: string, jobPosting: any): boolean {
+  const { applicants } = jobPosting;
+
+  return (
+    applicants?.some((applicant: any) => applicant.userId === userId) ?? false
+  );
+}

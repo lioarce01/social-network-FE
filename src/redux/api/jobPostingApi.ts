@@ -68,8 +68,8 @@ export const jobPostingApi = createApi({
         url: "/jobapplications/applyjob",
         method: "POST",
         body,
-        invalidateTags: [{ type: "JobPosting", id: "LIST" }],
       }),
+      invalidatesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
   }),
 });

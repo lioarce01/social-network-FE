@@ -46,10 +46,9 @@ const JobListComponent = () => {
                   <p className="text-sm">{job.description}</p>
                 </CardContent>
                 <CardFooter className="flex justify-between mt-auto ">
-                  <Button asChild>
+                  <Button asChild className="w-full">
                     <Link href={`/jobpostings/${job.id}`}>View Details</Link>
                   </Button>
-                  <ApplyJob />
                 </CardFooter>
               </Card>
             ))
