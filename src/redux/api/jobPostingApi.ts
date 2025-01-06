@@ -69,7 +69,7 @@ export const jobPostingApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "JobPosting", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
     }),
   }),
 });
