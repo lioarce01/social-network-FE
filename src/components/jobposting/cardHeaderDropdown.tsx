@@ -47,7 +47,7 @@ const CardHeaderDropdown: React.FC<CardHeaderDropdownProps> = ({
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
           {/* APPLICANTS LIST MODAL */}
-          <ApplicantsList jobDetails={jobDetails} />
+          <ApplicantsList jobId={jobId} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

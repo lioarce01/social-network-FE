@@ -71,6 +71,10 @@ export const jobPostingApi = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
     }),
+    getJobApplicants: builder.query({
+      query: (id) => `/jobpostings/${id}/applicants`,
+      providesTags: (result, error, id) => [{ type: "JobPosting", id }],
+    }),
   }),
 });
 
@@ -82,4 +86,5 @@ export const {
   useSwitchStatusMutation,
   useDeleteJobPostingMutation,
   useApplyJobMutation,
+  useGetJobApplicantsQuery,
 } = jobPostingApi;

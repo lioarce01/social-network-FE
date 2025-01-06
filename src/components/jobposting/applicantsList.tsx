@@ -11,30 +11,63 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { format } from "date-fns";
 import Link from "next/link";
+import { useGetJobApplicantsQuery } from "@/redux/api/jobPostingApi";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface Applicant {
   id: string;
-  userId: string;
-  jobPostingId: string;
-  appliedAt: string;
+  name: string;
+  email: string;
+  profile_pic: string;
 }
 
-interface ApplicantsListProps {
-  jobDetails: {
-    applicants: Applicant[];
-  };
-}
+const ApplicantsList = ({ jobId }: { jobId: string }) => {
+  const {
+    data: applicants,
+    error,
+    isLoading,
+  } = useGetJobApplicantsQuery(jobId);
 
-const ApplicantsList: React.FC<ApplicantsListProps> = ({ jobDetails }) => {
-  const { applicants } = jobDetails;
+  const dialogTrigger = (
+    <DialogTrigger asChild>
+      <button className="w-full justify-start">Applicants List</button>
+    </DialogTrigger>
+  );
+
+  if (isLoading) {
+    return (
+      <Dialog>
+        {dialogTrigger}
+        <DialogContent className="sm:max-w-[425px] md:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Applicants List</DialogTitle>
+            <DialogDescription>Loading applicants...</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  if (error) {
+    return (
+      <Dialog>
+        {dialogTrigger}
+        <DialogContent className="sm:max-w-[425px] md:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Applicants List</DialogTitle>
+            <DialogDescription>
+              There was an error loading applicants.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <button className="w-full justify-start">Applicants List</button>
-      </DialogTrigger>
+      {dialogTrigger}
       <DialogContent className="sm:max-w-[425px] md:max-w-[800px]">
         <DialogHeader>
           <DialogTitle>Applicants List</DialogTitle>
@@ -43,32 +76,36 @@ const ApplicantsList: React.FC<ApplicantsListProps> = ({ jobDetails }) => {
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-[300px] w-full rounded-md border p-4">
-          {applicants.length > 0 ? (
-            applicants.map((applicant) => (
+          {applicants && applicants.length > 0 ? (
+            applicants.map((applicant: Applicant) => (
               <div
                 key={applicant.id}
-                className="mb-4 p-2 border-b last:border-b-0"
+                className="mb-4 p-4 border-b last:border-b-0 flex items-center justify-between"
               >
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex items-center space-x-4">
+                  <Avatar>
+                    <AvatarImage
+                      src={applicant.profile_pic}
+                      alt={applicant.name}
+                    />
+                    <AvatarFallback>{applicant.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
                   <div>
-                    <Link
-                      href={`/profile/${applicant.userId}`}
-                      className="text-sm font-medium text-blue-600 hover:underline"
-                    >
-                      View Profile
-                    </Link>
-                    <p className="text-xs text-gray-500">
-                      User ID: {applicant.userId}
-                    </p>
+                    <p className="font-medium">{applicant.name}</p>
+                    <p className="text-sm text-gray-500">{applicant.email}</p>
                   </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {/* <Link
+                    href={`/profile/${applicant.id}`}
+                    className="text-sm font-medium text-blue-600 hover:underline"
+                  >
+                    View Profile
+                  </Link> */}
                   <Button variant="destructive" size="sm">
                     Reject
                   </Button>
                 </div>
-                <p className="text-xs text-gray-500">
-                  Applied on:{" "}
-                  {format(new Date(applicant.appliedAt), "PPP 'at' p")}
-                </p>
               </div>
             ))
           ) : (
