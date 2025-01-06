@@ -1,4 +1,3 @@
-import { useDeletePostMutation } from "@/redux/api/postApi";
 import React from "react";
 import {
   Dialog,
@@ -31,7 +30,7 @@ const DeleteJobPosting = ({ jobId }: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full text-left">Delete post</button>
+        <button className="w-full text-left">Delete</button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

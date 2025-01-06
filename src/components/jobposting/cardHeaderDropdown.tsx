@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DeleteJobPosting from "./deleteJobPosting";
 import SwitchJobPostingStatus from "./switchJobPostingStatus";
-import EditJobPosting from "./editJobPosting";
+import Link from "next/link";
+import ApplicantsList from "./applicantsList";
 
 interface CardHeaderDropdownProps {
   jobDetails: any;
@@ -36,11 +37,17 @@ const CardHeaderDropdown: React.FC<CardHeaderDropdownProps> = ({
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <DropdownMenuItem>
           {/* EDIT JOB POSTING */}
-          <EditJobPosting />
+          <Link className="w-full" href={`${jobId}/update`}>
+            Edit
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           {/* SWITCH STATUS JOB POSTING */}
           <SwitchJobPostingStatus jobId={jobId} jobDetails={jobDetails} />
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          {/* APPLICANTS LIST MODAL */}
+          <ApplicantsList jobId={jobId} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

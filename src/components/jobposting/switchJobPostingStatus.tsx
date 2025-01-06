@@ -13,8 +13,6 @@ const SwitchJobPostingStatus: React.FC<SwitchJobPostingStatusProps> = ({
 }) => {
   const [switchStatus, { isLoading }] = useSwitchStatusMutation();
 
-  const router = useRouter();
-
   const handleSwitchStatus = async () => {
     try {
       await switchStatus(jobId).unwrap();
@@ -25,7 +23,7 @@ const SwitchJobPostingStatus: React.FC<SwitchJobPostingStatusProps> = ({
 
   return (
     <button onClick={handleSwitchStatus} disabled={isLoading}>
-      {jobDetails?.status === "OPEN" ? "Close Posting" : "Open Posting"}
+      {jobDetails?.status === "OPEN" ? "Close Job" : "Open Job"}
     </button>
   );
 };

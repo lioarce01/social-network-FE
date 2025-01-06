@@ -13,7 +13,11 @@ const JobDetailCardComponent = () => {
   const jobId = params.id as string;
   const { currentUser } = useCurrentUser();
 
-  const { data: jobDetails, isLoading, error } = useGetJobByIdQueryQuery(jobId);
+  const {
+    data: jobDetails,
+    isLoading,
+    error,
+  } = useGetJobByIdQueryQuery(jobId, { refetchOnMountOrArgChange: true });
   console.log("job author:", jobDetails);
 
   if (isLoading) {
@@ -40,7 +44,10 @@ const JobDetailCardComponent = () => {
           jobId={jobId}
         />
         <JobDetailCardContent jobDetails={jobDetails && jobDetails} />
-        <ApplyButtonComponent jobDetails={jobDetails && jobDetails} />
+        <ApplyButtonComponent
+          jobDetails={jobDetails && jobDetails}
+          userId={currentUser?.id}
+        />
       </Card>
     </>
   );

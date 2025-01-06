@@ -2,6 +2,10 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+type UpdateJobPostingData = Partial<
+  Omit<any, "applicants" | "jobAuthor" | "id">
+>;
+
 export const jobPostingApi = createApi({
   reducerPath: "jobPostingApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
@@ -34,13 +38,16 @@ export const jobPostingApi = createApi({
         { type: "JobPosting", id: "LIST" },
       ],
     }),
-    updateJobPosting: builder.mutation({
-      query: ({ id, body }) => ({
+    updateJobPosting: builder.mutation<
+      any,
+      { id: string; data: UpdateJobPostingData }
+    >({
+      query: ({ id, data }) => ({
         url: `/jobpostings/${id}/update`,
         method: "PUT",
-        body,
+        body: data,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "JobPosting", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
     }),
     switchStatus: builder.mutation({
       query: (id) => ({
@@ -53,16 +60,20 @@ export const jobPostingApi = createApi({
       query: (id) => ({
         url: `/jobpostings/${id}`,
         method: "DELETE",
-        invalidateTags: [{ type: "JobPosting", id: "LIST" }],
       }),
+      invalidatesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
     applyJob: builder.mutation({
       query: (body) => ({
         url: "/jobapplications/applyjob",
         method: "POST",
         body,
-        invalidateTags: [{ type: "JobPosting", id: "LIST" }],
       }),
+      invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
+    }),
+    getJobApplicants: builder.query({
+      query: (id) => `/jobpostings/${id}/applicants`,
+      providesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
   }),
 });
@@ -75,4 +86,5 @@ export const {
   useSwitchStatusMutation,
   useDeleteJobPostingMutation,
   useApplyJobMutation,
+  useGetJobApplicantsQuery,
 } = jobPostingApi;

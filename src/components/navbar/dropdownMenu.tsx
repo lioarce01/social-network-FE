@@ -36,21 +36,16 @@ const DropdownMenuComponent = () => {
           <DropdownMenuLabel>{currentUser?.email}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link className="w-full" href="/profile">
-              Profile
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link className="w-full" href="/settings">
+            <Link className="w-full" href={`/profile/${currentUser?.id}`}>
               Settings
             </Link>
           </DropdownMenuItem>
+
           <DropdownMenuItem>
             <LogoutButton />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {/* )} */}
     </>
   );
 };

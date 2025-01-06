@@ -4,7 +4,6 @@ import { Code, Users, Zap } from "lucide-react";
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-indigo-100 text-gray-800">
-      {/* Hero Section */}
       <section className="container mx-auto px-4 py-20 flex flex-col items-center text-center">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
           Connect, Collaborate, Innovate
@@ -15,7 +14,6 @@ export default function LandingPage() {
         </p>
       </section>
 
-      {/* Features Section */}
       <section className="container mx-auto px-4 py-10">
         <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
           Why TechConnect?
@@ -39,7 +37,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h2 className="text-3xl font-bold mb-6 text-gray-800">
           Ready to Take Your Career to the Next Level?
@@ -47,7 +44,6 @@ export default function LandingPage() {
         <LoginButton text={"Join TechConnect Today"} />
       </section>
 
-      {/* Animated Background */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
       </div>
