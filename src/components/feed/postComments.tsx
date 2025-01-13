@@ -6,12 +6,16 @@ interface PostCommentsProps {
 }
 
 const PostComments: React.FC<PostCommentsProps> = ({ comments }) => {
+  const sortedComments = comments?.slice().sort((a: any, b: any) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+
   return (
     <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
-      {comments?.length ? (
-        comments.map((comment: any, index: string) => (
+      {sortedComments?.length > 0 ? (
+        sortedComments.map((comment: any) => (
           <div
-            key={index}
+            key={comment?.id}
             className="flex items-start space-x-4 p-3 border border-muted bg-gray-50 rounded-sm"
           >
             <div className="flex-shrink-0">

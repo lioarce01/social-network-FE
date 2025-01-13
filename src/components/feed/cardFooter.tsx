@@ -8,6 +8,7 @@ import { formatDate, userLikedAPost } from "@/lib/utils";
 import { useGetPostByIdQuery } from "@/redux/api/postApi";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import PostDetail from "./postDetail";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 const CardFooterComponent = ({ post, currentUser }: any) => {
   const { data: queryPost, isLoading, error } = useGetPostByIdQuery(post?.id);
@@ -56,6 +57,7 @@ const CardFooterComponent = ({ post, currentUser }: any) => {
                 </div>
               </div>
             </DialogTitle>
+            <DialogDescription />
           </DialogHeader>
 
           <PostDetail queryPost={queryPost} currentUser={currentUser} />

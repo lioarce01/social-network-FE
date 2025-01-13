@@ -36,7 +36,7 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
         </div>
       </div>
       <PostComments comments={postComments} />
-      <CreateComment />
+      <CreateComment currentUserId={currentUser?.id} postId={queryPost?.id} />
     </div>
   );
 };
