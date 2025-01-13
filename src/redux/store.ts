@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { userApi } from "./api/userApi";
 import { postApi } from "./api/postApi";
+import { commentApi } from "./api/commentApi";
 import authReducer from "./slices/authSlice";
 import { jobPostingApi } from "./api/jobPostingApi";
 
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [postApi.reducerPath]: postApi.reducer,
   [jobPostingApi.reducerPath]: jobPostingApi.reducer,
+  [commentApi.reducerPath]: commentApi.reducer,
   auth: authReducer,
 });
 
@@ -55,7 +57,12 @@ export const store = configureStore({
         ],
       },
       //concat api middlewares
-    }).concat(userApi.middleware, postApi.middleware, jobPostingApi.middleware),
+    }).concat(
+      userApi.middleware,
+      postApi.middleware,
+      jobPostingApi.middleware,
+      commentApi.middleware,
+    ),
 });
 
 export const persistor = persistStore(store);
