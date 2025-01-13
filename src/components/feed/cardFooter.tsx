@@ -44,9 +44,9 @@ const CardFooterComponent = ({ post, currentUser }: any) => {
                     "https://via.placeholder.com/40"
                   }
                   alt="Author Avatar"
-                  className="h-10 w-10 rounded-full"
+                  className="h-12 w-12 rounded-full"
                 />
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-1">
                   <p className="font-medium">
                     {queryPost?.author?.name || "Unknown Author"}
                   </p>
@@ -58,7 +58,7 @@ const CardFooterComponent = ({ post, currentUser }: any) => {
             </DialogTitle>
           </DialogHeader>
 
-          <PostDetail queryPost={queryPost} />
+          <PostDetail queryPost={queryPost} currentUser={currentUser} />
         </DialogContent>
       </Dialog>
     </>

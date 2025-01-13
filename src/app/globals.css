@@ -70,3 +70,35 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height of the scrollbar for horizontal scrolling */
+}
+
+::-webkit-scrollbar-track {
+  background: #2d2d2d; /* Dark track background */
+  border-radius: 4px; /* Rounded edges */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a4a; /* Darker thumb color */
+  border-radius: 4px; /* Rounded edges */
+  transition: background 0.2s ease-in-out; /* Smooth hover transition */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6a6a6a; /* Slightly lighter on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color: #4a4a4a #2d2d2d; /* Thumb color and track color */
+}
+
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth; /* Smooth scroll across the document */
+}
