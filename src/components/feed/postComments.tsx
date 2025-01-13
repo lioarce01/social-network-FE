@@ -1,5 +1,6 @@
 import React from "react";
 import { formatDate } from "@/lib/utils";
+import CommentSettings from "./commentSettings";
 
 interface PostCommentsProps {
   comments: any;
@@ -28,15 +29,20 @@ const PostComments: React.FC<PostCommentsProps> = ({ comments }) => {
                 className="h-10 w-10 rounded-full"
               />
             </div>
-            <div className="space-y-2">
-              <div>
-                <p className="font-medium text-primary">
-                  {comment?.author?.name || "Anonymous"}
-                </p>
+            <div className="space-y-2 w-full">
+              <div className="w-full">
+                <div className="flex justify-between w-full">
+                  <p className="font-medium text-primary">
+                    {comment?.author?.name || "Anonymous"}
+                  </p>
+                  <CommentSettings />
+                </div>
+
                 <p className="text-xs text-muted-foreground">
                   {formatDate(comment?.createdAt)}
                 </p>
               </div>
+
               <p className="text-sm text-gray-900 font-sm">
                 {comment?.content || "No comment content."}
               </p>
