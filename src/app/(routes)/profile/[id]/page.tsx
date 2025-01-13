@@ -1,5 +1,7 @@
 import React from "react";
+import { Suspense } from "react";
 import ProfilePage from "@/components/profile/profilePage";
+import ProfileSkeleton from "@/components/profile/profileSkeleton";
 
 export default function Profile({
   params,
@@ -10,7 +12,9 @@ export default function Profile({
 
   return (
     <div className="container mx-auto py-8">
-      <ProfilePage userId={resolvedParams.id} />
+      <Suspense fallback={<ProfileSkeleton />}>
+        <ProfilePage userId={resolvedParams.id} />
+      </Suspense>
     </div>
   );
 }

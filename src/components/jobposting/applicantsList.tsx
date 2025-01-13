@@ -88,7 +88,7 @@ const ApplicantsList = ({ jobId }: { jobId: string }) => {
                       src={applicant.profile_pic}
                       alt={applicant.name}
                     />
-                    <AvatarFallback>{applicant.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{applicant.name}</AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="font-medium">{applicant.name}</p>
@@ -96,12 +96,12 @@ const ApplicantsList = ({ jobId }: { jobId: string }) => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  {/* <Link
+                  <Link
                     href={`/profile/${applicant.id}`}
                     className="text-sm font-medium text-blue-600 hover:underline"
                   >
                     View Profile
-                  </Link> */}
+                  </Link>
                   <Button variant="destructive" size="sm">
                     Reject
                   </Button>
