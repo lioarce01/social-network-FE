@@ -17,17 +17,15 @@ const useAuthSync = () => {
     if (isAuthenticated && user) {
       const { email, sub, name, picture } = user;
       try {
-        const existingUser = await getUserBySub(sub).unwrap();
-        console.log("User already exists:", existingUser);
+        await getUserBySub(sub).unwrap();
       } catch {
         try {
-          const newUser = await registerUser({
+          await registerUser({
             email,
             sub,
             name,
             profile_pic: picture,
           }).unwrap();
-          console.log("User created:", newUser);
 
           dispatch(userApi.util.invalidateTags(["User"]));
         } catch (error) {
