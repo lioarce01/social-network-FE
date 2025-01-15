@@ -17,9 +17,13 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 interface Applicant {
   id: string;
-  name: string;
-  email: string;
-  profile_pic: string;
+  isRejected: boolean;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    profile_pic: string;
+  };
 }
 
 const ApplicantsList = ({ jobId }: { jobId: string }) => {
@@ -28,6 +32,8 @@ const ApplicantsList = ({ jobId }: { jobId: string }) => {
     error,
     isLoading,
   } = useGetJobApplicantsQuery(jobId);
+
+  console.log("applicants:", applicants);
 
   const dialogTrigger = (
     <DialogTrigger asChild>
@@ -79,25 +85,27 @@ const ApplicantsList = ({ jobId }: { jobId: string }) => {
           {applicants && applicants.length > 0 ? (
             applicants.map((applicant: Applicant) => (
               <div
-                key={applicant.id}
+                key={applicant.user?.id}
                 className="mb-4 p-4 border-b last:border-b-0 flex items-center justify-between"
               >
                 <div className="flex items-center space-x-4">
                   <Avatar>
                     <AvatarImage
-                      src={applicant.profile_pic}
-                      alt={applicant.name}
+                      src={applicant.user?.profile_pic}
+                      alt={applicant.user?.name}
                     />
-                    <AvatarFallback>{applicant.name}</AvatarFallback>
+                    <AvatarFallback>{applicant.user?.name}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">{applicant.name}</p>
-                    <p className="text-sm text-gray-500">{applicant.email}</p>
+                    <p className="font-medium">{applicant.user?.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {applicant.user?.email}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Link
-                    href={`/profile/${applicant.id}`}
+                    href={`/profile/${applicant.user?.id}`}
                     className="text-sm font-medium text-blue-600 hover:underline"
                   >
                     View Profile
