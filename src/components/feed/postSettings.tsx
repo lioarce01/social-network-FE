@@ -16,7 +16,6 @@ const PostSettingsComponent = ({ post }: any) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const handleMenuClose = () => setIsMenuOpen(false);
   const handleMenuOpen = () => setIsMenuOpen(true);
 
   const authorId = post.author?.id;

@@ -1,5 +1,5 @@
-import { useUpdatePostMutation } from "@/redux/api/postApi";
 import React, { useState } from "react";
+import { useUpdateCommentMutation } from "@/redux/api/commentApi";
 import {
   Dialog,
   DialogContent,
@@ -7,34 +7,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button } from "../ui/button";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
-const EditPost = ({
-  postId,
+const EditComment = ({
+  commentId,
   initialContent,
   onClose,
 }: {
-  postId: string;
+  commentId: string;
   initialContent: string;
   onClose: () => void;
 }) => {
-  const [updatePost, { isLoading }] = useUpdatePostMutation();
+  const [updateComment, { isLoading: isUpdating }] = useUpdateCommentMutation();
   const [content, setContent] = useState(initialContent);
   const { currentUser } = useCurrentUser();
 
-  const handleUpdatePost = async () => {
+  const handleUpdateComment = async () => {
     if (!content.trim()) return;
 
     try {
-      await updatePost({
+      await updateComment({
         userId: currentUser?.id,
-        postId: postId,
+        commentId: commentId,
         content,
       }).unwrap();
       onClose();
-    } catch (error) {
-      console.error("Error updating post:", error);
+    } catch (e) {
+      console.error("Error updateing comment:", e);
     }
   };
 
@@ -53,7 +53,6 @@ const EditPost = ({
                 <p className="font-medium">
                   {currentUser?.name || "User Name"}
                 </p>
-                <p className="text-sm text-gray-500">Public</p>
               </div>
             </div>
           </DialogTitle>
@@ -70,11 +69,11 @@ const EditPost = ({
         <DialogFooter className="border-t pt-2">
           <Button
             variant="outline"
-            onClick={handleUpdatePost}
-            disabled={isLoading}
+            onClick={handleUpdateComment}
+            disabled={isUpdating}
             className="rounded-full bg-gray-100 border-gray-100 hover:bg-gray-200 hover:border-gray-200 transition-all duration-200"
           >
-            {isLoading ? "Saving..." : "Save"}
+            {isUpdating ? "Saving..." : "Save"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -82,4 +81,4 @@ const EditPost = ({
   );
 };
 
-export default EditPost;
+export default EditComment;
