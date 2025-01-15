@@ -48,7 +48,7 @@ export const commentApi = createApi({
         method: "DELETE",
         body: commentId,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Comment", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Comment", id }],
     }),
   }),
 });

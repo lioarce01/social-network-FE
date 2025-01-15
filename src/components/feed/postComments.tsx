@@ -4,9 +4,13 @@ import CommentSettings from "./commentSettings";
 
 interface PostCommentsProps {
   comments: any;
+  currentUserId: string;
 }
 
-const PostComments: React.FC<PostCommentsProps> = ({ comments }) => {
+const PostComments: React.FC<PostCommentsProps> = ({
+  comments,
+  currentUserId,
+}) => {
   const sortedComments = comments?.slice().sort((a: any, b: any) => {
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
@@ -35,7 +39,9 @@ const PostComments: React.FC<PostCommentsProps> = ({ comments }) => {
                   <p className="font-medium text-primary">
                     {comment?.author?.name || "Anonymous"}
                   </p>
-                  <CommentSettings />
+                  {currentUserId === comment?.author?.id ? (
+                    <CommentSettings commentId={comment?.id} />
+                  ) : null}
                 </div>
 
                 <p className="text-xs text-muted-foreground">
