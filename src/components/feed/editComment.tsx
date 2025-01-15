@@ -10,16 +10,14 @@ import {
 import { Button } from "../ui/button";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
-interface EditCommentProps {
-  commentId: string;
-  initialContent: string;
-  onClose: () => void;
-}
-
-const EditComment: React.FC<EditCommentProps> = ({
+const EditComment = ({
   commentId,
   initialContent,
   onClose,
+}: {
+  commentId: string;
+  initialContent: string;
+  onClose: () => void;
 }) => {
   const [updateComment, { isLoading: isUpdating }] = useUpdateCommentMutation();
   const [content, setContent] = useState(initialContent);
@@ -29,9 +27,13 @@ const EditComment: React.FC<EditCommentProps> = ({
     if (!content.trim()) return;
 
     try {
-      await updateComment({ id: commentId, content }).unwrap();
+      await updateComment({
+        userId: currentUser?.id,
+        commentId: commentId,
+        content,
+      }).unwrap();
       console.log("Comment updated successfully:", commentId);
-      onClose;
+      onClose();
     } catch (e) {
       console.error("Error updateing comment:", e);
     }
