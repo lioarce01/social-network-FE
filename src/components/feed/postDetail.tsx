@@ -10,7 +10,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ queryPost, currentUser }) => {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm">
           {queryPost?.content || "Post content goes here..."}
         </p>
       </div>

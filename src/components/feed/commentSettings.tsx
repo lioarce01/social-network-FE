@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,12 +7,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis } from "lucide-react";
 import DeleteComment from "./deleteComment";
+import EditComment from "./editComment";
 
 interface CommentSettingsProps {
-  commentId: string;
+  comment: any;
 }
 
-const CommentSettings: React.FC<CommentSettingsProps> = ({ commentId }) => {
+const CommentSettings: React.FC<CommentSettingsProps> = ({ comment }) => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
   return (
     <div>
       <DropdownMenu>
@@ -24,17 +26,28 @@ const CommentSettings: React.FC<CommentSettingsProps> = ({ commentId }) => {
           sideOffset={4}
           align="end"
         >
-          <DropdownMenuItem className="cursor-pointer p-2 text-sm hover:bg-gray-100">
+          <DropdownMenuItem
+            onClick={() => setIsEditOpen(true)}
+            className="cursor-pointer p-2 text-sm hover:bg-gray-100"
+          >
             Edit
           </DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer p-2 text-sm text-red-600 hover:bg-red-50"
             onSelect={(e) => e.preventDefault()}
           >
-            <DeleteComment commentId={commentId} />
+            <DeleteComment commentId={comment?.id} />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {isEditOpen && (
+        <EditComment
+          commentId={comment?.id}
+          initialContent={comment.content}
+          onClose={() => setIsEditOpen(false)}
+        />
+      )}
     </div>
   );
 };

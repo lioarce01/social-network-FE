@@ -40,7 +40,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
                     {comment?.author?.name || "Anonymous"}
                   </p>
                   {currentUserId === comment?.author?.id ? (
-                    <CommentSettings commentId={comment?.id} />
+                    <CommentSettings comment={comment} />
                   ) : null}
                 </div>
 

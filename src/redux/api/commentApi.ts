@@ -40,7 +40,7 @@ export const commentApi = createApi({
         method: "PUT",
         body: comment,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Comment", id }],
+      invalidatesTags: (result, error, { id }) => [{ type: "Comment", id }],
     }),
     deleteComment: builder.mutation({
       query: (commentId) => ({
