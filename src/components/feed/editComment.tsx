@@ -32,7 +32,6 @@ const EditComment = ({
         commentId: commentId,
         content,
       }).unwrap();
-      console.log("Comment updated successfully:", commentId);
       onClose();
     } catch (e) {
       console.error("Error updateing comment:", e);

@@ -27,8 +27,11 @@ const EditPost = ({
     if (!content.trim()) return;
 
     try {
-      await updatePost({ id: postId, content }).unwrap();
-      console.log("Post updated successfully:", postId);
+      await updatePost({
+        userId: currentUser?.id,
+        postId: postId,
+        content,
+      }).unwrap();
       onClose();
     } catch (error) {
       console.error("Error updating post:", error);
