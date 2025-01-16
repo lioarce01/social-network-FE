@@ -12,7 +12,7 @@ export default function Navbar() {
           TechConnect
         </Link>
         <div className="flex items-center space-x-4">
-          <NavbarSearchbarComponent />
+          {/* <NavbarSearchbarComponent /> */}
           <NavbarLinksComponent />
           <NavbarNotificationsComponent />
           <DropdownMenuComponent />

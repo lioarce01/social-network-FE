@@ -21,7 +21,7 @@ const JobListComponent = () => {
   if (isLoading) return <JobListSkeleton />;
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="">
       <div className="max-w-screen-lg mx-auto">
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
           {jobs && jobs.length > 0 ? (
@@ -33,7 +33,10 @@ const JobListComponent = () => {
                 <CardHeader>
                   <CardTitle className="flex items-start justify-between">
                     <div className="flex flex-col">
-                      <span className="text-lg font-semibold truncate">
+                      <span
+                        className="text-lg font-semibold truncate max-w-[200px] lg:max-w-[300px]"
+                        title={job.title}
+                      >
                         {job.title}
                       </span>
                       <span className="text-sm text-neutral-600">
@@ -44,6 +47,7 @@ const JobListComponent = () => {
                       {job.mode}
                     </Badge>
                   </CardTitle>
+
                   {job.featured && (
                     <Badge variant="default" className="mt-2">
                       Featured
