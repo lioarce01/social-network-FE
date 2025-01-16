@@ -12,17 +12,22 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { useGetJobsQuery } from "@/redux/api/jobPostingApi";
-import ApplyJob from "./applyJob";
+import JobListSkeleton from "./jobListSkeleton";
 
 const JobListComponent = () => {
   const { data: jobs, isLoading, error } = useGetJobsQuery({});
+
+  if (isLoading) return <JobListSkeleton />;
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-screen-lg mx-auto ">
+      <div className="max-w-screen-lg mx-auto">
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-          {jobs ? (
+          {jobs && jobs.length > 0 ? (
             jobs.map((job: any) => (
-              <Card key={job.id} className=" flex flex-col h-full">
+              <Card
+                key={job.id}
+                className="flex flex-col h-full w-full md:w-94 lg:w-[320px]"
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span className="text-lg">{job.title}</span>
@@ -53,7 +58,7 @@ const JobListComponent = () => {
               </Card>
             ))
           ) : (
-            <div className="col-span-full text-center">Loading...</div>
+            <div className="col-span-full text-center">No jobs found.</div>
           )}
         </div>
       </div>
