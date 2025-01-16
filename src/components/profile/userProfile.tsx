@@ -1,13 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const UserProfile = ({
@@ -17,80 +11,59 @@ const UserProfile = ({
   profileUser: any;
   isLoading: boolean;
 }) => {
-  const getValueOrPlaceholder = (
-    value: string | undefined | null,
-    placeholder = "Not provided",
-  ) => {
-    return value ?? placeholder;
-  };
-
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>{profileUser.name}'s Profile</CardTitle>
-        <CardDescription>View user profile information.</CardDescription>
+    <Card className="w-full max-w-2xl mx-auto shadow-md rounded-lg">
+      <CardHeader className="text-center">
+        <Avatar className="h-24 w-24 mx-auto mb-4">
+          <AvatarImage src={profileUser.profile_pic} alt={profileUser.name} />
+          <AvatarFallback>{profileUser.name?.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <CardTitle className="text-2xl font-bold text-gray-800">
+          {profileUser.name}
+        </CardTitle>
+        {profileUser.email ? (
+          <p className="text-sm text-gray-500">{profileUser.email}</p>
+        ) : (
+          <p className="text-sm text-gray-500 italic">Email not provided</p>
+        )}
       </CardHeader>
-      <CardContent>
-        <div className="flex items-center space-x-4 mb-6">
-          <Avatar className="h-24 w-24">
-            <AvatarImage src={profileUser.profile_pic} alt={profileUser.name} />
-            <AvatarFallback>{profileUser.name.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-medium text-lg">{profileUser.name}</p>
-            <p className="text-gray-500">{profileUser.email}</p>
-          </div>
+
+      <CardContent className="space-y-6 p-6">
+        <div className="text-center">
+          {profileUser.headline ? (
+            <p className="text-lg font-medium text-gray-700">
+              {profileUser.headline}
+            </p>
+          ) : (
+            <p className="text-sm text-gray-500 italic">
+              This user has not shared a headline.
+            </p>
+          )}
         </div>
 
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="font-semibold">Headline:</p>
-              <p>{getValueOrPlaceholder(profileUser.headline)}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Country:</p>
-              <p>{getValueOrPlaceholder(profileUser.country)}</p>
-            </div>
-          </div>
+        <div className="text-center">
+          {profileUser.current_position ? (
+            <p className="text-sm text-gray-500">
+              {profileUser.current_position}
+            </p>
+          ) : (
+            <p className="text-sm text-gray-500 italic">
+              This user has not provided a current position.
+            </p>
+          )}
+        </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="font-semibold">Postal Code:</p>
-              <p>{getValueOrPlaceholder(profileUser.postal_code)}</p>
-            </div>
-            <div>
-              <p className="font-semibold">City:</p>
-              <p>{getValueOrPlaceholder(profileUser.city)}</p>
-            </div>
-          </div>
-
-          <div>
-            <p className="font-semibold">Current Position:</p>
-            <p>{getValueOrPlaceholder(profileUser.current_position)}</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="font-semibold">Role:</p>
-              <p>{profileUser.role}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Status:</p>
-              <p>{profileUser.enabled ? "Enabled" : "Disabled"}</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="font-semibold">Created At:</p>
-              <p>{new Date(profileUser.createdAt).toLocaleString()}</p>
-            </div>
-            <div>
-              <p className="font-semibold">Updated At:</p>
-              <p>{new Date(profileUser.updatedAt).toLocaleString()}</p>
-            </div>
-          </div>
+        <div className="flex justify-center space-x-4">
+          {profileUser.city ? (
+            <p className="text-sm text-gray-600">{profileUser.city}</p>
+          ) : (
+            <p className="text-sm text-gray-500 italic">City not provided</p>
+          )}
+          {profileUser.country ? (
+            <p className="text-sm text-gray-600">{profileUser.country}</p>
+          ) : (
+            <p className="text-sm text-gray-500 italic">Country not provided</p>
+          )}
         </div>
       </CardContent>
     </Card>

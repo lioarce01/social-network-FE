@@ -14,9 +14,10 @@ const ProfilePage = ({ userId }: { userId: string }) => {
     data: profileUser,
     isLoading: profileLoading,
     error,
-  } = useGetUserBySubQuery(userId);
+  } = useGetUserBySubQuery(userId, {
+    skip: !userId,
+  });
 
-  // Show the skeleton while loading
   if (profileLoading || currentUserLoading) {
     return <ProfileSkeleton />;
   }
@@ -38,7 +39,7 @@ const ProfilePage = ({ userId }: { userId: string }) => {
   return isOwnProfile ? (
     <OwnProfile
       userId={userId}
-      profileUser={profileUser}
+      profileUser={currentUser}
       isLoading={currentUserLoading}
     />
   ) : (

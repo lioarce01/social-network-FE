@@ -28,7 +28,7 @@ const JobListComponent = () => {
             jobs.map((job: any) => (
               <Card
                 key={job.id}
-                className="flex flex-col justify-between h-[350px] w-full md:w-94"
+                className="flex flex-col justify-between  w-full md:w-94"
               >
                 <CardHeader>
                   <CardTitle className="flex items-start justify-between">
@@ -55,7 +55,7 @@ const JobListComponent = () => {
                   )}
                 </CardHeader>
                 <CardContent className="flex-1">
-                  <div className="flex items-start space-x-4 text-sm text-muted-foreground mb-4 justify-start">
+                  <div className="flex items-start space-x-4 text-sm text-muted-foreground justify-start">
                     <span className="flex items-start">
                       <MapPin className="mr-1 h-4 w-4" /> {job.location}
                     </span>
@@ -63,14 +63,9 @@ const JobListComponent = () => {
                       <DollarSign className="mr-1 h-4 w-4" /> {job.budget}
                     </span>
                   </div>
-                  <div className="h-[120px] overflow-hidden">
-                    <p className="text-sm text-neutral-700 line-clamp-5">
-                      {job.description}
-                    </p>
-                  </div>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full">
+                  <Button asChild className="">
                     <Link href={`/jobpostings/${job.id}`}>View Details</Link>
                   </Button>
                 </CardFooter>

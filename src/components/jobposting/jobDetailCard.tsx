@@ -39,10 +39,10 @@ const JobDetailCardComponent = () => {
           currentUserId={currentUser?.id}
           jobId={jobId}
         />
-        <JobDetailCardContent jobDetails={jobDetails && jobDetails} />
-        <ApplyButtonComponent
+
+        <JobDetailCardContent
           jobDetails={jobDetails && jobDetails}
-          userId={currentUser?.id}
+          currentUserId={currentUser?.id}
         />
       </Card>
     </>

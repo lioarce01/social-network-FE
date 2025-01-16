@@ -19,8 +19,8 @@ export const userApi = createApi({
       invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
     getUserBySub: builder.query({
-      query: (id) => `/users/${id}`,
-      providesTags: (result, error, sub) => [{ type: "User", id: sub }],
+      query: (identifier) => `/users/${identifier}`,
+      providesTags: (result, error, id) => [{ type: "User", id }],
     }),
     //PROFILE SETTINGS
     updateUser: builder.mutation({
