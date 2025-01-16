@@ -21,15 +21,22 @@ import DeleteAccount from "./deleteAccount";
 const OwnProfile = ({
   userId,
   profileUser,
+  isLoading,
 }: {
   userId: string;
   profileUser: any;
+  isLoading: boolean;
 }) => {
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     profile_pic: "",
+    headline: "",
+    country: "",
+    postal_code: "",
+    city: "",
+    current_position: "",
   });
 
   useEffect(() => {
@@ -38,6 +45,11 @@ const OwnProfile = ({
         name: profileUser.name || "",
         email: profileUser.email || "",
         profile_pic: profileUser.profile_pic || "",
+        headline: profileUser.headline || "",
+        country: profileUser.country || "",
+        postal_code: profileUser.postal_code || "",
+        city: profileUser.city || "",
+        current_position: profileUser.current_position || "",
       });
     }
   }, [profileUser]);
@@ -53,6 +65,11 @@ const OwnProfile = ({
       const updateData = {
         name: formData.name,
         profile_pic: formData.profile_pic,
+        headline: formData.headline,
+        country: formData.country,
+        postal_code: formData.postal_code,
+        city: formData.city,
+        current_position: formData.current_position,
       };
       await updateUser({ id: userId, data: updateData }).unwrap();
       toast({
@@ -113,6 +130,56 @@ const OwnProfile = ({
               type="email"
               value={formData.email}
               readOnly
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="headline">Headline</Label>
+            <Input
+              id="headline"
+              name="headline"
+              value={formData.headline}
+              onChange={handleInputChange}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="current_position">Current Position</Label>
+            <Input
+              id="current_position"
+              name="current_position"
+              value={formData.current_position}
+              onChange={handleInputChange}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="country">Country</Label>
+            <Input
+              id="country"
+              name="country"
+              value={formData.country}
+              onChange={handleInputChange}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="city">City</Label>
+            <Input
+              id="city"
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="postal_code">Postal Code</Label>
+            <Input
+              id="postal_code"
+              name="postal_code"
+              value={formData.postal_code}
+              onChange={handleInputChange}
               className="mt-1"
             />
           </div>
