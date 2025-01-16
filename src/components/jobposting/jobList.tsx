@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import {
   Card,
@@ -6,11 +7,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "@/components/ui/card";
 import { DollarSign, MapPin } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { useGetJobsQuery } from "@/redux/api/jobPostingApi";
 import JobListSkeleton from "./jobListSkeleton";
 
@@ -18,39 +19,48 @@ const JobListComponent = () => {
   const { data: jobs, isLoading, error } = useGetJobsQuery({});
 
   if (isLoading) return <JobListSkeleton />;
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-screen-lg mx-auto">
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
           {jobs && jobs.length > 0 ? (
             jobs.map((job: any) => (
               <Card
                 key={job.id}
-                className="flex flex-col h-full w-full md:w-94 lg:w-[320px]"
+                className="flex flex-col justify-between h-[350px] w-full md:w-94"
               >
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <span className="text-lg">{job.title}</span>
-                    <p className="text-sm text-neutral-500">{job.mode}</p>
+                    <span className="text-lg font-semibold truncate">
+                      {job.title}
+                    </span>
+                    <Badge variant="secondary" className="ml-2">
+                      {job.mode}
+                    </Badge>
                   </CardTitle>
                   {job.featured && (
-                    <Badge variant="secondary" className="mt-2">
+                    <Badge variant="default" className="mt-2">
                       Featured
                     </Badge>
                   )}
                 </CardHeader>
-                <CardContent className="flex-grow">
-                  <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-4">
-                    <span className="flex items-center">
+                <CardContent className="flex-1">
+                  <div className="flex items-start space-x-4 text-sm text-muted-foreground mb-4 justify-start">
+                    <span className="flex items-start">
                       <MapPin className="mr-1 h-4 w-4" /> {job.location}
                     </span>
-                    <span className="flex items-center">
+                    <span className="flex items-start">
                       <DollarSign className="mr-1 h-4 w-4" /> {job.budget}
                     </span>
                   </div>
-                  <p className="text-sm">{job.description}</p>
+                  <div className="h-[120px] overflow-hidden">
+                    <p className="text-sm text-muted-foreground line-clamp-5">
+                      {job.description}
+                    </p>
+                  </div>
                 </CardContent>
-                <CardFooter className="flex justify-between mt-auto ">
+                <CardFooter>
                   <Button asChild className="w-full">
                     <Link href={`/jobpostings/${job.id}`}>View Details</Link>
                   </Button>
@@ -58,7 +68,9 @@ const JobListComponent = () => {
               </Card>
             ))
           ) : (
-            <div className="col-span-full text-center">No jobs found.</div>
+            <div className="col-span-full text-center text-muted-foreground">
+              No jobs found.
+            </div>
           )}
         </div>
       </div>

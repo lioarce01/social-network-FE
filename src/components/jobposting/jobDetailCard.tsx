@@ -7,6 +7,7 @@ import ApplyButtonComponent from "./jobDetailApplyButton";
 import { useParams } from "next/navigation";
 import { useGetJobByIdQueryQuery } from "@/redux/api/jobPostingApi";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import JobDetailSkeleton from "./jobDetailSkeleton";
 
 const JobDetailCardComponent = () => {
   const params = useParams();
@@ -18,14 +19,9 @@ const JobDetailCardComponent = () => {
     isLoading,
     error,
   } = useGetJobByIdQueryQuery(jobId, { refetchOnMountOrArgChange: true });
-  console.log("job author:", jobDetails);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
-    );
+    return <JobDetailSkeleton />;
   }
 
   if (error || !jobDetails) {
