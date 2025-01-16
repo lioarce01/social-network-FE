@@ -24,6 +24,7 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
 
   return (
     <div className="space-y-4">
+      <CreateComment currentUserId={currentUser?.id} postId={queryPost?.id} />
       <div className="flex items-center justify-between">
         {hasLiked ? (
           <UnlikeButton post={queryPost} currentUser={currentUser} />
@@ -36,7 +37,6 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
         </div>
       </div>
       <PostComments comments={postComments} currentUserId={currentUser?.id} />
-      <CreateComment currentUserId={currentUser?.id} postId={queryPost?.id} />
     </div>
   );
 };

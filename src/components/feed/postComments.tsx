@@ -16,7 +16,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
   });
 
   return (
-    <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+    <div className="space-y-4 max-h-44 overflow-y-auto pr-2">
       {sortedComments?.length > 0 ? (
         sortedComments.map((comment: any) => (
           <div
@@ -36,17 +36,24 @@ const PostComments: React.FC<PostCommentsProps> = ({
             <div className="space-y-2 w-full">
               <div className="w-full">
                 <div className="flex justify-between w-full">
-                  <p className="font-medium text-primary">
-                    {comment?.author?.name || "Anonymous"}
-                  </p>
-                  {currentUserId === comment?.author?.id ? (
-                    <CommentSettings comment={comment} />
-                  ) : null}
+                  <div className="flex flex-col">
+                    <p className="font-medium text-primary">
+                      {comment?.author?.name || "Anonymous"}
+                    </p>
+                    <p className="text-xs text-neutral-600">
+                      {comment?.author?.current_position ||
+                        comment?.author?.headline}
+                    </p>
+                  </div>
+                  <div className="flex items-center">
+                    <p className="text-xs text-muted-foreground">
+                      {formatDate(comment?.createdAt)}
+                    </p>
+                    {currentUserId === comment?.author?.id ? (
+                      <CommentSettings comment={comment} />
+                    ) : null}
+                  </div>
                 </div>
-
-                <p className="text-xs text-muted-foreground">
-                  {formatDate(comment?.createdAt)}
-                </p>
               </div>
 
               <p className="text-sm text-gray-900 font-sm">

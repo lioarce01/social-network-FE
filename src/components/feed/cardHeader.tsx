@@ -18,7 +18,7 @@ const CardHeaderComponent = ({ post }: any) => {
           <div>
             <h3 className="font-bold">{post.author?.name}</h3>
             <p className="text-sm text-gray-500">
-              Senior Software Engineer at TechCorp
+              {post.author?.current_position || post.author?.headline}
             </p>
             <p className="text-sm text-gray-500">
               {formatDate(post.updatedAt)}

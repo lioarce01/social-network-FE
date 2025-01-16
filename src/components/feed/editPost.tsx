@@ -53,7 +53,9 @@ const EditPost = ({
                 <p className="font-medium">
                   {currentUser?.name || "User Name"}
                 </p>
-                <p className="text-sm text-gray-500">Public</p>
+                <p className="text-sm font-normal text-gray-600">
+                  {currentUser?.current_position || currentUser?.headline}
+                </p>
               </div>
             </div>
           </DialogTitle>

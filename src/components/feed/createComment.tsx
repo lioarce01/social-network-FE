@@ -26,7 +26,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({
         postId: postId,
         content: content.trim(),
       }).unwrap();
-      setContent(""); // Clear the input field after successful submission
+      setContent("");
     } catch (error) {
       console.error("Failed to create comment:", error);
     }

@@ -6,13 +6,11 @@ import CardFooterComponent from "./cardFooter";
 
 const PostCard = ({ post, currentUser }: any) => {
   return (
-    <>
-      <Card className="bg-white">
-        <CardHeaderComponent post={post} />
-        <CardContentComponent post={post} />
-        <CardFooterComponent post={post} currentUser={currentUser} />
-      </Card>
-    </>
+    <Card className="bg-white max-w-[700px] mx-auto">
+      <CardHeaderComponent post={post} />
+      <CardContentComponent post={post} />
+      <CardFooterComponent post={post} currentUser={currentUser} />
+    </Card>
   );
 };
 

@@ -49,7 +49,7 @@ const WritePostComponent = () => {
               </button>
             </div>
           </DialogTrigger>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-[800px]">
             <DialogHeader>
               <DialogTitle className="text-xl font-semibold">
                 <div className="flex items-center gap-3">
@@ -62,7 +62,9 @@ const WritePostComponent = () => {
                     <p className="font-medium">
                       {currentUser?.name || "User Name"}
                     </p>
-                    <p className="text-sm text-gray-500">Public</p>
+                    <p className="text-sm font-normal text-gray-600">
+                      {currentUser?.current_position || currentUser?.headline}
+                    </p>
                   </div>
                 </div>
               </DialogTitle>

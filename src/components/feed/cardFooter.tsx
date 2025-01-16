@@ -35,7 +35,7 @@ const CardFooterComponent = ({ post, currentUser }: any) => {
 
       {/* Modal */}
       <Dialog open={isModalOpen} onOpenChange={toggleModal}>
-        <DialogContent className="max-w-lg space-y-4">
+        <DialogContent className="max-w-lg space-y-4 min-w-[800px]">
           <DialogHeader>
             <DialogTitle>
               <div className="flex items-start space-x-4">
@@ -50,6 +50,10 @@ const CardFooterComponent = ({ post, currentUser }: any) => {
                 <div className="flex flex-col space-y-1">
                   <p className="font-medium">
                     {queryPost?.author?.name || "Unknown Author"}
+                  </p>
+                  <p className="text-sm font-normal text-gray-600">
+                    {queryPost?.author?.current_position ||
+                      queryPost?.author?.headline}
                   </p>
                   <p className="text-sm font-light text-gray-500">
                     {formatDate(queryPost?.createdAt)}

@@ -5,7 +5,6 @@ import { Inter } from "next/font/google";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { useRouter } from "next/navigation";
 import { Providers } from "@/lib/providers";
-import AuthSyncWrapper from "@/components/auth/AuthSyncWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
