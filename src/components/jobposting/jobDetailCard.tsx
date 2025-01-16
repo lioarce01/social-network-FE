@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import { Card } from "../ui/card";
-import JobDetailCardHeader from "./jobDetailCardHeader";
 import JobDetailCardContent from "./jobDetailCardComponent";
 import ApplyButtonComponent from "./jobDetailApplyButton";
 import { useParams } from "next/navigation";
 import { useGetJobByIdQueryQuery } from "@/redux/api/jobPostingApi";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import JobDetailSkeleton from "./jobDetailSkeleton";
+import JobDetailCardHeader from "./jobDetailCardHeader";
 
 const JobDetailCardComponent = () => {
   const params = useParams();

@@ -31,10 +31,15 @@ const JobListComponent = () => {
                 className="flex flex-col justify-between h-[350px] w-full md:w-94"
               >
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span className="text-lg font-semibold truncate">
-                      {job.title}
-                    </span>
+                  <CardTitle className="flex items-start justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-lg font-semibold truncate">
+                        {job.title}
+                      </span>
+                      <span className="text-sm text-neutral-600">
+                        {job.category}
+                      </span>
+                    </div>
                     <Badge variant="secondary" className="ml-2">
                       {job.mode}
                     </Badge>
@@ -55,7 +60,7 @@ const JobListComponent = () => {
                     </span>
                   </div>
                   <div className="h-[120px] overflow-hidden">
-                    <p className="text-sm text-muted-foreground line-clamp-5">
+                    <p className="text-sm text-neutral-700 line-clamp-5">
                       {job.description}
                     </p>
                   </div>

@@ -38,31 +38,36 @@ const JobDetailCardContent = ({ jobDetails }: any) => {
 
   return (
     <CardContent className="space-y-6">
-      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-muted-foreground">
+      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-sm font-medium text-muted-foreground">
         <span className="flex items-center">
-          <DollarSign className="mr-1 h-4 w-4" /> Budget: ${jobDetails?.budget}
+          <DollarSign className="mr-1 h-4 w-4 text-primary" /> Budget: $
+          {jobDetails?.budget}
         </span>
         <span className="flex items-center">
-          <CalendarDays className="mr-1 h-4 w-4" /> Deadline:{" "}
+          <CalendarDays className="mr-1 h-4 w-4 text-primary" /> Deadline:{" "}
           {formatDateTime(jobDetails?.deadline)}
         </span>
         <span className="flex items-center">
-          <Clock className="mr-1 h-4 w-4" /> Posted:{" "}
+          <Clock className="mr-1 h-4 w-4 text-primary" /> Posted:{" "}
           {formatDate(jobDetails?.createdAt)}
         </span>
       </div>
 
-      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-sm text-muted-foreground">
+      <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-sm font-medium text-muted-foreground">
         <span className="flex items-center">
-          <MapPin className="mr-1 h-4 w-4" /> Location: {jobDetails?.location}
+          <MapPin className="mr-1 h-4 w-4 text-primary" /> Location:{" "}
+          {jobDetails?.location}
         </span>
         <span className="flex items-center">
-          <Briefcase className="mr-1 h-4 w-4" /> Mode: {jobDetails?.mode}
+          <Briefcase className="mr-1 h-4 w-4 text-primary" /> Mode:{" "}
+          {jobDetails?.mode}
         </span>
       </div>
 
       <div>
-        <h3 className="font-semibold text-lg mb-4">Job Description</h3>
+        <h3 className="font-semibold text-xl text-primary mb-4">
+          Job Description
+        </h3>
         <div className="prose prose-sm max-w-none">
           <div className="whitespace-pre-line">
             {formatDescription(jobDetails?.description)}
@@ -71,10 +76,16 @@ const JobDetailCardContent = ({ jobDetails }: any) => {
       </div>
 
       <div>
-        <h3 className="font-semibold text-lg mb-2">Required Technologies</h3>
+        <h3 className="font-semibold text-xl text-primary mb-2">
+          Required Technologies
+        </h3>
         <div className="flex flex-wrap gap-2">
           {jobDetails.techRequired.map((tech: string, index: number) => (
-            <Badge key={index} variant="outline" className="flex items-center">
+            <Badge
+              key={index}
+              variant="outline"
+              className="flex items-center bg-secondary text-secondary-foreground"
+            >
               <Tag className="mr-1 h-3 w-3" /> {tech}
             </Badge>
           ))}
