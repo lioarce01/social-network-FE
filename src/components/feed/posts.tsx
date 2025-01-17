@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetPostsQuery } from "@/redux/api/postApi";
 import PostCard from "./postCard";
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -16,17 +16,41 @@ const Posts = () => {
     sortOrder: "desc",
   });
 
+  const [allPosts, setAllPosts] = useState<any[]>([]);
+
   const { data, isLoading, isFetching } = useGetPostsQuery(queryParams);
   const { currentUser } = useCurrentUser();
 
+  useEffect(() => {
+    if (data) {
+      setAllPosts((prevPosts) => {
+        const newPosts = data.filter(
+          (newPost: any) =>
+            !prevPosts.some((existingPost) => existingPost.id === newPost.id),
+        );
+        return [...prevPosts, ...newPosts];
+      });
+    }
+  }, [data]);
+
   const handleLoadMore = () => {
-    setQueryParams({
-      ...queryParams,
-      offset: queryParams.offset + queryParams.limit,
-    });
+    setQueryParams((prevParams) => ({
+      ...prevParams,
+      offset: prevParams.offset + prevParams.limit,
+    }));
   };
 
-  if (isLoading) {
+  const handleSortChange = (sortBy: string, sortOrder: string) => {
+    setQueryParams({
+      ...queryParams,
+      sortBy,
+      sortOrder,
+      offset: 0,
+    });
+    setAllPosts([]);
+  };
+
+  if (isLoading && allPosts.length === 0) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, index) => (
@@ -41,16 +65,14 @@ const Posts = () => {
       <PostFilters
         sortBy={queryParams.sortBy}
         sortOrder={queryParams.sortOrder}
-        onSortChange={(sortBy, sortOrder) =>
-          setQueryParams({ ...queryParams, sortBy, sortOrder, offset: 0 })
-        }
+        onSortChange={handleSortChange}
       />
       <div className="space-y-4">
-        {data?.map((post: any) => (
+        {allPosts.map((post: any) => (
           <PostCard key={post.id} post={post} currentUser={currentUser} />
         ))}
       </div>
-      {data?.length === queryParams.limit && (
+      {data && data.length === queryParams.limit && (
         <div className="flex justify-center mt-6">
           <Button onClick={handleLoadMore} disabled={isFetching}>
             {isFetching ? <Loader2 className="animate-spin" /> : "Load more"}
