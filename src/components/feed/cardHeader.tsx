@@ -3,6 +3,7 @@ import React from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { CardHeader } from "../ui/card";
 import PostSettingsComponent from "./postSettings";
+import Link from "next/link";
 
 const CardHeaderComponent = ({ post }: any) => {
   return (
@@ -16,7 +17,9 @@ const CardHeaderComponent = ({ post }: any) => {
             />
           </Avatar>
           <div>
-            <h3 className="font-bold">{post.author?.name}</h3>
+            <Link href={`/profile/${post.author?.id}`} className="font-bold">
+              {post.author?.name}
+            </Link>
             <p className="text-sm text-gray-500">
               {post.author?.current_position || post.author?.headline}
             </p>

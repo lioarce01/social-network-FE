@@ -5,8 +5,8 @@ import PostCard from "./postCard";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { PostFilters } from "./postFilters";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
+import PostSkeleton from "./postSkeleton";
 
 const Posts = () => {
   const [queryParams, setQueryParams] = useState({
@@ -30,7 +30,7 @@ const Posts = () => {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, index) => (
-          <Skeleton key={index} className="h-[200px] w-full" />
+          <PostSkeleton key={index} />
         ))}
       </div>
     );

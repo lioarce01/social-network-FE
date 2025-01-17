@@ -19,7 +19,7 @@ export const PostFilters: React.FC<PostFiltersProps> = ({
   onSortChange,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mb-6">
+    <div className="flex items-center sm:items-center sm:space-y-0 space-x-2 sm:space-x-4 mb-6">
       <Select
         value={sortBy}
         onValueChange={(value) => onSortChange(value, sortOrder)}
