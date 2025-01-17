@@ -5,45 +5,48 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Skeleton } from "../ui/skeleton";
-import { Button } from "../ui/button";
+} from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { DollarSign, MapPin } from "lucide-react";
 
 const JobListSkeleton = () => {
-  const skeletons = Array(6).fill(null);
+  const skeletons = Array(4).fill(null);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="">
       <div className="max-w-screen-lg mx-auto">
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
           {skeletons.map((_, index) => (
             <Card
               key={index}
-              className="flex flex-col h-full w-full md:w-94 lg:w-[320px]"
+              className="flex flex-col justify-between w-full md:w-94"
             >
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <Skeleton className="w-2/4 h-4" />
-                  <Skeleton className="w-1/4 h-4" />
+                <CardTitle className="flex items-start justify-between">
+                  <div className="flex flex-col">
+                    <Skeleton className="h-6 w-[200px] lg:w-[300px] mb-2" />
+                    <Skeleton className="h-4 w-[150px]" />
+                  </div>
+                  <Skeleton className="h-6 w-20" />
                 </CardTitle>
-                <Skeleton className="mt-2 w-20 h-4" />{" "}
+                <Skeleton className="h-5 w-16 mt-2" />
               </CardHeader>
-              <CardContent className="flex-grow">
-                <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-4">
-                  <div className="flex items-center space-x-2">
-                    <Skeleton className="w-16 h-4" />
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Skeleton className="w-16 h-4" />
-                  </div>
+              <CardContent className="flex-1">
+                <div className="flex items-start space-x-4 text-sm text-muted-foreground justify-start">
+                  <span className="flex items-start">
+                    <MapPin className="mr-1 h-4 w-4 text-muted-foreground" />
+                    <Skeleton className="h-4 w-20" />
+                  </span>
+                  <span className="flex items-start">
+                    <DollarSign className="mr-1 h-4 w-4 text-muted-foreground" />
+                    <Skeleton className="h-4 w-20" />
+                  </span>
                 </div>
-                <Skeleton className="w-full h-12" />{" "}
               </CardContent>
-              <CardFooter className="flex justify-between mt-auto">
+              <CardFooter>
                 <Button asChild className="w-full">
-                  <a className="w-full">
-                    <Skeleton className="w-full h-10" />
-                  </a>
+                  <Skeleton className="h-10 w-1/4" />
                 </Button>
               </CardFooter>
             </Card>
