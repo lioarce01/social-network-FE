@@ -8,7 +8,15 @@ export const postApi = createApi({
   tagTypes: ["Post"],
   endpoints: (builder) => ({
     getPosts: builder.query({
-      query: () => "/posts",
+      query: (params) => ({
+        url: "/posts",
+        params: {
+          offset: params.offset || 0,
+          limit: params.limit || 10,
+          sortBy: params.sortBy || "createdAt",
+          sortOrder: params.sortOrder || "desc",
+        },
+      }),
       providesTags: (result) =>
         result
           ? [
@@ -76,6 +84,7 @@ export const postApi = createApi({
 
 export const {
   useGetPostsQuery,
+  useLazyGetPostsQuery,
   useGetPostByIdQuery,
   useCreatePostMutation,
   useDeletePostMutation,
