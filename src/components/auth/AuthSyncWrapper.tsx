@@ -2,19 +2,28 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import useAuthSync from "@/hooks/useAuthSync";
-import { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { ReactNode, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const AuthSyncWrapper = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth0();
   useAuthSync();
 
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated && pathname === "/") {
+      router.push("/feed");
+    }
+  }, [isAuthenticated, pathname, router]);
 
   if (isLoading) {
     return (
-      <div className="w-full bg-black bg-opacity-50 h-screen flex text-white justify-center items-center">
-        Loading...
+      <div className="flex flex-col w-full bg-gray-200 text-neutral-800 h-screen justify-center items-center">
+        <p>TechConnect</p>
+        <Loader2 className="animate-spin" />
       </div>
     );
   }
