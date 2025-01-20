@@ -16,12 +16,12 @@ const PostComments: React.FC<PostCommentsProps> = ({
   });
 
   return (
-    <div className="space-y-4 max-h-44 overflow-y-auto pr-2">
+    <div className="space-y-4 pr-2">
       {sortedComments?.length > 0 ? (
         sortedComments.map((comment: any) => (
           <div
             key={comment?.id}
-            className="flex items-start space-x-4 p-3 border border-muted bg-gray-50 rounded-sm"
+            className="flex items-start space-x-4 p-3 border-muted"
           >
             <div className="flex-shrink-0">
               <img
