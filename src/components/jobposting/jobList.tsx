@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DollarSign, MapPin } from "lucide-react";
+import { DollarSign, Loader2, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -16,18 +16,45 @@ import { useGetJobsQuery } from "@/redux/api/jobPostingApi";
 import JobListSkeleton from "./jobListSkeleton";
 
 const JobListComponent = () => {
-  const { data: jobs, isLoading, error } = useGetJobsQuery({});
+  const [queryParams, setQueryParams] = useState({
+    offset: 0,
+    limit: 2,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+  });
 
-  if (isLoading) return <JobListSkeleton />;
+  const [allJobs, setAllJobs] = useState<any[]>([]);
+  const { data: jobs, isLoading, error } = useGetJobsQuery(queryParams);
+
+  useEffect(() => {
+    if (jobs) {
+      setAllJobs((prevJobs) => {
+        const newJobs = jobs.filter(
+          (newJob: any) =>
+            !prevJobs.some((existingJob) => existingJob.id === newJob.id),
+        );
+        return [...prevJobs, ...newJobs];
+      });
+    }
+  }, [jobs]);
+
+  const handleLoadMore = () => {
+    setQueryParams((prevQueryParams) => ({
+      ...prevQueryParams,
+      offset: prevQueryParams.offset + prevQueryParams.limit,
+    }));
+  };
+
+  if (isLoading && allJobs.length === 0) return <JobListSkeleton />;
 
   return (
     <div className="max-w-screen-lg mx-auto">
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
-        {jobs && jobs.length > 0 ? (
-          jobs.map((job: any) => (
+        {allJobs.length > 0 ? (
+          allJobs.map((job: any) => (
             <Card
               key={job.id}
-              className="flex flex-col justify-between  w-full md:w-94"
+              className="flex flex-col justify-between w-full md:w-94"
             >
               <CardHeader>
                 <CardTitle className="flex items-start justify-between">
@@ -76,6 +103,13 @@ const JobListComponent = () => {
           </div>
         )}
       </div>
+      {jobs && jobs.length === queryParams.limit && (
+        <div className="flex justify-center items-center mt-4">
+          <Button onClick={handleLoadMore} disabled={isLoading}>
+            {isLoading ? <Loader2 className="animate-spin" /> : "Load more"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

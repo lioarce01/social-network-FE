@@ -22,10 +22,6 @@ export default function JobsPage() {
         <main>
           <JobList />
         </main>
-
-        <footer className="flex justify-center">
-          <LoadMoreJobs />
-        </footer>
       </div>
     </div>
   );
