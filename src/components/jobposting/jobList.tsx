@@ -72,8 +72,8 @@ const JobListComponent: React.FC = () => {
   if (isLoading && jobs.length === 0) return <JobListSkeleton />;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div className="py-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-[1200px]">
         <aside className="md:col-span-1">
           <JobFilters
             sortBy={queryParams.sortBy}
@@ -82,10 +82,13 @@ const JobListComponent: React.FC = () => {
           />
         </aside>
         <main className="md:col-span-3">
-          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <div className="grid gap-6 grid-cols-1">
             {jobs.length > 0 ? (
               jobs.map((job) => (
-                <Card key={job.id} className="flex flex-col justify-between">
+                <Card
+                  key={job.id}
+                  className="flex flex-col justify-between max-w-[600px]"
+                >
                   <CardHeader>
                     <CardTitle className="flex items-start justify-between">
                       <div className="flex flex-col">
