@@ -7,6 +7,7 @@ import { commentApi } from "./api/commentApi";
 import authReducer from "./slices/authSlice";
 import { jobPostingApi } from "./api/jobPostingApi";
 import jobReducer from "./slices/jobSlice";
+import postReducer from "./slices/postSlice";
 
 const createNoopStorage = () => {
   return {
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   [jobPostingApi.reducerPath]: jobPostingApi.reducer,
   [commentApi.reducerPath]: commentApi.reducer,
   jobs: jobReducer,
+  posts: postReducer,
   auth: authReducer,
 });
 
