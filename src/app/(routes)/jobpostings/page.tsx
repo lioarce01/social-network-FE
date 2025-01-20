@@ -1,28 +1,36 @@
-import SearchBarComponent from "@/components/jobposting/searchBar";
-import JobList from "@/components/jobposting/jobList";
-import LoadMoreJobs from "@/components/jobposting/loadMoreJobs";
+import React from "react";
+import JobListComponent from "@/components/jobposting/jobList";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
 
 export default function JobsPage() {
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8 py-8">
-      <div className="max-w-7xl w-full space-y-12">
-        <header className="text-center space-y-4">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
+    <div className="min-h-screen bg-background">
+      <header className="bg-secondary py-12">
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl font-bold mb-4">
             Find Your Next Opportunity
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600">
+          <p className="text-xl mb-8">
             Discover jobs that match your skills and passions.
           </p>
-        </header>
-
-        <div className="flex justify-center">
-          <SearchBarComponent />
+          <div className="flex max-w-md mx-auto">
+            <Input
+              type="text"
+              placeholder="Search jobs..."
+              className="rounded-r-none"
+            />
+            <Button type="submit" className="rounded-l-none">
+              <Search className="h-4 w-4 mr-2" />
+              Search
+            </Button>
+          </div>
         </div>
-
-        <main>
-          <JobList />
-        </main>
-      </div>
+      </header>
+      <main className="py-8">
+        <JobListComponent />
+      </main>
     </div>
   );
 }
