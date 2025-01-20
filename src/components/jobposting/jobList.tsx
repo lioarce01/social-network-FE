@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Card,
   CardContent,
@@ -12,46 +14,53 @@ import { DollarSign, Loader2, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { useGetJobsQuery } from "@/redux/api/jobPostingApi";
 import JobListSkeleton from "./jobListSkeleton";
 import JobFilters from "./jobListFilters";
+import { useGetJobsQuery } from "@/redux/api/jobPostingApi";
+import {
+  selectAllJobs,
+  selectTotalJobsCount,
+  setJobs,
+  addJobs,
+  setTotalCount,
+} from "@/redux/slices/jobSlice";
+import type { AppDispatch, RootState } from "@/redux/store";
 
-const JobListComponent = () => {
+const JobListComponent: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const jobs = useSelector((state: RootState) => selectAllJobs(state) || []);
+  const totalCount = useSelector(
+    (state: RootState) => selectTotalJobsCount(state) || 0,
+  );
+
   const [queryParams, setQueryParams] = useState({
     offset: 0,
     limit: 6,
-    sortBy: ["createdAt"],
-    sortOrder: "desc",
+    sortBy: ["createdAt"] as string[],
+    sortOrder: "desc" as "asc" | "desc",
   });
 
-  const [allJobs, setAllJobs] = useState<any[]>([]);
-  const [isFiltering, setIsFiltering] = useState(false);
-  const { data: jobs, isLoading, isFetching } = useGetJobsQuery(queryParams);
+  const { data, isLoading, isFetching } = useGetJobsQuery(queryParams);
 
   useEffect(() => {
-    if (jobs && !isFiltering) {
-      setAllJobs((prevJobs) => {
-        const newJobs = jobs.filter(
-          (newJob: any) =>
-            !prevJobs.some((existingJob) => existingJob.id === newJob.id),
-        );
-        return [...prevJobs, ...newJobs];
-      });
-    } else if (jobs && isFiltering) {
-      setAllJobs(jobs);
-      setIsFiltering(false);
+    if (data && data.jobs) {
+      if (queryParams.offset === 0) {
+        dispatch(setJobs(data.jobs));
+      } else {
+        dispatch(addJobs(data.jobs));
+      }
+      dispatch(setTotalCount(data.totalCount));
     }
-  }, [jobs, isFiltering]);
+  }, [data, dispatch, queryParams.offset]);
 
   const handleLoadMore = () => {
-    setQueryParams((prevQueryParams) => ({
-      ...prevQueryParams,
-      offset: prevQueryParams.offset + prevQueryParams.limit,
+    setQueryParams((prevParams) => ({
+      ...prevParams,
+      offset: prevParams.offset + prevParams.limit,
     }));
   };
 
-  const handleSortChange = (sortBy: string[], sortOrder: string) => {
-    setIsFiltering(true);
+  const handleSortChange = (sortBy: string[], sortOrder: "asc" | "desc") => {
     setQueryParams({
       ...queryParams,
       sortBy,
@@ -60,7 +69,7 @@ const JobListComponent = () => {
     });
   };
 
-  if (isLoading || (isFetching && isFiltering)) return <JobListSkeleton />;
+  if (isLoading && jobs.length === 0) return <JobListSkeleton />;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -74,8 +83,8 @@ const JobListComponent = () => {
         </aside>
         <main className="md:col-span-3">
           <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-            {allJobs.length > 0 ? (
-              allJobs.map((job: any) => (
+            {jobs.length > 0 ? (
+              jobs.map((job) => (
                 <Card key={job.id} className="flex flex-col justify-between">
                   <CardHeader>
                     <CardTitle className="flex items-start justify-between">
@@ -128,7 +137,7 @@ const JobListComponent = () => {
               </div>
             )}
           </div>
-          {jobs && jobs.length === queryParams.limit && (
+          {jobs.length < totalCount && (
             <div className="flex justify-center mt-8">
               <Button onClick={handleLoadMore} disabled={isFetching}>
                 {isFetching ? (

@@ -22,9 +22,9 @@ export const jobPostingApi = createApi({
         },
       }),
       providesTags: (result) =>
-        result
+        result.jobs
           ? [
-              ...result.map(({ id }: { id: string }) => ({
+              ...result.jobs.map(({ id }: { id: string }) => ({
                 type: "JobPosting",
                 id,
               })),

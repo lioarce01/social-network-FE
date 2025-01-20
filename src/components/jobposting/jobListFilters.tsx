@@ -9,8 +9,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface JobFiltersProps {
   sortBy: string[];
-  sortOrder: string;
-  onSortChange: (sortBy: string[], sortOrder: string) => void;
+  sortOrder: "asc" | "desc";
+  onSortChange: (sortBy: string[], sortOrder: "asc" | "desc") => void;
 }
 
 const JobFilters: React.FC<JobFiltersProps> = ({
