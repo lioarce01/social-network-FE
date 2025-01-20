@@ -14,20 +14,22 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { useGetJobsQuery } from "@/redux/api/jobPostingApi";
 import JobListSkeleton from "./jobListSkeleton";
+import JobFilters from "./jobListFilters";
 
 const JobListComponent = () => {
   const [queryParams, setQueryParams] = useState({
     offset: 0,
     limit: 2,
-    sortBy: "createdAt",
+    sortBy: ["createdAt"],
     sortOrder: "desc",
   });
 
   const [allJobs, setAllJobs] = useState<any[]>([]);
-  const { data: jobs, isLoading, error } = useGetJobsQuery(queryParams);
+  const [isFiltering, setIsFiltering] = useState(false);
+  const { data: jobs, isLoading, isFetching } = useGetJobsQuery(queryParams);
 
   useEffect(() => {
-    if (jobs) {
+    if (jobs && !isFiltering) {
       setAllJobs((prevJobs) => {
         const newJobs = jobs.filter(
           (newJob: any) =>
@@ -35,8 +37,11 @@ const JobListComponent = () => {
         );
         return [...prevJobs, ...newJobs];
       });
+    } else if (jobs && isFiltering) {
+      setAllJobs(jobs);
+      setIsFiltering(false);
     }
-  }, [jobs]);
+  }, [jobs, isFiltering]);
 
   const handleLoadMore = () => {
     setQueryParams((prevQueryParams) => ({
@@ -45,11 +50,26 @@ const JobListComponent = () => {
     }));
   };
 
-  if (isLoading && allJobs.length === 0) return <JobListSkeleton />;
+  const handleSortChange = (sortBy: string[], sortOrder: string) => {
+    setIsFiltering(true);
+    setQueryParams({
+      ...queryParams,
+      sortBy,
+      sortOrder,
+      offset: 0,
+    });
+  };
+
+  if (isLoading || (isFetching && isFiltering)) return <JobListSkeleton />;
 
   return (
     <div className="max-w-screen-lg mx-auto">
-      <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+      <JobFilters
+        sortBy={queryParams.sortBy}
+        sortOrder={queryParams.sortOrder}
+        onSortChange={handleSortChange}
+      />
+      <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mt-6">
         {allJobs.length > 0 ? (
           allJobs.map((job: any) => (
             <Card
@@ -83,10 +103,12 @@ const JobListComponent = () => {
               <CardContent className="flex-1">
                 <div className="flex items-start space-x-4 text-sm text-muted-foreground justify-start">
                   <span className="flex items-start">
-                    <MapPin className="mr-1 h-4 w-4" /> {job.location}
+                    <MapPin className="mr-1 h-4 w-4" aria-hidden="true" />
+                    <span>{job.location}</span>
                   </span>
                   <span className="flex items-start">
-                    <DollarSign className="mr-1 h-4 w-4" /> {job.budget}
+                    <DollarSign className="mr-1 h-4 w-4" aria-hidden="true" />
+                    <span>{job.budget}</span>
                   </span>
                 </div>
               </CardContent>
@@ -105,8 +127,15 @@ const JobListComponent = () => {
       </div>
       {jobs && jobs.length === queryParams.limit && (
         <div className="flex justify-center items-center mt-4">
-          <Button onClick={handleLoadMore} disabled={isLoading}>
-            {isLoading ? <Loader2 className="animate-spin" /> : "Load more"}
+          <Button onClick={handleLoadMore} disabled={isFetching}>
+            {isFetching ? (
+              <Loader2 className="animate-spin" aria-hidden="true" />
+            ) : (
+              "Load more"
+            )}
+            <span className="sr-only">
+              {isFetching ? "Loading more jobs" : "Load more jobs"}
+            </span>
           </Button>
         </div>
       )}
