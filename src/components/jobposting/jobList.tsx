@@ -73,7 +73,7 @@ const JobListComponent: React.FC = () => {
 
   return (
     <div className="py-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-[1200px]">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-[1200px] justify-center">
         <aside className="md:col-span-1">
           <JobFilters
             sortBy={queryParams.sortBy}
@@ -141,7 +141,7 @@ const JobListComponent: React.FC = () => {
             )}
           </div>
           {jobs.length < totalCount && (
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-4 max-w-[600px]">
               <Button onClick={handleLoadMore} disabled={isFetching}>
                 {isFetching ? (
                   <Loader2 className="animate-spin mr-2" aria-hidden="true" />
