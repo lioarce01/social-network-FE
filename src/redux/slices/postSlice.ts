@@ -30,6 +30,7 @@ interface PostsState {
   totalCount: number;
   postId: string | null;
   loading: boolean;
+  noMorePosts: boolean;
 }
 
 const initialState: PostsState = {
@@ -37,6 +38,7 @@ const initialState: PostsState = {
   totalCount: 0,
   postId: null,
   loading: false,
+  noMorePosts: false,
 };
 
 const postsSlice = createSlice({
@@ -45,12 +47,16 @@ const postsSlice = createSlice({
   reducers: {
     setPosts: (state, action: PayloadAction<Post[]>) => {
       state.posts = action.payload;
+      state.noMorePosts = action.payload.length === 0;
     },
     addPosts: (state, action: PayloadAction<Post[]>) => {
       const newPosts = action.payload.filter(
         (newPost) => !state.posts.find((post) => post.id === newPost.id),
       );
       state.posts = [...state.posts, ...newPosts];
+      if (newPosts.length === 0) {
+        state.noMorePosts = true;
+      }
     },
     setTotalCount: (state, action: PayloadAction<number>) => {
       state.totalCount = action.payload;
@@ -64,6 +70,9 @@ const postsSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setNoMorePosts: (state, action: PayloadAction<boolean>) => {
+      state.noMorePosts = action.payload;
+    },
   },
 });
 
@@ -74,6 +83,7 @@ export const {
   setPostId,
   resetPostState,
   setLoading,
+  setNoMorePosts,
 } = postsSlice.actions;
 
 export const selectAllPosts = (state: RootState) => state.posts.posts;
@@ -81,5 +91,6 @@ export const selectTotalJobsCount = (state: RootState) =>
   state.posts.totalCount;
 export const selectPostId = (state: RootState) => state.posts.postId;
 export const selectLoading = (state: RootState) => state.posts.loading;
+export const selectNoMorePosts = (state: RootState) => state.posts.noMorePosts;
 
 export default postsSlice.reducer;

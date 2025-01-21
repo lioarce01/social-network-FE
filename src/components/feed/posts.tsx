@@ -4,8 +4,6 @@ import { useGetPostsQuery } from "@/redux/api/postApi";
 import PostCard from "./postCard";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { PostFilters } from "./postFilters";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import PostSkeleton from "./postSkeleton";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -16,6 +14,8 @@ import {
   selectTotalJobsCount,
   setPosts,
   setTotalCount,
+  selectNoMorePosts,
+  setNoMorePosts,
 } from "@/redux/slices/postSlice";
 
 const Posts = () => {
@@ -24,6 +24,7 @@ const Posts = () => {
   const totalCount = useSelector(
     (state: RootState) => selectTotalJobsCount(state) || 0,
   );
+  const noMorePosts = useSelector(selectNoMorePosts);
 
   const [queryParams, setQueryParams] = useState({
     offset: 0,
@@ -38,30 +39,39 @@ const Posts = () => {
 
   useEffect(() => {
     if (data && data.posts) {
-      if (queryParams.offset === 0) {
-        dispatch(setPosts(data.posts));
+      if (data.posts.length === 0) {
+        dispatch(setNoMorePosts(true));
       } else {
-        dispatch(addPosts(data.posts));
+        if (queryParams.offset === 0) {
+          dispatch(setPosts(data.posts));
+        } else {
+          dispatch(addPosts(data.posts));
+        }
+        dispatch(setTotalCount(data.totalCount));
       }
-      dispatch(setTotalCount(data.totalCount));
     }
   }, [data, dispatch, queryParams.offset]);
 
-  const handleLoadMore = () => {
-    setQueryParams((prevParams) => ({
-      ...prevParams,
-      offset: prevParams.offset + prevParams.limit,
-    }));
+  const handleScroll = () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (
+      scrollHeight - scrollTop <= clientHeight * 1.5 &&
+      !isFetching &&
+      !noMorePosts
+    ) {
+      setQueryParams((prevParams) => ({
+        ...prevParams,
+        offset: prevParams.offset + prevParams.limit,
+      }));
+    }
   };
 
-  const handleSortChange = (sortBy: string, sortOrder: string) => {
-    setQueryParams({
-      ...queryParams,
-      sortBy,
-      sortOrder,
-      offset: 0,
-    });
-  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isFetching, noMorePosts]);
 
   if (isLoading || (loading && posts.length === 0)) {
     return (
@@ -78,7 +88,14 @@ const Posts = () => {
       <PostFilters
         sortBy={queryParams.sortBy}
         sortOrder={queryParams.sortOrder}
-        onSortChange={handleSortChange}
+        onSortChange={(sortBy, sortOrder) =>
+          setQueryParams({
+            ...queryParams,
+            sortBy,
+            sortOrder,
+            offset: 0,
+          })
+        }
       />
       <div className="space-y-4">
         {posts.length > 0 ? (
@@ -89,12 +106,15 @@ const Posts = () => {
           <div className="text-center text-gray-500">No posts found</div>
         )}
       </div>
-      {posts.length < totalCount && (
-        <div className="flex justify-center mt-6">
-          <Button onClick={handleLoadMore} disabled={isFetching}>
-            {isFetching ? <Loader2 className="animate-spin" /> : "Load more"}
-          </Button>
+      {isFetching && (
+        <div className="space-y-4">
+          {[...Array(2)].map((_, index) => (
+            <PostSkeleton key={index} />
+          ))}
         </div>
+      )}
+      {noMorePosts && (
+        <div className="text-center text-gray-500">No more posts available</div>
       )}
     </div>
   );

@@ -8,17 +8,17 @@ export const postApi = createApi({
   tagTypes: ["Post"],
   endpoints: (builder) => ({
     getPosts: builder.query({
-      query: (params) => ({
+      query: ({ sortBy, sortOrder, offset, limit }) => ({
         url: "/posts",
         params: {
-          offset: params.offset || 0,
-          limit: params.limit || 10,
-          sortBy: params.sortBy || "createdAt",
-          sortOrder: params.sortOrder || "desc",
+          offset,
+          limit,
+          sortBy: "createdAt",
+          sortOrder: "desc",
         },
       }),
       providesTags: (result) =>
-        result.posts
+        result && result.posts
           ? [
               ...result.posts.map(({ id }: { id: string }) => ({
                 type: "Post",
