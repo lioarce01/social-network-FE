@@ -13,16 +13,25 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import Link from "next/link";
 import LogoutButton from "../auth/LogoutButton";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { Loader2 } from "lucide-react";
 
 const DropdownMenuComponent = () => {
   const { currentUser, isLoading } = useCurrentUser();
-  if (isLoading) return <div>loading user...</div>;
+  if (isLoading)
+    return (
+      <div>
+        <Loader2 className="animate-spin" />
+      </div>
+    );
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+          <Button
+            variant="ghost"
+            className="flex flex-col h-8 w-8 rounded-full"
+          >
             <Avatar className="h-8 w-8">
               <AvatarImage
                 src={currentUser?.profile_pic}
