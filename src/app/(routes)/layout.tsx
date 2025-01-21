@@ -6,9 +6,9 @@ export default function RoutesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main>{children}</main>
-    </>
+      <main className="flex-1 pt-16 bg-gray-50">{children}</main>
+    </div>
   );
 }
