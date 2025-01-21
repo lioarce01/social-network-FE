@@ -1,4 +1,4 @@
-import PostDetailContent from "@/components/feed/postDetailContent";
+import PostDetailContentWrapper from "@/components/feed/postDetailContentWrapper";
 import React from "react";
 
 const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -6,7 +6,7 @@ const PostDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <PostDetailContent postId={resolvedParams?.id} />
+      <PostDetailContentWrapper id={resolvedParams?.id} />
     </div>
   );
 };

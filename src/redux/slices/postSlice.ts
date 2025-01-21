@@ -28,11 +28,13 @@ export interface Post {
 interface PostsState {
   posts: Post[];
   totalCount: number;
+  postId: string | null;
 }
 
 const initialState: PostsState = {
   posts: [],
   totalCount: 0,
+  postId: null,
 };
 
 const postsSlice = createSlice({
@@ -51,13 +53,18 @@ const postsSlice = createSlice({
     setTotalCount: (state, action: PayloadAction<number>) => {
       state.totalCount = action.payload;
     },
+    setPostId: (state, action: PayloadAction<string>) => {
+      state.postId = action.payload;
+    },
   },
 });
 
-export const { setPosts, addPosts, setTotalCount } = postsSlice.actions;
+export const { setPosts, addPosts, setTotalCount, setPostId } =
+  postsSlice.actions;
 
 export const selectAllPosts = (state: RootState) => state.posts.posts;
 export const selectTotalJobsCount = (state: RootState) =>
   state.posts.totalCount;
+export const selectPostId = (state: RootState) => state.posts.postId;
 
 export default postsSlice.reducer;

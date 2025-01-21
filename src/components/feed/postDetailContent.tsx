@@ -7,12 +7,11 @@ import { useGetPostByIdQuery } from "@/redux/api/postApi";
 import { useRouter } from "next/navigation";
 import { IconLeft } from "react-day-picker";
 import { Button } from "../ui/button";
+import { useSelector } from "react-redux";
+import { selectPostId } from "@/redux/slices/postSlice";
 
-interface PostDetailContentProps {
-  postId: string;
-}
-
-const PostDetailContent: React.FC<PostDetailContentProps> = ({ postId }) => {
+const PostDetailContent = () => {
+  const postId = useSelector(selectPostId);
   const router = useRouter();
   const {
     data: queryPost,
