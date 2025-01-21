@@ -20,7 +20,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ queryPost, currentUser }) => {
       <CardHeader className="flex flex-row justify-between">
         <div className="flex flex-row items-center space-x-4">
           <Avatar>
-            <AvatarImage src={author.profile_pic} alt={author?.name} />
+            <AvatarImage src={author?.profile_pic} alt={author?.name} />
           </Avatar>
           <div>
             <Link href={`/profile/${author?.id}`} className="font-bold">
@@ -30,7 +30,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ queryPost, currentUser }) => {
               {author?.current_position || author?.headline}
             </p>
             <p className="text-sm text-gray-500">
-              {formatDate(queryPost.updatedAt)}
+              {formatDate(queryPost?.updatedAt)}
             </p>
           </div>
         </div>

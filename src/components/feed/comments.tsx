@@ -82,7 +82,7 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
   if (isInitialError || isPaginatedError) {
     return (
       <div className="text-red-500">
-        Error al cargar los comentarios. Por favor, intente de nuevo más tarde.
+        Error loading comments. Please try again later.
       </div>
     );
   }
@@ -97,12 +97,12 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
           <LikeButton post={queryPost} currentUser={currentUser} />
         )}
         <div className="flex space-x-2">
-          <h3 className="text-md font-medium">Comentarios</h3>
+          <h3 className="text-md font-medium">Comments</h3>
           <p className="text-gray-500 text-sm">{totalCount}</p>
         </div>
       </div>
       {isLoadingInitial ? (
-        <div>Cargando comentarios iniciales...</div>
+        <div>Loading initial comments...</div>
       ) : (
         <>
           <PostComments comments={comments} currentUserId={currentUser?.id} />
@@ -114,7 +114,7 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
                 variant="outline"
                 className="text-sm"
               >
-                {isLoadingPaginated ? "Cargando..." : "Cargar más comentarios"}
+                {isLoadingPaginated ? "Loading..." : "More Comments"}
               </Button>
             </div>
           )}
