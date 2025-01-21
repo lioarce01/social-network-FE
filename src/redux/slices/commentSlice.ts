@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import { User } from "./postSlice";
+import type { User } from "./postSlice";
 
 export interface Comment {
   id: string;
@@ -27,26 +27,23 @@ const commentsSlice = createSlice({
   initialState,
   reducers: {
     setComments: (state, action: PayloadAction<Comment[]>) => {
-      state.comments = action.payload;
+      state.comments = action.payload || [];
     },
     addComments: (state, action: PayloadAction<Comment[]>) => {
       const newComments = action.payload.filter(
         (newComment) =>
-          !state.comments.find((comment) => comment.id === newComment.id),
+          !state.comments.some(
+            (existingComment) => existingComment.id === newComment.id,
+          ),
       );
       state.comments = [...state.comments, ...newComments];
     },
     setTotalCount: (state, action: PayloadAction<number>) => {
-      state.totalCount = action.payload;
+      state.totalCount = action.payload || 0;
     },
   },
 });
 
 export const { setComments, addComments, setTotalCount } =
   commentsSlice.actions;
-
-export const selectAllComments = (state: RootState) => state.comments.comments;
-export const selectTotalCommentsCount = (state: RootState) =>
-  state.comments.totalCount;
-
 export default commentsSlice.reducer;

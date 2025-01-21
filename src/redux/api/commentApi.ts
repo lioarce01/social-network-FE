@@ -8,17 +8,17 @@ export const commentApi = createApi({
   tagTypes: ["Comment"],
   endpoints: (builder) => ({
     getPostComments: builder.query({
-      query: ({ postId, ...params }) => ({
+      query: ({ postId, sortBy, sortOrder, offset, limit }) => ({
         url: `/comments/post/${postId}`,
         params: {
-          sortBy: params.sortBy || "createdAt",
-          sortOrder: params.sortOrder || "desc",
-          offset: params.offset || 0,
-          limit: params.limit || 10,
+          sortBy: "createdAt",
+          sortOrder: "desc",
+          offset,
+          limit,
         },
       }),
       providesTags: (result) =>
-        result.comments
+        result && result.comments
           ? [
               ...result.comments.map(({ id }: { id: string }) => ({
                 type: "Comment",
@@ -63,6 +63,7 @@ export const commentApi = createApi({
 
 export const {
   useGetPostCommentsQuery,
+  useLazyGetPostCommentsQuery,
   useGetAllCommentsQuery,
   useGetUserCommentsQuery,
   useCreateCommentMutation,

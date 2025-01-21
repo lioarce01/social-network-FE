@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useState, useCallback } from "react";
 import PostComments from "./postComments";
 import CreateComment from "./createComment";
-import { useGetPostCommentsQuery } from "@/redux/api/commentApi";
+import {
+  useGetPostCommentsQuery,
+  useLazyGetPostCommentsQuery,
+} from "@/redux/api/commentApi";
 import { userLikedAPost } from "@/lib/utils";
 import UnlikeButton from "./unlikeButton";
 import LikeButton from "./likeButton";
 import { selectPostId } from "@/redux/slices/postSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store";
+import type { AppDispatch, RootState } from "@/redux/store";
 import {
   addComments,
-  selectAllComments,
-  selectTotalCommentsCount,
   setComments,
   setTotalCount,
 } from "@/redux/slices/commentSlice";
+import { Button } from "@/components/ui/button";
 
 interface CommentsProps {
   queryPost: any;
@@ -24,36 +27,65 @@ interface CommentsProps {
 const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
   const postId = useSelector(selectPostId);
   const dispatch = useDispatch<AppDispatch>();
-  const comments = useSelector(
-    (state: RootState) => selectAllComments(state) || [],
+  const { comments, totalCount } = useSelector(
+    (state: RootState) => state.comments,
   );
-  const totalCount = useSelector(
-    (state: RootState) => selectTotalCommentsCount(state) || 0,
-  );
-  const [queryParams, setQueryParams] = useState({
-    offset: 0,
-    limit: 5,
-    sortBy: "createdAt",
-    sortOrder: "desc",
-  });
+  const [page, setPage] = useState(0);
+  const INITIAL_COMMENTS = 2;
+  const COMMENTS_PER_PAGE = 10;
+
   const {
-    data,
-    isLoading: isCommentsLoading,
-    isError: isCommentsError,
-  } = useGetPostCommentsQuery({ postId, ...queryParams });
+    data: initial,
+    isLoading: isLoadingInitial,
+    isError: isInitialError,
+  } = useGetPostCommentsQuery({
+    postId,
+    offset: 0,
+    limit: INITIAL_COMMENTS,
+  });
+
+  const [
+    triggerLoadMore,
+    {
+      data: paginated,
+      isLoading: isLoadingPaginated,
+      isError: isPaginatedError,
+    },
+  ] = useLazyGetPostCommentsQuery();
 
   const hasLiked = userLikedAPost(queryPost, currentUser?.id || "");
 
   useEffect(() => {
-    if (data && data.comments) {
-      if (queryParams.offset === 0) {
-        dispatch(setComments(data.comments));
-      } else {
-        dispatch(addComments(data.comments));
-      }
-      dispatch(setTotalCount(data.totalCount));
+    if (initial && initial.comments) {
+      dispatch(setComments(initial.comments));
+      dispatch(setTotalCount(initial.totalCount));
     }
-  }, [data, dispatch, queryParams.offset]);
+  }, [dispatch, initial]);
+
+  useEffect(() => {
+    if (paginated && paginated.comments) {
+      dispatch(addComments(paginated.comments));
+    }
+  }, [dispatch, paginated]);
+
+  const loadMoreComments = useCallback(() => {
+    triggerLoadMore({
+      postId,
+      offset: INITIAL_COMMENTS + page * COMMENTS_PER_PAGE,
+      limit: COMMENTS_PER_PAGE,
+    });
+    setPage((prevPage) => prevPage + 1);
+  }, [triggerLoadMore, postId, page]);
+
+  const hasMoreComments = comments.length < totalCount;
+
+  if (isInitialError || isPaginatedError) {
+    return (
+      <div className="text-red-500">
+        Error al cargar los comentarios. Por favor, intente de nuevo más tarde.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -65,11 +97,29 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
           <LikeButton post={queryPost} currentUser={currentUser} />
         )}
         <div className="flex space-x-2">
-          <h3 className="text-md font-medium">Comments</h3>
-          <p className="text-gray-500 text-sm">{comments?.length}</p>
+          <h3 className="text-md font-medium">Comentarios</h3>
+          <p className="text-gray-500 text-sm">{totalCount}</p>
         </div>
       </div>
-      <PostComments comments={comments} currentUserId={currentUser?.id} />
+      {isLoadingInitial ? (
+        <div>Cargando comentarios iniciales...</div>
+      ) : (
+        <>
+          <PostComments comments={comments} currentUserId={currentUser?.id} />
+          {hasMoreComments && (
+            <div className="flex justify-center">
+              <Button
+                onClick={loadMoreComments}
+                disabled={isLoadingPaginated}
+                variant="outline"
+                className="text-sm"
+              >
+                {isLoadingPaginated ? "Cargando..." : "Cargar más comentarios"}
+              </Button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };

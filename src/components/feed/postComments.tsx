@@ -1,9 +1,9 @@
-import React from "react";
+import type React from "react";
 import { formatDate } from "@/lib/utils";
 import CommentSettings from "./commentSettings";
 
 interface PostCommentsProps {
-  comments: any;
+  comments: any[];
   currentUserId: string;
 }
 
@@ -11,14 +11,10 @@ const PostComments: React.FC<PostCommentsProps> = ({
   comments,
   currentUserId,
 }) => {
-  const sortedComments = comments?.slice().sort((a: any, b: any) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
-
   return (
     <div className="space-y-4 pr-2">
-      {sortedComments?.length > 0 ? (
-        sortedComments.map((comment: any) => (
+      {comments?.length > 0 ? (
+        comments.map((comment: any) => (
           <div
             key={comment?.id}
             className="flex items-start space-x-4 p-3 border-muted"
@@ -27,7 +23,9 @@ const PostComments: React.FC<PostCommentsProps> = ({
               <img
                 src={
                   comment?.author?.profile_pic ||
-                  "https://via.placeholder.com/40"
+                  "https://via.placeholder.com/40" ||
+                  "/placeholder.svg" ||
+                  "/placeholder.svg"
                 }
                 alt="User Avatar"
                 className="h-10 w-10 rounded-full"

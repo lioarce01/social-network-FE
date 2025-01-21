@@ -39,7 +39,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ queryPost, currentUser }) => {
         </div>
       </CardHeader>
       <div className="space-y-2">
-        <div className="min-h-[400px] px-4 bg-white">
+        <div className="min-h-[100px] px-4 bg-white">
           <div className="whitespace-pre-wrap text-sm leading-relaxed text-neutral-800">
             {content}
           </div>
