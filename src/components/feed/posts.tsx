@@ -12,6 +12,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import {
   addPosts,
   selectAllPosts,
+  selectLoading,
   selectTotalJobsCount,
   setPosts,
   setTotalCount,
@@ -32,6 +33,7 @@ const Posts = () => {
   });
 
   const { data, isLoading, isFetching } = useGetPostsQuery(queryParams);
+  const loading = useSelector(selectLoading);
   const { currentUser } = useCurrentUser();
 
   useEffect(() => {
@@ -61,7 +63,7 @@ const Posts = () => {
     });
   };
 
-  if (isLoading && posts.length === 0) {
+  if (isLoading || (loading && posts.length === 0)) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, index) => (

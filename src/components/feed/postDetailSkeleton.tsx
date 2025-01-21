@@ -33,7 +33,7 @@ const PostDetailSkeleton: React.FC = () => {
         {/* Comment Input Skeleton */}
         <div className="flex items-center space-x-4">
           <Skeleton className="h-10 w-full rounded" />
-          <Skeleton className="w-12 h-8 rounded" />
+          <Skeleton className="w-12git h-8 rounded" />
         </div>
 
         {/* Comment Header Skeleton */}
