@@ -25,7 +25,7 @@ const JobFilters: React.FC<JobFiltersProps> = ({
   onSortChange,
 }) => {
   const handleSortByChange = (value: string) => {
-    onSortChange([value], sortOrder); // Only one sorting option can be selected
+    onSortChange([value], sortOrder);
   };
 
   const handleSortOrderChange = () => {
@@ -39,15 +39,11 @@ const JobFilters: React.FC<JobFiltersProps> = ({
         <CardTitle className="text-lg font-semibold">Sort Jobs</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Sort By Dropdown */}
         <div className="space-y-2">
           <Label htmlFor="sortBy" className="text-sm font-medium">
             Sort By
           </Label>
-          <Select
-            value={sortBy[0] || ""} // Use the first item in the array (only one option is allowed)
-            onValueChange={handleSortByChange}
-          >
+          <Select value={sortBy[0] || ""} onValueChange={handleSortByChange}>
             <SelectTrigger id="sortBy" className="w-full">
               <SelectValue placeholder="Select a sorting option" />
             </SelectTrigger>
@@ -58,7 +54,6 @@ const JobFilters: React.FC<JobFiltersProps> = ({
           </Select>
         </div>
 
-        {/* Sort Order Button */}
         <div className="flex items-center justify-between">
           <Button
             variant="outline"

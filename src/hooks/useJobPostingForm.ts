@@ -3,6 +3,16 @@ import { useCreateJobMutation } from "@/redux/api/jobPostingApi";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { validateForm } from "@/lib/utils";
 
+export enum ExperienceLevel {
+  INTERNSHIP = "Internship",
+  ENTRY_LEVEL = "Entry Level",
+  JUNIOR = "Junior",
+  MID_SENIOR = "Mid-Senior",
+  SENIOR = "Senior",
+  DIRECTOR = "Director",
+  EXECUTIVE = "Executive",
+}
+
 export interface JobPostingFormData {
   title: string;
   description: string;
@@ -12,6 +22,7 @@ export interface JobPostingFormData {
   category: string;
   location: string;
   mode: "REMOTE" | "HYBRID" | "ONSITE";
+  experienceLevel: ExperienceLevel;
 }
 
 export function useJobPostingForm() {
@@ -26,6 +37,7 @@ export function useJobPostingForm() {
     category: "",
     location: "",
     mode: "REMOTE",
+    experienceLevel: ExperienceLevel.ENTRY_LEVEL,
   });
   const [techInput, setTechInput] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -67,6 +79,11 @@ export function useJobPostingForm() {
     setFormData((prev) => ({ ...prev, mode: value }));
   };
 
+  const handleExperienceLevelChange = (value: ExperienceLevel) => {
+    setFormData((prev) => ({ ...prev, experienceLevel: value }));
+    setErrors((prev) => ({ ...prev, experienceLevel: "" }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors = validateForm(formData);
@@ -88,6 +105,7 @@ export function useJobPostingForm() {
           category: "",
           location: "",
           mode: "REMOTE",
+          experienceLevel: ExperienceLevel.ENTRY_LEVEL,
         });
       } catch (error) {
         console.error("Failed to create job posting:", error);
@@ -106,6 +124,7 @@ export function useJobPostingForm() {
     addTech,
     removeTech,
     handleModeChange,
+    handleExperienceLevelChange,
     handleSubmit,
   };
 }

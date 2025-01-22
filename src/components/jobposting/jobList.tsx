@@ -26,9 +26,11 @@ import {
   selectLoading,
 } from "@/redux/slices/jobSlice";
 import type { AppDispatch, RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 const JobListComponent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
   const jobs = useSelector((state: RootState) => selectAllJobs(state) || []);
   const totalCount = useSelector(
     (state: RootState) => selectTotalJobsCount(state) || 0,
@@ -70,6 +72,10 @@ const JobListComponent: React.FC = () => {
     });
   };
 
+  const handleCreateJob = () => {
+    router.push("/createJobPosting");
+  };
+
   if (isLoading || (loading && jobs.length === 0)) return <JobListSkeleton />;
 
   return (
@@ -82,6 +88,7 @@ const JobListComponent: React.FC = () => {
             sortOrder={queryParams.sortOrder}
             onSortChange={handleSortChange}
           />
+          <Button onClick={handleCreateJob}>Post a Job</Button>
         </aside>
 
         {/* Job List Section */}

@@ -23,6 +23,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+enum ExperienceLevel {
+  INTERNSHIP = "Internship",
+  ENTRY_LEVEL = "Entry Level",
+  JUNIOR = "Junior",
+  MID_SENIOR = "Mid-Senior",
+  SENIOR = "Senior",
+  DIRECTOR = "Director",
+  EXECUTIVE = "Executive",
+}
+
 const CreateJobPosting: React.FC = () => {
   const {
     formData,
@@ -35,6 +45,7 @@ const CreateJobPosting: React.FC = () => {
     addTech,
     removeTech,
     handleModeChange,
+    handleExperienceLevelChange,
     handleSubmit,
   } = useJobPostingForm();
 
@@ -237,6 +248,36 @@ const CreateJobPosting: React.FC = () => {
             </Select>
             {errors.mode && (
               <p className="mt-1 text-sm text-red-500">{errors.mode}</p>
+            )}
+          </div>
+
+          {/* Experience Level */}
+          <div>
+            <label
+              htmlFor="experienceLevel"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Experience Level
+            </label>
+            <Select
+              onValueChange={handleExperienceLevelChange}
+              defaultValue={formData.experienceLevel}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select experience level" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(ExperienceLevel).map((level) => (
+                  <SelectItem key={level} value={level}>
+                    {level}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.experienceLevel && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.experienceLevel}
+              </p>
             )}
           </div>
 
