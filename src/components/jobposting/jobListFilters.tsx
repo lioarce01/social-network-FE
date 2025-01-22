@@ -1,11 +1,17 @@
 "use client";
 
 import type React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "../ui/label";
 
 interface JobFiltersProps {
   sortBy: string[];
@@ -19,10 +25,7 @@ const JobFilters: React.FC<JobFiltersProps> = ({
   onSortChange,
 }) => {
   const handleSortByChange = (value: string) => {
-    const newSortBy = sortBy.includes(value)
-      ? sortBy.filter((item) => item !== value)
-      : [...sortBy, value];
-    onSortChange(newSortBy, sortOrder);
+    onSortChange([value], sortOrder); // Only one sorting option can be selected
   };
 
   const handleSortOrderChange = () => {
@@ -36,34 +39,26 @@ const JobFilters: React.FC<JobFiltersProps> = ({
         <CardTitle className="text-lg font-semibold">Sort Jobs</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="sortByCreatedAt"
-              checked={sortBy.includes("createdAt")}
-              onCheckedChange={() => handleSortByChange("createdAt")}
-            />
-            <Label
-              htmlFor="sortByCreatedAt"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Date Created
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="sortByBudget"
-              checked={sortBy.includes("budget")}
-              onCheckedChange={() => handleSortByChange("budget")}
-            />
-            <Label
-              htmlFor="sortByBudget"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Budget
-            </Label>
-          </div>
+        {/* Sort By Dropdown */}
+        <div className="space-y-2">
+          <Label htmlFor="sortBy" className="text-sm font-medium">
+            Sort By
+          </Label>
+          <Select
+            value={sortBy[0] || ""} // Use the first item in the array (only one option is allowed)
+            onValueChange={handleSortByChange}
+          >
+            <SelectTrigger id="sortBy" className="w-full">
+              <SelectValue placeholder="Select a sorting option" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="createdAt">Date Created</SelectItem>
+              <SelectItem value="budget">Budget</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
+
+        {/* Sort Order Button */}
         <div className="flex items-center justify-between">
           <Button
             variant="outline"

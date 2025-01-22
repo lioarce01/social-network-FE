@@ -14,11 +14,13 @@ export interface Job {
 interface JobsState {
   jobs: Job[];
   totalCount: number;
+  loading: boolean;
 }
 
 const initialState: JobsState = {
   jobs: [],
   totalCount: 0,
+  loading: false,
 };
 
 const jobsSlice = createSlice({
@@ -38,12 +40,17 @@ const jobsSlice = createSlice({
     setTotalCount: (state, action: PayloadAction<number>) => {
       state.totalCount = action.payload;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-export const { setJobs, addJobs, setTotalCount } = jobsSlice.actions;
+export const { setJobs, addJobs, setTotalCount, setLoading } =
+  jobsSlice.actions;
 
 export const selectAllJobs = (state: RootState) => state.jobs.jobs;
 export const selectTotalJobsCount = (state: RootState) => state.jobs.totalCount;
+export const selectLoading = (state: RootState) => state.jobs.loading;
 
 export default jobsSlice.reducer;

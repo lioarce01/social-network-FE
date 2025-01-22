@@ -23,6 +23,7 @@ import {
   setJobs,
   addJobs,
   setTotalCount,
+  selectLoading,
 } from "@/redux/slices/jobSlice";
 import type { AppDispatch, RootState } from "@/redux/store";
 
@@ -32,7 +33,7 @@ const JobListComponent: React.FC = () => {
   const totalCount = useSelector(
     (state: RootState) => selectTotalJobsCount(state) || 0,
   );
-
+  const loading = useSelector(selectLoading);
   const [queryParams, setQueryParams] = useState({
     offset: 0,
     limit: 6,
@@ -69,11 +70,12 @@ const JobListComponent: React.FC = () => {
     });
   };
 
-  if (isLoading && jobs.length === 0) return <JobListSkeleton />;
+  if (isLoading || (loading && jobs.length === 0)) return <JobListSkeleton />;
 
   return (
-    <div className="py-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-[1200px] justify-center">
+    <div className="flex justify-center w-full p-2 sm:p-4 md:p-6 lg:p-8">
+      <div className="w-full max-w-[100%] sm:max-w-[1200px] grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* Filters Section */}
         <aside className="md:col-span-1">
           <JobFilters
             sortBy={queryParams.sortBy}
@@ -81,19 +83,21 @@ const JobListComponent: React.FC = () => {
             onSortChange={handleSortChange}
           />
         </aside>
+
+        {/* Job List Section */}
         <main className="md:col-span-3">
-          <div className="grid gap-6 grid-cols-1">
+          <div className="grid gap-4 sm:gap-6">
             {jobs.length > 0 ? (
               jobs.map((job) => (
                 <Card
                   key={job.id}
-                  className="flex flex-col justify-between max-w-[600px]"
+                  className="flex flex-col justify-between max-w-[700px]"
                 >
                   <CardHeader>
-                    <CardTitle className="flex items-start justify-between">
+                    <CardTitle className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                       <div className="flex flex-col">
                         <span
-                          className="text-lg font-semibold truncate max-w-[200px] lg:max-w-[300px]"
+                          className="text-lg font-semibold truncate max-w-[200px] sm:max-w-[300px]"
                           title={job.title}
                         >
                           {job.title}
@@ -102,7 +106,10 @@ const JobListComponent: React.FC = () => {
                           {job.category}
                         </span>
                       </div>
-                      <Badge variant="secondary" className="ml-2">
+                      <Badge
+                        variant="secondary"
+                        className="mt-2 sm:mt-0 sm:ml-2"
+                      >
                         {job.mode}
                       </Badge>
                     </CardTitle>
@@ -113,12 +120,12 @@ const JobListComponent: React.FC = () => {
                     )}
                   </CardHeader>
                   <CardContent className="flex-1">
-                    <div className="flex items-start space-x-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:space-x-4 text-sm text-muted-foreground">
                       <span className="flex items-center">
                         <MapPin className="mr-1 h-4 w-4" aria-hidden="true" />
                         <span>{job.location}</span>
                       </span>
-                      <span className="flex items-center">
+                      <span className="flex items-center mt-2 sm:mt-0">
                         <DollarSign
                           className="mr-1 h-4 w-4"
                           aria-hidden="true"
@@ -141,7 +148,7 @@ const JobListComponent: React.FC = () => {
             )}
           </div>
           {jobs.length < totalCount && (
-            <div className="flex justify-center mt-4 max-w-[600px]">
+            <div className="flex justify-center mt-4 max-w-[700px]">
               <Button onClick={handleLoadMore} disabled={isFetching}>
                 {isFetching ? (
                   <Loader2 className="animate-spin mr-2" aria-hidden="true" />
