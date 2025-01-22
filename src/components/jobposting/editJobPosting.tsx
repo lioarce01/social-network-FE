@@ -39,6 +39,7 @@ const EditJobPosting: React.FC<EditJobPostingProps> = ({ jobId }) => {
     addTech,
     removeTech,
     handleModeChange,
+    handleExperienceLevelChange, // Add this
     handleSubmit,
   } = useEditJobPostingForm(jobId);
 
@@ -243,6 +244,38 @@ const EditJobPosting: React.FC<EditJobPostingProps> = ({ jobId }) => {
             </Select>
             {errors.mode && (
               <p className="mt-1 text-sm text-red-500">{errors.mode}</p>
+            )}
+          </div>
+
+          {/* Experience Level */}
+          <div>
+            <label
+              htmlFor="experience_level"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Experience Level
+            </label>
+            <Select
+              onValueChange={handleExperienceLevelChange}
+              defaultValue={formData.experience_level}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select experience level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="INTERNSHIP">Internship</SelectItem>
+                <SelectItem value="ENTRY_LEVEL">Entry Level</SelectItem>
+                <SelectItem value="JUNIOR">Junior</SelectItem>
+                <SelectItem value="MID_SENIOR">Mid-Senior</SelectItem>
+                <SelectItem value="SENIOR">Senior</SelectItem>
+                <SelectItem value="DIRECTOR">Director</SelectItem>
+                <SelectItem value="EXECUTIVE">Executive</SelectItem>
+              </SelectContent>
+            </Select>
+            {errors.experience_level && (
+              <p className="mt-1 text-sm text-red-500">
+                {errors.experience_level}
+              </p>
             )}
           </div>
 

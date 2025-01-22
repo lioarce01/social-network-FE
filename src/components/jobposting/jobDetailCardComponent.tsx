@@ -63,6 +63,10 @@ const JobDetailCardContent = ({ jobDetails, currentUserId }: any) => {
           <Briefcase className="mr-1 h-4 w-4 text-primary" /> Mode:{" "}
           {jobDetails?.mode}
         </span>
+        <span className="flex items-center">
+          <Briefcase className="mr-1 h-4 w-4 text-primary" /> Experience:{" "}
+          {jobDetails?.experience_level}
+        </span>
       </div>
       <ApplyButtonComponent
         jobDetails={jobDetails && jobDetails}
