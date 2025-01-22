@@ -21,9 +21,7 @@ import {
 const Posts = () => {
   const dispatch = useDispatch<AppDispatch>();
   const posts = useSelector((state: RootState) => selectAllPosts(state) || []);
-  const totalCount = useSelector(
-    (state: RootState) => selectTotalJobsCount(state) || 0,
-  );
+
   const noMorePosts = useSelector(selectNoMorePosts);
 
   const [queryParams, setQueryParams] = useState({
@@ -40,12 +38,12 @@ const Posts = () => {
   useEffect(() => {
     if (data && data.posts) {
       if (data.posts.length === 0) {
-        dispatch(setNoMorePosts(true));
+        dispatch(setNoMorePosts(true)); // No hay más posts
       } else {
         if (queryParams.offset === 0) {
-          dispatch(setPosts(data.posts));
+          dispatch(setPosts(data.posts)); // Reiniciar posts si el offset es 0
         } else {
-          dispatch(addPosts(data.posts));
+          dispatch(addPosts(data.posts)); // Agregar posts al final de la lista
         }
         dispatch(setTotalCount(data.totalCount));
       }
@@ -55,7 +53,7 @@ const Posts = () => {
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
     if (
-      scrollHeight - scrollTop <= clientHeight * 1.5 &&
+      scrollHeight - scrollTop <= clientHeight + 100 && // Ajusta el umbral según sea necesario
       !isFetching &&
       !noMorePosts
     ) {
@@ -67,7 +65,9 @@ const Posts = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    if (!noMorePosts) {
+      window.addEventListener("scroll", handleScroll);
+    }
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -88,32 +88,29 @@ const Posts = () => {
       <PostFilters
         sortBy={queryParams.sortBy}
         sortOrder={queryParams.sortOrder}
-        onSortChange={(sortBy, sortOrder) =>
+        onSortChange={(sortBy, sortOrder) => {
           setQueryParams({
             ...queryParams,
             sortBy,
             sortOrder,
             offset: 0,
-          })
-        }
+          });
+          dispatch(setNoMorePosts(false));
+        }}
       />
       <div className="space-y-4">
-        {posts.length > 0 ? (
-          posts.map((post: any) => (
-            <PostCard key={post.id} post={post} currentUser={currentUser} />
-          ))
-        ) : (
-          <div className="text-center text-gray-500">No posts found</div>
-        )}
+        {posts.length > 0
+          ? posts.map((post: any) => (
+              <PostCard key={post.id} post={post} currentUser={currentUser} />
+            ))
+          : // Mostrar "No posts found" solo si no hay posts y no se está cargando
+            !isFetching && (
+              <div className="text-center text-gray-500">No posts found</div>
+            )}
       </div>
-      {isFetching && (
-        <div className="space-y-4">
-          {[...Array(2)].map((_, index) => (
-            <PostSkeleton key={index} />
-          ))}
-        </div>
-      )}
-      {noMorePosts && (
+      {isFetching && <div className="space-y-4">{<PostSkeleton />}</div>}
+      {noMorePosts && posts.length > 0 && (
+        // Mostrar "No more posts available" solo si no hay más posts y ya hay posts en la lista
         <div className="text-center text-gray-500">No more posts available</div>
       )}
     </div>

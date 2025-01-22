@@ -7,7 +7,7 @@ const NavbarLinksComponent = () => {
   return (
     <>
       <nav className="hidden md:flex items-center space-x-4">
-        <Link href="/">
+        <Link href="/feed">
           <Button variant="ghost">
             <div className="flex flex-col items-center">
               <House className="h-4 w-4" />
