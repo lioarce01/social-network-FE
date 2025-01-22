@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useJobPostingForm } from "@/hooks/useJobPostingForm";
+import { ExperienceLevel, useJobPostingForm } from "@/hooks/useJobPostingForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,16 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-enum ExperienceLevel {
-  INTERNSHIP = "Internship",
-  ENTRY_LEVEL = "Entry Level",
-  JUNIOR = "Junior",
-  MID_SENIOR = "Mid-Senior",
-  SENIOR = "Senior",
-  DIRECTOR = "Director",
-  EXECUTIVE = "Executive",
-}
 
 const CreateJobPosting: React.FC = () => {
   const {
@@ -261,7 +251,7 @@ const CreateJobPosting: React.FC = () => {
             </label>
             <Select
               onValueChange={handleExperienceLevelChange}
-              defaultValue={formData.experienceLevel}
+              defaultValue={formData.experience_level}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select experience level" />

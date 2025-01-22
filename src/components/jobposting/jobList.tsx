@@ -82,7 +82,7 @@ const JobListComponent: React.FC = () => {
     <div className="flex justify-center w-full p-2 sm:p-4 md:p-6 lg:p-8">
       <div className="w-full max-w-[100%] sm:max-w-[1200px] grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Filters Section */}
-        <aside className="md:col-span-1">
+        <aside className="md:col-span-1 flex flex-col space-y-2 items-center">
           <JobFilters
             sortBy={queryParams.sortBy}
             sortOrder={queryParams.sortOrder}

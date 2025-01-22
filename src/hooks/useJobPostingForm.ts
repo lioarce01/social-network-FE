@@ -22,7 +22,7 @@ export interface JobPostingFormData {
   category: string;
   location: string;
   mode: "REMOTE" | "HYBRID" | "ONSITE";
-  experienceLevel: ExperienceLevel;
+  experience_level: ExperienceLevel;
 }
 
 export function useJobPostingForm() {
@@ -37,7 +37,7 @@ export function useJobPostingForm() {
     category: "",
     location: "",
     mode: "REMOTE",
-    experienceLevel: ExperienceLevel.ENTRY_LEVEL,
+    experience_level: ExperienceLevel.ENTRY_LEVEL,
   });
   const [techInput, setTechInput] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -105,7 +105,7 @@ export function useJobPostingForm() {
           category: "",
           location: "",
           mode: "REMOTE",
-          experienceLevel: ExperienceLevel.ENTRY_LEVEL,
+          experience_level: ExperienceLevel.ENTRY_LEVEL,
         });
       } catch (error) {
         console.error("Failed to create job posting:", error);
