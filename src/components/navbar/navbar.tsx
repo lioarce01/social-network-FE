@@ -19,10 +19,10 @@ export default function Navbar() {
   return (
     <header
       className={`fixed w-full z-50 transition-shadow ${
-        scrolled ? "shadow-md bg-white" : "bg-transparent"
+        scrolled ? "shadow bg-white" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="mx-auto px-4 py-2 flex items-center justify-between">
         <Link href="/feed" className="text-2xl font-bold text-primary">
           TechConnect
         </Link>

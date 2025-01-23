@@ -18,12 +18,13 @@ import {
   setLoading,
 } from "@/redux/slices/postSlice";
 import useSocket from "@/hooks/useSocket";
-import { Loader2 } from "lucide-react";
+import { ArrowUp, Loader2 } from "lucide-react";
 
 const Posts = () => {
   const dispatch = useDispatch<AppDispatch>();
   const posts = useSelector((state: RootState) => selectAllPosts(state) || []);
   const [showNewPostsButton, setShowNewPostsButton] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const noMorePosts = useSelector(selectNoMorePosts);
   const { currentUser } = useCurrentUser();
 
@@ -43,6 +44,11 @@ const Posts = () => {
     refetch: refetchPosts,
   } = useGetPostsQuery(queryParams);
   const loading = useSelector(selectLoading);
+
+  const navbarHeight = 40; // Altura de la navbar
+  const initialTop = 260; // Espacio adicional entre la navbar y el botón
+  const buttonTop =
+    scrollPosition > initialTop - navbarHeight ? navbarHeight : initialTop;
 
   const [lastPostDate, setLastPostDate] = useState(new Date().toISOString());
   const {
@@ -127,6 +133,17 @@ const Posts = () => {
     };
   }, [isFetching, noMorePosts]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY); // Actualiza la posición del scroll
+    };
+
+    window.addEventListener("scroll", handleScroll); // Escucha el evento scroll
+    return () => {
+      window.removeEventListener("scroll", handleScroll); // Limpia el evento
+    };
+  }, []);
+
   if (isLoading || (isFetching && posts.length === 0)) {
     return (
       <div className="space-y-4">
@@ -167,19 +184,27 @@ const Posts = () => {
         <div className="text-center text-gray-500">No more posts available</div>
       )}
       {showNewPostsButton && (
-        <button
-          disabled={loading || isRecentPostsLoading || isRecentPostsFetching}
-          className="fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"
-          onClick={handleNewPostsClick}
+        <div
+          className="w-full flex justify-center fixed max-w-[635px] transition-all duration-500 ease-in-out"
+          style={{ top: `${buttonTop}px` }}
         >
-          {loading ? (
-            <div className="flex items-center">
-              <Loader2 className="animate-spin h-5 w-5" />
-            </div>
-          ) : (
-            "New posts"
-          )}
-        </button>
+          <button
+            disabled={loading || isRecentPostsLoading || isRecentPostsFetching}
+            className="self-center bg-neutral-800 px-3 py-2 rounded-full text-white text-sm shadow-neutral-500 shadow-md hover:bg-neutral-700 transition-all duration-300"
+            onClick={handleNewPostsClick}
+          >
+            {loading ? (
+              <div className="flex items-center">
+                <Loader2 className="animate-spin h-5 w-5" />
+              </div>
+            ) : (
+              <div className="flex flex-row items-center space-x-1">
+                <ArrowUp className="h-4 w-4" />
+                <span>New Posts</span>
+              </div>
+            )}
+          </button>
+        </div>
       )}
     </div>
   );
