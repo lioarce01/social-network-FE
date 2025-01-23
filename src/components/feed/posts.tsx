@@ -38,12 +38,12 @@ const Posts = () => {
   useEffect(() => {
     if (data && data.posts) {
       if (data.posts.length === 0) {
-        dispatch(setNoMorePosts(true)); // No hay más posts
+        dispatch(setNoMorePosts(true));
       } else {
         if (queryParams.offset === 0) {
-          dispatch(setPosts(data.posts)); // Reiniciar posts si el offset es 0
+          dispatch(setPosts(data.posts));
         } else {
-          dispatch(addPosts(data.posts)); // Agregar posts al final de la lista
+          dispatch(addPosts(data.posts));
         }
         dispatch(setTotalCount(data.totalCount));
       }
@@ -53,7 +53,7 @@ const Posts = () => {
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
     if (
-      scrollHeight - scrollTop <= clientHeight + 100 && // Ajusta el umbral según sea necesario
+      scrollHeight - scrollTop <= clientHeight + 100 &&
       !isFetching &&
       !noMorePosts
     ) {
