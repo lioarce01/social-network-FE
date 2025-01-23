@@ -11,18 +11,21 @@ import {
   addPosts,
   selectAllPosts,
   selectLoading,
-  selectTotalJobsCount,
   setPosts,
   setTotalCount,
   selectNoMorePosts,
   setNoMorePosts,
 } from "@/redux/slices/postSlice";
+import useSocket from "@/hooks/useSocket";
 
 const Posts = () => {
   const dispatch = useDispatch<AppDispatch>();
   const posts = useSelector((state: RootState) => selectAllPosts(state) || []);
-
+  const [showNewPostsButton, setShowNewPostsButton] = useState(false);
   const noMorePosts = useSelector(selectNoMorePosts);
+  const { currentUser } = useCurrentUser();
+
+  useSocket("http://localhost:4000", setShowNewPostsButton);
 
   const [queryParams, setQueryParams] = useState({
     offset: 0,
@@ -33,16 +36,19 @@ const Posts = () => {
 
   const { data, isLoading, isFetching } = useGetPostsQuery(queryParams);
   const loading = useSelector(selectLoading);
-  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     if (data && data.posts) {
+      console.log("Datos recibidos de la API:", data);
       if (data.posts.length === 0) {
+        console.log("No hay más posts disponibles");
         dispatch(setNoMorePosts(true));
       } else {
         if (queryParams.offset === 0) {
+          console.log("Cargando posts iniciales");
           dispatch(setPosts(data.posts));
         } else {
+          console.log("Agregando nuevos posts al estado");
           dispatch(addPosts(data.posts));
         }
         dispatch(setTotalCount(data.totalCount));
@@ -52,11 +58,13 @@ const Posts = () => {
 
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    console.log("Scroll position:", scrollTop, scrollHeight, clientHeight);
     if (
       scrollHeight - scrollTop <= clientHeight + 100 &&
       !isFetching &&
       !noMorePosts
     ) {
+      console.log("Cargando más posts...");
       setQueryParams((prevParams) => ({
         ...prevParams,
         offset: prevParams.offset + prevParams.limit,
@@ -73,7 +81,7 @@ const Posts = () => {
     };
   }, [isFetching, noMorePosts]);
 
-  if (isLoading || (loading && posts.length === 0)) {
+  if (isLoading || (isFetching && posts.length === 0)) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, index) => (
@@ -103,18 +111,28 @@ const Posts = () => {
           ? posts.map((post: any) => (
               <PostCard key={post.id} post={post} currentUser={currentUser} />
             ))
-          : // Mostrar "No posts found" solo si no hay posts y no se está cargando
-            !isFetching && (
+          : !isFetching && (
               <div className="text-center text-gray-500">No posts found</div>
             )}
       </div>
-      {isFetching && <div className="space-y-4">{<PostSkeleton />}</div>}
+      {isFetching ||
+        (loading && <div className="space-y-4">{<PostSkeleton />}</div>)}
       {noMorePosts && posts.length > 0 && (
-        // Mostrar "No more posts available" solo si no hay más posts y ya hay posts en la lista
         <div className="text-center text-gray-500">No more posts available</div>
+      )}
+      {showNewPostsButton && (
+        <button
+          className="fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"
+          onClick={() => {
+            console.log("Haciendo clic en 'Ver nuevos posts'");
+            setShowNewPostsButton(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
+          Ver nuevos posts
+        </button>
       )}
     </div>
   );
 };
-
 export default Posts;

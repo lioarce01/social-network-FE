@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Post } from "../slices/postSlice";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -17,16 +18,22 @@ export const postApi = createApi({
           sortOrder: "desc",
         },
       }),
-      providesTags: (result) =>
+      providesTags: (result): { type: "Post"; id: string }[] =>
         result && result.posts
           ? [
               ...result.posts.map(({ id }: { id: string }) => ({
-                type: "Post",
+                type: "Post" as const,
                 id,
               })),
-              { type: "Post", id: "LIST" },
+              { type: "Post" as const, id: "LIST" },
             ]
-          : [{ type: "Post", id: "LIST" }],
+          : [{ type: "Post" as const, id: "LIST" }],
+      transformResponse: (response: { posts: Post[]; totalCount: number }) => {
+        return {
+          posts: response.posts,
+          totalCount: response.totalCount,
+        };
+      },
     }),
     createPost: builder.mutation({
       query: (body) => ({

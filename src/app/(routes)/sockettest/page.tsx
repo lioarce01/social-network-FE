@@ -1,99 +1,93 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
-import { useEffect, useState } from "react";
-import { io, type Socket } from "socket.io-client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-
-export default function SocketTest() {
+const WebSocketTest = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [connected, setConnected] = useState(false);
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState("");
+
+  // URL del servidor WebSocket
+  const socketUrl = "http://localhost:4000";
 
   useEffect(() => {
-    // Create socket connection
-    const socketInstance = io("http://localhost:4000", {
-      transports: ["websocket", "polling"],
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
+    // Crear la conexión WebSocket
+    const newSocket = io(socketUrl, {
+      transports: ["websocket"], // Usar solo WebSocket
+      reconnection: true, // Habilitar reconexión automática
+      reconnectionAttempts: 5, // Número máximo de intentos de reconexión
+      reconnectionDelay: 1000, // Tiempo entre intentos de reconexión (en ms)
     });
 
-    // Connection event handlers
-    socketInstance.on("connect", () => {
-      console.log("Connected to server");
-      setConnected(true);
-      setMessages((prev) => [...prev, "Connected to server"]);
+    // Manejar la conexión exitosa
+    newSocket.on("connect", () => {
+      console.log("Conectado al servidor WebSocket");
+      setMessages((prev) => [...prev, "Conectado al servidor WebSocket"]);
     });
 
-    socketInstance.on("disconnect", (reason) => {
-      console.log("Disconnected:", reason);
-      setConnected(false);
-      setMessages((prev) => [...prev, `Disconnected: ${reason}`]);
+    // Manejar errores de conexión
+    newSocket.on("connect_error", (error) => {
+      console.error("Error de conexión WebSocket:", error);
+      setMessages((prev) => [...prev, `Error de conexión: ${error.message}`]);
     });
 
-    socketInstance.on("connect_error", (error) => {
-      console.log("Connection error:", error);
-      setMessages((prev) => [...prev, `Connection error: ${error.message}`]);
+    // Escuchar eventos personalizados desde el servidor
+    newSocket.on("new-posts", (data: any) => {
+      console.log("Evento 'new-posts' recibido:", data);
+      setMessages((prev) => [...prev, `Nuevos posts: ${JSON.stringify(data)}`]);
     });
 
-    socketInstance.on("test-event", (data) => {
-      console.log("Received test event:", data);
-      setMessages((prev) => [...prev, `Server: ${data.message}`]);
+    // Manejar la desconexión
+    newSocket.on("disconnect", (reason) => {
+      console.log("Desconectado del servidor WebSocket:", reason);
+      setMessages((prev) => [...prev, `Desconectado: ${reason}`]);
     });
 
-    socketInstance.on("echo", (data) => {
-      console.log("Received echo:", data);
-      setMessages((prev) => [...prev, `Echo: ${data.message}`]);
-    });
+    // Guardar la instancia del socket en el estado
+    setSocket(newSocket);
 
-    setSocket(socketInstance);
-
-    // Cleanup on unmount
+    // Limpiar la conexión al desmontar el componente
     return () => {
-      socketInstance.disconnect();
+      newSocket.disconnect();
     };
   }, []);
 
+  // Función para enviar un mensaje al servidor
   const sendMessage = () => {
-    if (socket && message) {
-      socket.emit("message", { text: message });
-      setMessages((prev) => [...prev, `You: ${message}`]);
-      setMessage("");
+    if (socket && inputValue.trim()) {
+      socket.emit("test-message", inputValue); // Enviar un mensaje de prueba
+      setInputValue("");
     }
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto mt-8">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          Socket.IO Test
-          <span
-            className={`h-3 w-3 rounded-full ${
-              connected ? "bg-green-500" : "bg-red-500"
-            }`}
-          />
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="h-[300px] overflow-y-auto border rounded-md p-4 space-y-2">
-          {messages.map((msg, i) => (
-            <div key={i} className="text-sm">
-              {msg}
-            </div>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          <Input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type a message..."
-            onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-          />
-          <Button onClick={sendMessage}>Send</Button>
-        </div>
-      </CardContent>
-    </Card>
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <h1>Prueba de WebSocket</h1>
+      <div
+        style={{
+          border: "1px solid #ccc",
+          padding: "10px",
+          height: "200px",
+          overflowY: "scroll",
+          marginBottom: "10px",
+        }}
+      >
+        {messages.map((message, index) => (
+          <div key={index}>{message}</div>
+        ))}
+      </div>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Escribe un mensaje"
+        style={{ padding: "5px", marginRight: "10px" }}
+      />
+      <button onClick={sendMessage} style={{ padding: "5px 10px" }}>
+        Enviar mensaje
+      </button>
+    </div>
   );
-}
+};
+
+export default WebSocketTest;

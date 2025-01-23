@@ -47,19 +47,19 @@ const postsSlice = createSlice({
   reducers: {
     setPosts: (state, action: PayloadAction<Post[]>) => {
       state.posts = action.payload;
-      state.noMorePosts = action.payload.length === 0;
+      state.noMorePosts = action.payload.length < state.totalCount;
     },
     addPosts: (state, action: PayloadAction<Post[]>) => {
+      const existingPostIds = new Set(state.posts.map((post) => post.id));
       const newPosts = action.payload.filter(
-        (newPost) => !state.posts.find((post) => post.id === newPost.id),
+        (newPost) => !existingPostIds.has(newPost.id),
       );
       state.posts = [...state.posts, ...newPosts];
-      if (newPosts.length === 0) {
-        state.noMorePosts = true;
-      }
+      state.noMorePosts = state.posts.length >= state.totalCount;
     },
     setTotalCount: (state, action: PayloadAction<number>) => {
       state.totalCount = action.payload;
+      state.noMorePosts = state.posts.length >= action.payload;
     },
     setPostId: (state, action: PayloadAction<string>) => {
       state.postId = action.payload;
