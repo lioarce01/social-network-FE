@@ -15,8 +15,10 @@ import {
   setTotalCount,
   selectNoMorePosts,
   setNoMorePosts,
+  setLoading,
 } from "@/redux/slices/postSlice";
 import useSocket from "@/hooks/useSocket";
+import { Loader2 } from "lucide-react";
 
 const Posts = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -78,9 +80,11 @@ const Posts = () => {
   // Manejador de clics para el botón "Ver nuevos posts"
   const handleNewPostsClick = async () => {
     console.log("Haciendo clic en 'Ver nuevos posts'");
-    setShowNewPostsButton(false); // Oculta el botón inmediatamente
+    dispatch(setLoading(true)); // Activa el loading
     await refetchRecentPosts(); // Re-ejecuta la consulta para obtener los posts recientes
-    await refetchPosts();
+    await refetchPosts(); // Re-ejecuta la consulta para obtener todos los posts
+    dispatch(setLoading(false)); // Desactiva el loading
+    setShowNewPostsButton(false); // Oculta el botón inmediatamente
   };
 
   // Efecto para manejar la carga inicial de posts
@@ -164,11 +168,17 @@ const Posts = () => {
       )}
       {showNewPostsButton && (
         <button
-          disabled={isRecentPostsLoading || isRecentPostsFetching}
+          disabled={loading || isRecentPostsLoading || isRecentPostsFetching}
           className="fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"
           onClick={handleNewPostsClick}
         >
-          Ver nuevos posts
+          {loading ? (
+            <div className="flex items-center">
+              <Loader2 className="animate-spin h-5 w-5" />
+            </div>
+          ) : (
+            "New posts"
+          )}
         </button>
       )}
     </div>
