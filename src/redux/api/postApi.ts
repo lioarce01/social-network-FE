@@ -35,6 +35,31 @@ export const postApi = createApi({
         };
       },
     }),
+    getRecentPosts: builder.query({
+      query: ({ lastPostDate, limit }) => ({
+        url: "/posts/recent",
+        params: {
+          lastPostDate,
+          limit,
+        },
+      }),
+      providesTags: (result): { type: "Post"; id: string }[] =>
+        result && result.posts
+          ? [
+              ...result.posts.map(({ id }: { id: string }) => ({
+                type: "Post" as const,
+                id,
+              })),
+              { type: "Post" as const, id: "LIST" },
+            ]
+          : [{ type: "Post" as const, id: "LIST" }],
+      transformResponse: (response: { posts: Post[]; totalCount: number }) => {
+        return {
+          posts: response.posts,
+          totalCount: response.totalCount,
+        };
+      },
+    }),
     createPost: builder.mutation({
       query: (body) => ({
         url: "/posts",
@@ -95,6 +120,7 @@ export const postApi = createApi({
 export const {
   useGetPostsQuery,
   useLazyGetPostsQuery,
+  useGetRecentPostsQuery,
   useGetPostByIdQuery,
   useCreatePostMutation,
   useDeletePostMutation,

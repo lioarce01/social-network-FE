@@ -18,19 +18,16 @@ const useSocket = (
       reconnectionDelay: 1000,
     });
 
-    // Manejar la conexión exitosa
     socket.on("connect", () => {
       console.log("Conectado al servidor WebSocket");
     });
 
-    // Escuchar el evento "new-posts"
     socket.on("new-posts", (data: { posts: Post[]; totalCount: number }) => {
       console.log("Nuevos posts recibidos:", data);
       dispatch(addPosts(data.posts));
       setShowNewPostsButton(true);
     });
 
-    // Manejar errores de conexión
     socket.on("connect_error", (error) => {
       console.error("Error de conexión WebSocket:", error);
     });
@@ -39,7 +36,6 @@ const useSocket = (
       console.log("Desconectado del servidor WebSocket:", reason);
     });
 
-    // Limpiar la conexión al desmontar el componente
     return () => {
       socket.disconnect();
     };

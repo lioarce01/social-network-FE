@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useGetPostsQuery } from "@/redux/api/postApi";
+import { useGetPostsQuery, useGetRecentPostsQuery } from "@/redux/api/postApi";
 import PostCard from "./postCard";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { PostFilters } from "./postFilters";
@@ -34,21 +34,64 @@ const Posts = () => {
     sortOrder: "desc",
   });
 
-  const { data, isLoading, isFetching } = useGetPostsQuery(queryParams);
+  const {
+    data,
+    isLoading,
+    isFetching,
+    refetch: refetchPosts,
+  } = useGetPostsQuery(queryParams);
   const loading = useSelector(selectLoading);
 
+  const [lastPostDate, setLastPostDate] = useState(new Date().toISOString());
+  const {
+    data: recentPostsData,
+    isLoading: isRecentPostsLoading,
+    isFetching: isRecentPostsFetching,
+    refetch: refetchRecentPosts, // Función para re-ejecutar la consulta
+  } = useGetRecentPostsQuery(
+    { lastPostDate, limit: 5 }, // Parámetros para el endpoint
+    { skip: !showNewPostsButton }, // Solo ejecutar cuando showNewPostsButton es true
+  );
+
+  console.log("recent post data:", recentPostsData);
+
+  // Efecto para agregar los nuevos posts al estado global
+  useEffect(() => {
+    if (recentPostsData && recentPostsData.posts.length > 0) {
+      // Agrega los nuevos posts al estado global
+      console.log(
+        "Agregando nuevos posts al estado global:",
+        recentPostsData.posts,
+      );
+      dispatch(addPosts(recentPostsData.posts));
+      // Actualiza la fecha del último post
+      console.log(
+        "Actualizando la fecha del último post:",
+        recentPostsData.posts[0].createdAt,
+      );
+      setLastPostDate(
+        new Date(recentPostsData.posts[0].createdAt).toISOString(),
+      );
+    }
+  }, [recentPostsData, dispatch]);
+
+  // Manejador de clics para el botón "Ver nuevos posts"
+  const handleNewPostsClick = async () => {
+    console.log("Haciendo clic en 'Ver nuevos posts'");
+    setShowNewPostsButton(false); // Oculta el botón inmediatamente
+    await refetchRecentPosts(); // Re-ejecuta la consulta para obtener los posts recientes
+    await refetchPosts();
+  };
+
+  // Efecto para manejar la carga inicial de posts
   useEffect(() => {
     if (data && data.posts) {
-      console.log("Datos recibidos de la API:", data);
       if (data.posts.length === 0) {
-        console.log("No hay más posts disponibles");
         dispatch(setNoMorePosts(true));
       } else {
         if (queryParams.offset === 0) {
-          console.log("Cargando posts iniciales");
           dispatch(setPosts(data.posts));
         } else {
-          console.log("Agregando nuevos posts al estado");
           dispatch(addPosts(data.posts));
         }
         dispatch(setTotalCount(data.totalCount));
@@ -56,15 +99,14 @@ const Posts = () => {
     }
   }, [data, dispatch, queryParams.offset]);
 
+  // Lógica del scroll infinito
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    console.log("Scroll position:", scrollTop, scrollHeight, clientHeight);
     if (
       scrollHeight - scrollTop <= clientHeight + 100 &&
       !isFetching &&
       !noMorePosts
     ) {
-      console.log("Cargando más posts...");
       setQueryParams((prevParams) => ({
         ...prevParams,
         offset: prevParams.offset + prevParams.limit,
@@ -122,12 +164,9 @@ const Posts = () => {
       )}
       {showNewPostsButton && (
         <button
+          disabled={isRecentPostsLoading || isRecentPostsFetching}
           className="fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-600"
-          onClick={() => {
-            console.log("Haciendo clic en 'Ver nuevos posts'");
-            setShowNewPostsButton(false);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
+          onClick={handleNewPostsClick}
         >
           Ver nuevos posts
         </button>
