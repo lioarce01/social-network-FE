@@ -1,17 +1,8 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import { Job } from "@/types/Job";
 
-export interface Job {
-  id: string;
-  title: string;
-  category: string;
-  mode: string;
-  featured: boolean;
-  location: string;
-  budget: string;
-}
-
-interface JobsState {
+export interface JobsState {
   jobs: Job[];
   totalCount: number;
   loading: boolean;

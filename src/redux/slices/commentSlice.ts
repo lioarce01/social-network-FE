@@ -1,18 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
-import type { User } from "./postSlice";
+import { Comment } from "@/types/Comment";
 
-export interface Comment {
-  id: string;
-  content: string;
-  authorId: string;
-  postId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  author: User;
-}
-
-interface CommentsState {
+export interface CommentsState {
   comments: Comment[];
   totalCount: number;
 }

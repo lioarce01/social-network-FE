@@ -1,29 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-
-export interface User {
-  id: string;
-  sub: string;
-  name: string;
-  headline: string;
-  country: string;
-  postal_code: string;
-  current_position: string;
-  email: string;
-  profile_pic: string;
-  enabled: boolean;
-  role: string;
-}
-
-export interface Post {
-  id: string;
-  content: string;
-  authorId: string;
-  likeCount: number;
-  createdAt: Date;
-  updatedAt: Date;
-  author: User;
-}
+import { Post } from "@/types/Post";
 
 interface PostsState {
   posts: Post[];
