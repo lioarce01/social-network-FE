@@ -45,34 +45,57 @@ const Posts = () => {
   } = useGetPostsQuery(queryParams);
   const loading = useSelector(selectLoading);
 
-  const navbarHeight = 40; // Altura de la navbar
-  const initialTop = 260; // Espacio adicional entre la navbar y el botón
-  const buttonTop =
-    scrollPosition > initialTop - navbarHeight ? navbarHeight : initialTop;
+  const calculateButtonTop = () => {
+    const viewportHeight = window.innerHeight;
+    const navbarHeight = 56;
+    const initialTop = viewportHeight * 0.25;
+    const scrollPosition = window.scrollY;
+
+    return scrollPosition > initialTop - navbarHeight
+      ? navbarHeight
+      : initialTop;
+  };
+
+  const [buttonTop, setButtonTop] = useState(calculateButtonTop());
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setButtonTop(calculateButtonTop());
+    };
+
+    const handleResize = () => {
+      setButtonTop(calculateButtonTop());
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const [lastPostDate, setLastPostDate] = useState(new Date().toISOString());
   const {
     data: recentPostsData,
     isLoading: isRecentPostsLoading,
     isFetching: isRecentPostsFetching,
-    refetch: refetchRecentPosts, // Función para re-ejecutar la consulta
+    refetch: refetchRecentPosts,
   } = useGetRecentPostsQuery(
-    { lastPostDate, limit: 5 }, // Parámetros para el endpoint
-    { skip: !showNewPostsButton }, // Solo ejecutar cuando showNewPostsButton es true
+    { lastPostDate, limit: 5 },
+    { skip: !showNewPostsButton },
   );
 
   console.log("recent post data:", recentPostsData);
 
-  // Efecto para agregar los nuevos posts al estado global
   useEffect(() => {
     if (recentPostsData && recentPostsData.posts.length > 0) {
-      // Agrega los nuevos posts al estado global
       console.log(
         "Agregando nuevos posts al estado global:",
         recentPostsData.posts,
       );
       dispatch(addPosts(recentPostsData.posts));
-      // Actualiza la fecha del último post
       console.log(
         "Actualizando la fecha del último post:",
         recentPostsData.posts[0].createdAt,
@@ -83,17 +106,15 @@ const Posts = () => {
     }
   }, [recentPostsData, dispatch]);
 
-  // Manejador de clics para el botón "Ver nuevos posts"
   const handleNewPostsClick = async () => {
     console.log("Haciendo clic en 'Ver nuevos posts'");
-    dispatch(setLoading(true)); // Activa el loading
-    await refetchRecentPosts(); // Re-ejecuta la consulta para obtener los posts recientes
-    await refetchPosts(); // Re-ejecuta la consulta para obtener todos los posts
-    dispatch(setLoading(false)); // Desactiva el loading
-    setShowNewPostsButton(false); // Oculta el botón inmediatamente
+    dispatch(setLoading(true));
+    await refetchRecentPosts();
+    await refetchPosts();
+    dispatch(setLoading(false));
+    setShowNewPostsButton(false);
   };
 
-  // Efecto para manejar la carga inicial de posts
   useEffect(() => {
     if (data && data.posts) {
       if (data.posts.length === 0) {
@@ -109,7 +130,6 @@ const Posts = () => {
     }
   }, [data, dispatch, queryParams.offset]);
 
-  // Lógica del scroll infinito
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
     if (
@@ -135,12 +155,12 @@ const Posts = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollPosition(window.scrollY); // Actualiza la posición del scroll
+      setScrollPosition(window.scrollY);
     };
 
-    window.addEventListener("scroll", handleScroll); // Escucha el evento scroll
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll); // Limpia el evento
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -184,26 +204,30 @@ const Posts = () => {
         <div className="text-center text-gray-500">No more posts available</div>
       )}
       {showNewPostsButton && (
-        <div
-          className="w-full flex justify-center fixed max-w-[635px] transition-all duration-500 ease-in-out"
-          style={{ top: `${buttonTop}px` }}
-        >
-          <button
-            disabled={loading || isRecentPostsLoading || isRecentPostsFetching}
-            className="self-center bg-neutral-800 px-3 py-2 rounded-full text-white text-sm shadow-neutral-500 shadow-md hover:bg-neutral-700 transition-all duration-300"
-            onClick={handleNewPostsClick}
+        <div className="w-full flex justify-center">
+          <div
+            className="flex justify-center fixed max-w-[635px] transition-all duration-500 ease-in-out"
+            style={{ top: `${buttonTop}px` }}
           >
-            {loading ? (
-              <div className="flex items-center">
-                <Loader2 className="animate-spin h-5 w-5" />
-              </div>
-            ) : (
-              <div className="flex flex-row items-center space-x-1">
-                <ArrowUp className="h-4 w-4" />
-                <span>New Posts</span>
-              </div>
-            )}
-          </button>
+            <button
+              disabled={
+                loading || isRecentPostsLoading || isRecentPostsFetching
+              }
+              className="self-center bg-neutral-800 px-3 py-2 rounded-full text-white text-sm shadow-neutral-500 shadow-md hover:bg-neutral-700 transition-all duration-300"
+              onClick={handleNewPostsClick}
+            >
+              {loading ? (
+                <div className="flex items-center">
+                  <Loader2 className="animate-spin h-5 w-5" />
+                </div>
+              ) : (
+                <div className="flex flex-row items-center space-x-1">
+                  <ArrowUp className="h-4 w-4" />
+                  <span>New Posts</span>
+                </div>
+              )}
+            </button>
+          </div>
         </div>
       )}
     </div>

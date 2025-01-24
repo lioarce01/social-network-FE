@@ -22,7 +22,7 @@ export default function Navbar() {
         scrolled ? "shadow bg-white" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto px-4 py-2 flex items-center justify-between">
+      <div className="mx-auto px-4 md:px-20 lg:px-72 py-2 flex items-center justify-between">
         <Link href="/feed" className="text-2xl font-bold text-primary">
           TechConnect
         </Link>

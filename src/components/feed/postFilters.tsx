@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ArrowDownUp } from "lucide-react";
 
 interface PostFiltersProps {
   sortBy: string;
@@ -18,31 +18,36 @@ export const PostFilters: React.FC<PostFiltersProps> = ({
   sortOrder,
   onSortChange,
 }) => {
+  const getSortLabel = () => {
+    if (sortBy === "createdAt" && sortOrder === "desc") return "Recent";
+    if (sortBy === "createdAt" && sortOrder === "asc") return "Oldest";
+    return "Sort by";
+  };
+
   return (
-    <div className="flex items-center sm:items-center sm:space-y-0 space-x-2 sm:space-x-4 mb-6">
-      <Select
-        value={sortBy}
-        onValueChange={(value) => onSortChange(value, sortOrder)}
-      >
-        <SelectTrigger className="w-[140px]">
-          <SelectValue placeholder="Order by" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="createdAt">Created Date</SelectItem>
-        </SelectContent>
-      </Select>
-      <Select
-        value={sortOrder}
-        onValueChange={(value) => onSortChange(sortBy, value)}
-      >
-        <SelectTrigger className="w-[140px]">
-          <SelectValue placeholder="Sort order" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="desc">Newest</SelectItem>
-          <SelectItem value="asc">Oldest</SelectItem>
-        </SelectContent>
-      </Select>
+    <div className="flex items-center justify-end">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="flex items-center space-x-2 text-sm font-medium text-neutral-600 hover:text-neutral-900 focus:outline-none">
+            <ArrowDownUp className="h-4 w-4" /> {/* Ícono */}
+            <span>{getSortLabel()}</span> {/* Texto */}
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-40">
+          <DropdownMenuItem
+            onClick={() => onSortChange("createdAt", "desc")}
+            className="cursor-pointer"
+          >
+            Recent
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onSortChange("createdAt", "asc")}
+            className="cursor-pointer"
+          >
+            Oldest
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
