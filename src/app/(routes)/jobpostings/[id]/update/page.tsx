@@ -11,7 +11,7 @@ export default function EditJobPostingPage({
   const resolvedParams = React.use(params);
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <Button variant="ghost" asChild className="mb-6">
           <Link href={`/jobpostings/${resolvedParams.id}`}>

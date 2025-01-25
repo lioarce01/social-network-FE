@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Post } from "../slices/postSlice";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -8,14 +9,56 @@ export const postApi = createApi({
   tagTypes: ["Post"],
   endpoints: (builder) => ({
     getPosts: builder.query({
-      query: () => "/posts",
-      providesTags: (result) =>
-        result
+      query: ({ offset, limit, sortBy, sortOrder }) => ({
+        url: "/posts",
+        params: {
+          offset,
+          limit,
+          sortBy,
+          sortOrder,
+        },
+      }),
+      providesTags: (result): { type: "Post"; id: string }[] =>
+        result && result.posts
           ? [
-              ...result.map(({ id }: { id: string }) => ({ type: "Post", id })),
-              { type: "Post", id: "LIST" },
+              ...result.posts.map(({ id }: { id: string }) => ({
+                type: "Post" as const,
+                id,
+              })),
+              { type: "Post" as const, id: "LIST" },
             ]
-          : [{ type: "Post", id: "LIST" }],
+          : [{ type: "Post" as const, id: "LIST" }],
+      transformResponse: (response: { posts: Post[]; totalCount: number }) => {
+        return {
+          posts: response.posts,
+          totalCount: response.totalCount,
+        };
+      },
+    }),
+    getRecentPosts: builder.query({
+      query: ({ lastPostDate, limit }) => ({
+        url: "/posts/recent",
+        params: {
+          lastPostDate,
+          limit,
+        },
+      }),
+      providesTags: (result): { type: "Post"; id: string }[] =>
+        result && result.posts
+          ? [
+              ...result.posts.map(({ id }: { id: string }) => ({
+                type: "Post" as const,
+                id,
+              })),
+              { type: "Post" as const, id: "LIST" },
+            ]
+          : [{ type: "Post" as const, id: "LIST" }],
+      transformResponse: (response: { posts: Post[]; totalCount: number }) => {
+        return {
+          posts: response.posts,
+          totalCount: response.totalCount,
+        };
+      },
     }),
     createPost: builder.mutation({
       query: (body) => ({
@@ -76,6 +119,8 @@ export const postApi = createApi({
 
 export const {
   useGetPostsQuery,
+  useLazyGetPostsQuery,
+  useGetRecentPostsQuery,
   useGetPostByIdQuery,
   useCreatePostMutation,
   useDeletePostMutation,

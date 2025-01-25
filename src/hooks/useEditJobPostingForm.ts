@@ -5,6 +5,7 @@ import {
 } from "@/redux/api/jobPostingApi";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { ExperienceLevel } from "./useJobPostingForm";
 
 export interface JobPostingFormData {
   title: string;
@@ -15,6 +16,7 @@ export interface JobPostingFormData {
   category: string;
   location: string;
   mode: "REMOTE" | "HYBRID" | "ONSITE";
+  experience_level: ExperienceLevel;
 }
 
 export function useEditJobPostingForm(jobId: string) {
@@ -34,6 +36,7 @@ export function useEditJobPostingForm(jobId: string) {
     category: "",
     location: "",
     mode: "REMOTE",
+    experience_level: ExperienceLevel.ENTRY_LEVEL,
   });
 
   const [techInput, setTechInput] = useState("");
@@ -42,6 +45,7 @@ export function useEditJobPostingForm(jobId: string) {
     extends Omit<Partial<JobPostingFormData>, "deadline" | "budget"> {
     deadline?: string;
     budget?: string;
+    experience_level?: ExperienceLevel;
   }
 
   const [errors, setErrors] = useState<JobPostingFormErrors>({});
@@ -57,6 +61,8 @@ export function useEditJobPostingForm(jobId: string) {
         category: jobDetails.category,
         location: jobDetails.location,
         mode: jobDetails.mode,
+        experience_level:
+          jobDetails.experience_level || ExperienceLevel.ENTRY_LEVEL,
       });
     }
   }, [jobDetails]);
@@ -104,6 +110,11 @@ export function useEditJobPostingForm(jobId: string) {
     setFormData((prev) => ({ ...prev, mode: value }));
   };
 
+  const handleExperienceLevelChange = (value: ExperienceLevel) => {
+    setFormData((prev) => ({ ...prev, experience_level: value }));
+    setErrors((prev) => ({ ...prev, experience_level: undefined }));
+  };
+
   const validateForm = () => {
     const newErrors: JobPostingFormErrors = {};
     if (formData.title.length < 5)
@@ -120,6 +131,8 @@ export function useEditJobPostingForm(jobId: string) {
       newErrors.category = "Category is required";
     if (formData.location.length === 0)
       newErrors.location = "Location is required";
+    if (!formData.experience_level)
+      newErrors.experience_level = ExperienceLevel.ENTRY_LEVEL;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -139,6 +152,7 @@ export function useEditJobPostingForm(jobId: string) {
           category: formData.category,
           location: formData.location,
           mode: formData.mode,
+          experience_level: formData.experience_level,
         };
 
         await updateJobPosting({
@@ -173,6 +187,7 @@ export function useEditJobPostingForm(jobId: string) {
     addTech,
     removeTech,
     handleModeChange,
+    handleExperienceLevelChange,
     handleSubmit,
   };
 }

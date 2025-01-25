@@ -27,18 +27,21 @@ const JobDetailCardHeader: React.FC<JobDetailCardHeaderProps> = ({
       <div className="flex flex-col sm:flex-row justify-between items-start">
         <div className="w-full sm:w-auto">
           <div className="flex justify-between items-center sm:block">
-            <CardTitle className="text-2xl mb-2 sm:mb-0">
+            <CardTitle className="text-3xl font-bold text-primary mb-2 sm:mb-0">
               {jobDetails.title}
             </CardTitle>
             <div className="sm:hidden">
               <CardHeaderDropdown jobDetails={jobDetails} jobId={jobId} />
             </div>
           </div>
-          <p className="text-lg text-muted-foreground">{jobDetails.category}</p>
+          <p className="text-lg font-medium text-muted-foreground">
+            {jobDetails.category}
+          </p>
         </div>
         <div className="flex items-center space-x-2 mt-2 sm:mt-0">
           <Badge
             variant={jobDetails.status === "OPEN" ? "default" : "secondary"}
+            className="text-sm font-semibold"
           >
             {jobDetails.status}
           </Badge>

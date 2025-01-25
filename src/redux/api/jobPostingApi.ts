@@ -12,11 +12,19 @@ export const jobPostingApi = createApi({
   tagTypes: ["JobPosting"],
   endpoints: (builder) => ({
     getJobs: builder.query({
-      query: () => "/jobpostings",
+      query: (params) => ({
+        url: "/jobpostings",
+        params: {
+          offset: params.offset || 0,
+          limit: params.limit || 10,
+          sortBy: params.sortBy || "createdAt",
+          sortOrder: params.sortOrder || "desc",
+        },
+      }),
       providesTags: (result) =>
-        result
+        result.jobs
           ? [
-              ...result.map(({ id }: { id: string }) => ({
+              ...result.jobs.map(({ id }: { id: string }) => ({
                 type: "JobPosting",
                 id,
               })),

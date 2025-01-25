@@ -73,6 +73,8 @@ export function validateForm(formData: JobPostingFormData) {
   if (formData.location.length === 0) errors.location = "Location is required";
   if (!["REMOTE", "HYBRID", "ONSITE"].includes(formData.mode))
     errors.mode = "Invalid job mode";
+  if (!formData.experienceLevel.length)
+    errors.experienceLevel = "Experience level is required";
 
   return errors;
 }

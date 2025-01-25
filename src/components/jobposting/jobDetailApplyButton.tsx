@@ -31,7 +31,7 @@ const ApplyButtonComponent = ({ jobDetails, userId }: any) => {
 
   return (
     <>
-      <CardFooter>
+      <div>
         <Button
           onClick={handleApplyJob}
           disabled={jobDetails?.status === "CLOSED" || applied}
@@ -39,7 +39,7 @@ const ApplyButtonComponent = ({ jobDetails, userId }: any) => {
         >
           {getButtonLabel()}
         </Button>
-      </CardFooter>
+      </div>
     </>
   );
 };
