@@ -80,7 +80,11 @@ export const jobPostingApi = createApi({
       invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
     }),
     getJobApplicants: builder.query({
-      query: (id) => `/jobpostings/${id}/applicants`,
+      query: ({ id, offset, limit }) => ({
+        url: `/jobpostings/${id}/job-applicants`,
+        method: "GET",
+        params: { offset, limit },
+      }),
       providesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
   }),
