@@ -1,5 +1,5 @@
+import { Post } from "@/types/Post";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Post } from "../slices/postSlice";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
