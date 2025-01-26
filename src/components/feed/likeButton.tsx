@@ -2,15 +2,21 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
 import { useLikePostMutation } from "@/redux/api/postApi";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { updatePost } from "@/redux/slices/postSlice";
 
 const LikeButton = ({ post, currentUser }: any) => {
   const [likePost, { isLoading }] = useLikePostMutation();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLikePost = async () => {
-    await likePost({
+    const updatedPost = await likePost({
       userId: currentUser?.id,
       postId: post.id,
-    });
+    }).unwrap();
+
+    dispatch(updatePost(updatedPost));
   };
   return (
     <>

@@ -50,6 +50,13 @@ const postsSlice = createSlice({
     setNoMorePosts: (state, action: PayloadAction<boolean>) => {
       state.noMorePosts = action.payload;
     },
+    updatePost: (state, action: PayloadAction<any>) => {
+      const updatedPost = action.payload;
+      const index = state.posts.findIndex((post) => post.id === updatedPost.id);
+      if (index !== -1) {
+        state.posts[index] = updatedPost;
+      }
+    },
   },
 });
 
@@ -61,6 +68,7 @@ export const {
   resetPostState,
   setLoading,
   setNoMorePosts,
+  updatePost,
 } = postsSlice.actions;
 
 export const selectAllPosts = (state: RootState) => state.posts.posts;

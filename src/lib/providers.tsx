@@ -28,6 +28,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             redirect_uri: redirectUri,
             audience: process.env.NEXT_PUBLIC_AUTH_AUDIENCE,
             scope: "openid profile email",
+            useRefreshTokens: true,
           }}
           onRedirectCallback={onRedirectCallback}
           cacheLocation="localstorage"
