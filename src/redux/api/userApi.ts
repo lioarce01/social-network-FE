@@ -170,4 +170,11 @@ export const {
   useDeleteUserMutation,
   useDisableUserMutation,
   useSwitchUserRoleMutation,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+  useGetUserApplicationsQuery,
+  useGetUserJobPostingsQuery,
+  useGetUserLikedPostsQuery,
+  useGetUserFollowingQuery,
+  useGetUserFollowersQuery,
 } = userApi;
