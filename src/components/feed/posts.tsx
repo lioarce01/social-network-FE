@@ -28,7 +28,7 @@ const Posts = () => {
   const noMorePosts = useSelector(selectNoMorePosts);
   const { currentUser } = useCurrentUser();
 
-  useSocket("http://localhost:4000", setShowNewPostsButton);
+  // useSocket("http://localhost:4000", setShowNewPostsButton);
 
   const [queryParams, setQueryParams] = useState({
     offset: 0,
@@ -77,39 +77,37 @@ const Posts = () => {
   }, []);
 
   const [lastPostDate, setLastPostDate] = useState(new Date().toISOString());
-  const {
-    data: recentPostsData,
-    isLoading: isRecentPostsLoading,
-    isFetching: isRecentPostsFetching,
-    refetch: refetchRecentPosts,
-  } = useGetRecentPostsQuery(
-    { lastPostDate, limit: 5 },
-    { skip: !showNewPostsButton },
-  );
+  // const {
+  //   data: recentPostsData,
+  //   isLoading: isRecentPostsLoading,
+  //   isFetching: isRecentPostsFetching,
+  //   refetch: refetchRecentPosts,
+  // } = useGetRecentPostsQuery(
+  //   { lastPostDate, limit: 5 },
+  //   { skip: !showNewPostsButton },
+  // );
 
-  console.log("recent post data:", recentPostsData);
-
-  useEffect(() => {
-    if (recentPostsData && recentPostsData.posts.length > 0) {
-      console.log(
-        "Agregando nuevos posts al estado global:",
-        recentPostsData.posts,
-      );
-      dispatch(addPosts(recentPostsData.posts));
-      console.log(
-        "Actualizando la fecha del último post:",
-        recentPostsData.posts[0].createdAt,
-      );
-      setLastPostDate(
-        new Date(recentPostsData.posts[0].createdAt).toISOString(),
-      );
-    }
-  }, [recentPostsData, dispatch]);
+  // useEffect(() => {
+  //   if (recentPostsData && recentPostsData.posts.length > 0) {
+  //     console.log(
+  //       "Agregando nuevos posts al estado global:",
+  //       recentPostsData.posts,
+  //     );
+  //     dispatch(addPosts(recentPostsData.posts));
+  //     console.log(
+  //       "Actualizando la fecha del último post:",
+  //       recentPostsData.posts[0].createdAt,
+  //     );
+  //     setLastPostDate(
+  //       new Date(recentPostsData.posts[0].createdAt).toISOString(),
+  //     );
+  //   }
+  // }, [recentPostsData, dispatch]);
 
   const handleNewPostsClick = async () => {
     console.log("Haciendo clic en 'Ver nuevos posts'");
     dispatch(setLoading(true));
-    await refetchRecentPosts();
+    // await refetchRecentPosts();
     await refetchPosts();
     dispatch(setLoading(false));
     setShowNewPostsButton(false);
@@ -203,16 +201,14 @@ const Posts = () => {
       {noMorePosts && posts.length > 0 && (
         <div className="text-center text-gray-500">No more posts available</div>
       )}
-      {showNewPostsButton && (
+      {/* {showNewPostsButton && (
         <div className="w-full flex justify-center">
           <div
             className="flex justify-center fixed max-w-[635px] transition-all duration-500 ease-in-out"
             style={{ top: `${buttonTop}px` }}
           >
             <button
-              disabled={
-                loading || isRecentPostsLoading || isRecentPostsFetching
-              }
+              disabled={loading}
               className="self-center bg-neutral-800 px-3 py-2 rounded-full text-white text-sm shadow-neutral-500 shadow-md hover:bg-neutral-700 transition-all duration-300"
               onClick={handleNewPostsClick}
             >
@@ -229,7 +225,7 @@ const Posts = () => {
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

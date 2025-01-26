@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { JobPostingFormData } from "@/hooks/useJobPostingForm";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -50,8 +51,6 @@ export function userLikedAPost(post: any | undefined, userId: string): boolean {
   return post.likes.some((like: any) => like.userId === userId);
 }
 
-import { JobPostingFormData } from "@/hooks/useJobPostingForm";
-
 export function validateForm(formData: JobPostingFormData) {
   const errors: Record<string, string> = {};
 
@@ -73,7 +72,7 @@ export function validateForm(formData: JobPostingFormData) {
   if (formData.location.length === 0) errors.location = "Location is required";
   if (!["REMOTE", "HYBRID", "ONSITE"].includes(formData.mode))
     errors.mode = "Invalid job mode";
-  if (!formData.experienceLevel.length)
+  if (!formData.experience_level.length)
     errors.experienceLevel = "Experience level is required";
 
   return errors;

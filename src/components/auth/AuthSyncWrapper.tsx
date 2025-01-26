@@ -29,7 +29,7 @@ const AuthSyncWrapper = ({ children }: { children: ReactNode }) => {
   }
 
   if (!isAuthenticated && pathname !== "/") {
-    return <p>Please log in.</p>;
+    router.push("/");
   }
 
   return <>{children}</>;

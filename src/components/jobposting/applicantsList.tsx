@@ -14,6 +14,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { useGetJobApplicantsQuery } from "@/redux/api/jobPostingApi";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useParams } from "next/navigation";
+import RejectApplicant from "./rejectApplicant";
 
 interface Applicant {
   id: string;
@@ -26,14 +28,14 @@ interface Applicant {
   };
 }
 
-const ApplicantsList = ({ jobId }: { jobId: string }) => {
-  const {
-    data: applicants,
-    error,
-    isLoading,
-  } = useGetJobApplicantsQuery(jobId);
-
-  console.log("applicants:", applicants);
+const ApplicantsList = () => {
+  const { id } = useParams() as { id: string };
+  const { data, error, isLoading } = useGetJobApplicantsQuery(
+    { id },
+    {
+      skip: !id,
+    },
+  );
 
   const dialogTrigger = (
     <DialogTrigger asChild>
@@ -82,8 +84,8 @@ const ApplicantsList = ({ jobId }: { jobId: string }) => {
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-[300px] w-full rounded-md border p-4">
-          {applicants && applicants.length > 0 ? (
-            applicants.map((applicant: Applicant) => (
+          {data?.applications && data?.applications.length > 0 ? (
+            data?.applications.map((applicant: Applicant) => (
               <div
                 key={applicant.user?.id}
                 className="mb-4 p-4 border-b last:border-b-0 flex items-center justify-between"
@@ -110,9 +112,11 @@ const ApplicantsList = ({ jobId }: { jobId: string }) => {
                   >
                     View Profile
                   </Link>
-                  <Button variant="destructive" size="sm">
-                    Reject
-                  </Button>
+                  <RejectApplicant
+                    userId={applicant.user?.id}
+                    id={id}
+                    isRejected={applicant.isRejected}
+                  />
                 </div>
               </div>
             ))

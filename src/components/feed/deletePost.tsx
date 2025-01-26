@@ -10,14 +10,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { updatePost } from "@/redux/slices/postSlice";
 
 const DeletePost = ({ postId }: { postId: string }) => {
-  const [deletePost] = useDeletePostMutation();
+  const [deletePost, { isLoading: isDeleting }] = useDeletePostMutation();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleDeletePost = async () => {
     try {
-      await deletePost({ id: postId }).unwrap();
+      const updatedPost = await deletePost({ id: postId }).unwrap();
       console.log("Post deleted successfully:", postId);
+      router.push("/feed");
+      dispatch(updatePost(updatedPost));
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -37,8 +45,12 @@ const DeletePost = ({ postId }: { postId: string }) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="destructive" onClick={handleDeletePost}>
-            Delete
+          <Button
+            disabled={isDeleting}
+            variant="destructive"
+            onClick={handleDeletePost}
+          >
+            {isDeleting ? <Loader2 className="animate-spin" /> : "Delete post"}
           </Button>
         </DialogFooter>
       </DialogContent>
