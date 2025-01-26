@@ -1,17 +1,22 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import { Job } from "@/types/Job";
+import { Job, JobSearchParams } from "@/types/Job";
 
 export interface JobsState {
   jobs: Job[];
   totalCount: number;
   loading: boolean;
+  searchParams: JobSearchParams;
 }
 
 const initialState: JobsState = {
   jobs: [],
   totalCount: 0,
   loading: false,
+  searchParams: {
+    searchTerm: "",
+    mode: undefined,
+  },
 };
 
 const jobsSlice = createSlice({
@@ -34,10 +39,13 @@ const jobsSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setSearchParams: (state, action: PayloadAction<JobSearchParams>) => {
+      state.searchParams = action.payload;
+    },
   },
 });
 
-export const { setJobs, addJobs, setTotalCount, setLoading } =
+export const { setJobs, addJobs, setTotalCount, setLoading, setSearchParams } =
   jobsSlice.actions;
 
 export const selectAllJobs = (state: RootState) => state.jobs.jobs;
