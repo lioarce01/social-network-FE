@@ -1,5 +1,6 @@
-import { addPosts, Post } from "@/redux/slices/postSlice";
+import { addPosts } from "@/redux/slices/postSlice";
 import { AppDispatch } from "@/redux/store";
+import { Post } from "@/types/Post";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { io, Socket } from "socket.io-client";
