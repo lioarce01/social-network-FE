@@ -87,8 +87,6 @@ const Posts = () => {
     { skip: !showNewPostsButton },
   );
 
-  console.log("recent post data:", recentPostsData);
-
   useEffect(() => {
     if (recentPostsData && recentPostsData.posts.length > 0) {
       console.log(

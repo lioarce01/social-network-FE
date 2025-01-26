@@ -81,11 +81,17 @@ export const jobPostingApi = createApi({
     }),
     getJobApplicants: builder.query({
       query: ({ id, offset, limit }) => ({
-        url: `/jobpostings/${id}/job-applicants`,
-        method: "GET",
+        url: `/jobpostings/${id}/applicants`,
         params: { offset, limit },
       }),
-      providesTags: (result, error, id) => [{ type: "JobPosting", id }],
+    }),
+    rejectApplicant: builder.mutation({
+      query: ({ id, userId }) => ({
+        url: `/jobapplications/${id}/reject-applicant`,
+        method: "PUT",
+        body: { userId },
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
     }),
   }),
 });
@@ -99,4 +105,5 @@ export const {
   useDeleteJobPostingMutation,
   useApplyJobMutation,
   useGetJobApplicantsQuery,
+  useRejectApplicantMutation,
 } = jobPostingApi;
