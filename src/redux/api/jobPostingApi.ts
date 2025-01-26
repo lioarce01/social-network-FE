@@ -19,8 +19,30 @@ export const jobPostingApi = createApi({
           limit: params.limit || 10,
           sortBy: params.sortBy || "createdAt",
           sortOrder: params.sortOrder || "desc",
+          searchTerm: params.searchTerm,
+          mode: params.mode,
         },
       }),
+      serializeQueryArgs: ({ queryArgs }) => {
+        return {
+          searchTerm: queryArgs.searchTerm,
+          mode: queryArgs.mode,
+          sortBy: queryArgs.sortBy,
+          sortOrder: queryArgs.sortOrder,
+        };
+      },
+      merge: (currentCache, newItems) => {
+        if (newItems.offset === 0) {
+          return newItems;
+        }
+        return {
+          ...newItems,
+          jobs: [...currentCache.jobs, ...newItems.jobs],
+        };
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.offset !== previousArg?.offset;
+      },
       providesTags: (result) =>
         result.jobs
           ? [

@@ -15,17 +15,6 @@ export default function JobsPage() {
           <p className="text-xl mb-8">
             Discover jobs that match your skills and passions.
           </p>
-          <div className="flex max-w-md mx-auto">
-            <Input
-              type="text"
-              placeholder="Search jobs..."
-              className="rounded-r-none"
-            />
-            <Button type="submit" className="rounded-l-none">
-              <Search className="h-4 w-4 mr-2" />
-              Search
-            </Button>
-          </div>
         </div>
       </header>
 
