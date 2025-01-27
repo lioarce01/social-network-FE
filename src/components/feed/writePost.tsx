@@ -15,7 +15,11 @@ import {
 import { useCreatePostMutation } from "@/redux/api/postApi";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
-const WritePostComponent = () => {
+const WritePostComponent = ({
+  onPostCreated,
+}: {
+  onPostCreated: () => void;
+}) => {
   const { currentUser } = useCurrentUser();
   const [content, setContent] = useState("");
   const [createPost, { isLoading }] = useCreatePostMutation();
@@ -27,6 +31,7 @@ const WritePostComponent = () => {
       await createPost({ content, userId: currentUser?.id }).unwrap();
       setContent("");
       setIsOpen(false);
+      onPostCreated();
       console.log("Post created successfully!");
     } catch (error) {
       console.error("Failed to create post:", error);
