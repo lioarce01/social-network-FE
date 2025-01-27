@@ -142,7 +142,7 @@ const JobListComponent: React.FC = () => {
           </div>
 
           {jobs.length < totalCount && (
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-8 w-full lg:w-[78%]">
               <Button
                 onClick={handleLoadMore}
                 disabled={isFetching}
