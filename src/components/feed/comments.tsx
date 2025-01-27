@@ -18,6 +18,7 @@ import {
   setTotalCount,
 } from "@/redux/slices/commentSlice";
 import { Button } from "@/components/ui/button";
+import CommentSkeleton from "./commentSkeleton";
 
 interface CommentsProps {
   queryPost: any;
@@ -102,7 +103,7 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
         </div>
       </div>
       {isLoadingInitial ? (
-        <div>Loading initial comments...</div>
+        <CommentSkeleton />
       ) : (
         <>
           <PostComments comments={comments} currentUserId={currentUser?.id} />
