@@ -22,10 +22,9 @@ const PostDetailSkeleton: React.FC = () => {
       </CardHeader>
 
       {/* Post Content Skeleton */}
-      <div className="space-y-2 bg-white px-4 py-2">
+      <div className="space-y-2 bg-white px-4 py-10">
         <Skeleton className="h-4 w-full rounded" />
         <Skeleton className="h-4 w-3/4 rounded" />
-        <Skeleton className="h-4 w-1/2 rounded" />
       </div>
 
       {/* Comments Section Skeleton */}
@@ -33,25 +32,11 @@ const PostDetailSkeleton: React.FC = () => {
         {/* Comment Input Skeleton */}
         <div className="flex items-center space-x-4">
           <Skeleton className="h-10 w-full rounded" />
-          <Skeleton className="w-12git h-8 rounded" />
+          <Skeleton className="w-12 h-8 rounded" />
         </div>
-
-        {/* Comment Header Skeleton */}
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-4 w-24 rounded" />
-          <Skeleton className="h-4 w-16 rounded" />
-        </div>
-
-        {/* Single Comment Skeleton */}
-        <div className="space-y-2">
-          <div className="flex items-center space-x-4">
-            <Skeleton className="w-8 h-8 rounded-full" />
-            <div className="space-y-1">
-              <Skeleton className="h-4 w-32 rounded" />
-              <Skeleton className="h-4 w-20 rounded" />
-            </div>
-          </div>
-          <Skeleton className="h-4 w-full rounded" />
+        <div className="flex items-center justify-between space-x-4">
+          <Skeleton className="w-20 h-4 rounded" />
+          <Skeleton className="h-4 w-20 rounded" />
         </div>
       </div>
     </div>
