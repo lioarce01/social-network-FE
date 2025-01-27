@@ -162,7 +162,7 @@ const Posts = () => {
     };
   }, []);
 
-  if (isLoading || (isFetching && posts.length === 0)) {
+  if (isLoading || (isFetching && posts.length === 0) || loading) {
     return (
       <div className="space-y-4">
         {[...Array(3)].map((_, index) => (
