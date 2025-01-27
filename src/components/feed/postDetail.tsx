@@ -15,22 +15,26 @@ const PostDetail: React.FC<PostDetailProps> = ({ queryPost, currentUser }) => {
   const content = queryPost?.content || "Post content goes here...";
   const author = queryPost?.author;
 
+  if (!queryPost || !author) {
+    return <div>Post not found</div>;
+  }
+
   return (
     <div className="space-y-2">
       <CardHeader className="flex flex-row justify-between">
         <div className="flex flex-row items-center space-x-4">
           <Avatar>
-            <AvatarImage src={author?.profile_pic} alt={author?.name} />
+            <AvatarImage src={author.profile_pic} alt={author.name} />
           </Avatar>
           <div>
-            <Link href={`/profile/${author?.id}`} className="font-bold">
-              {author?.name}
+            <Link href={`/profile/${author.id}`} className="font-bold">
+              {author.name}
             </Link>
             <p className="text-sm text-gray-500">
-              {author?.current_position || author?.headline}
+              {author.current_position || author.headline}
             </p>
             <p className="text-sm text-gray-500">
-              {formatDate(queryPost?.updatedAt)}
+              {formatDate(queryPost.updatedAt)}
             </p>
           </div>
         </div>

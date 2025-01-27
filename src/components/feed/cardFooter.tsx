@@ -17,7 +17,7 @@ const CardFooterComponent = ({ post, currentUser }: any) => {
         <LikeButton post={post} currentUser={currentUser} />
       )}
       <Link
-        href={`/feed/${post.id}`}
+        href={`/feed/${post?.id}`}
         className="text-xs sm:text-sm flex items-center"
       >
         <MessageSquare className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
