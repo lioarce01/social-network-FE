@@ -1,8 +1,5 @@
 import React from "react";
 import JobListComponent from "@/components/jobposting/jobList";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 
 export default function JobsPage() {
   return (

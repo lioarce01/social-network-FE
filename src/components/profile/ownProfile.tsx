@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import { useUpdateUserMutation } from "@/redux/api/userApi";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardHeader,
@@ -13,10 +11,12 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import DeleteAccount from "./deleteAccount";
+import ProfileForm from "./profileForm";
+import FollowersModal from "./followersModal";
+import FollowingModal from "./followingModal";
+import { Button } from "@/components/ui/button";
 
 const OwnProfile = ({
   userId,
@@ -38,6 +38,8 @@ const OwnProfile = ({
     city: "",
     current_position: "",
   });
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+  const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
 
   useEffect(() => {
     if (profileUser) {
@@ -95,109 +97,41 @@ const OwnProfile = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex items-center space-x-4">
-            <Avatar className="h-24 w-24">
-              <AvatarImage src={formData.profile_pic} alt={formData.name} />
-              <AvatarFallback>{formData.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <Label htmlFor="profile_pic">Profile Picture URL</Label>
-              <Input
-                id="profile_pic"
-                name="profile_pic"
-                value={formData.profile_pic}
-                onChange={handleInputChange}
-                className="mt-1"
-              />
-            </div>
-          </div>
-          <div>
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              value={formData.email}
-              readOnly
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="headline">Headline</Label>
-            <Input
-              id="headline"
-              name="headline"
-              value={formData.headline}
-              onChange={handleInputChange}
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="current_position">Current Position</Label>
-            <Input
-              id="current_position"
-              name="current_position"
-              value={formData.current_position}
-              onChange={handleInputChange}
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="country">Country</Label>
-            <Input
-              id="country"
-              name="country"
-              value={formData.country}
-              onChange={handleInputChange}
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="city">City</Label>
-            <Input
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={handleInputChange}
-              className="mt-1"
-            />
-          </div>
-          <div>
-            <Label htmlFor="postal_code">Postal Code</Label>
-            <Input
-              id="postal_code"
-              name="postal_code"
-              value={formData.postal_code}
-              onChange={handleInputChange}
-              className="mt-1"
-            />
-          </div>
-          <Button type="submit" disabled={isUpdating}>
-            {isUpdating ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Updating...
-              </>
-            ) : (
-              "Update Profile"
-            )}
+        <div className="flex justify-center space-x-4 mb-6">
+          <Button
+            variant="outline"
+            onClick={() => setIsFollowersModalOpen(true)}
+          >
+            {profileUser.followersCount} Followers
           </Button>
-        </form>
+          <Button
+            variant="outline"
+            onClick={() => setIsFollowingModalOpen(true)}
+          >
+            {profileUser.followingCount} Following
+          </Button>
+        </div>
+        <ProfileForm
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+          isUpdating={isUpdating}
+        />
       </CardContent>
       <CardFooter>
         <DeleteAccount userId={userId} />
       </CardFooter>
+
+      <FollowersModal
+        isOpen={isFollowersModalOpen}
+        onClose={() => setIsFollowersModalOpen(false)}
+        userId={userId}
+      />
+      <FollowingModal
+        isOpen={isFollowingModalOpen}
+        onClose={() => setIsFollowingModalOpen(false)}
+        userId={userId}
+      />
     </Card>
   );
 };

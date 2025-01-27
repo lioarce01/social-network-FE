@@ -85,3 +85,8 @@ export function hasApplied(userId: string, jobPosting: any): boolean {
     applicants?.some((applicant: any) => applicant.userId === userId) ?? false
   );
 }
+
+export function truncateText(text: string, maxLength: number): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "...";
+}

@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Followers", "Following"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => "/users",
@@ -63,15 +63,26 @@ export const userApi = createApi({
         method: "POST",
         body: body,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "User", id }],
+      invalidatesTags: (result, error, { userId, targetId }) => [
+        { type: "User", id: userId },
+        { type: "User", id: targetId },
+        { type: "Followers", id: "LIST" },
+        { type: "Following", id: "LIST" },
+      ],
     }),
+
     unfollowUser: builder.mutation({
       query: (body) => ({
         url: "/users/unfollow",
         method: "DELETE",
         body: body,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "User", id }],
+      invalidatesTags: (result, error, { userId, targetId }) => [
+        { type: "User", id: userId },
+        { type: "User", id: targetId },
+        { type: "Followers", id: "LIST" },
+        { type: "Following", id: "LIST" },
+      ],
     }),
     getUserApplications: builder.query({
       query: ({ id, offset, limit }) => ({
@@ -127,36 +138,35 @@ export const userApi = createApi({
     getUserFollowers: builder.query({
       query: ({ id, offset, limit }) => ({
         url: `/users/${id}/followers`,
-        method: "GET",
         params: { offset, limit },
       }),
-      providesTags: (result): { type: "User"; id: string }[] =>
-        result && result.jobPostings
+      providesTags: (result) =>
+        result
           ? [
-              ...result.jobPostings.map(({ id }: { id: string }) => ({
+              ...result.followers.map(({ id }: { id: string }) => ({
                 type: "User" as const,
                 id,
               })),
-              { type: "User" as const, id: "LIST" },
+              { type: "Followers", id: "LIST" },
             ]
-          : [{ type: "User" as const, id: "LIST" }],
+          : [{ type: "Followers", id: "LIST" }],
     }),
+
     getUserFollowing: builder.query({
       query: ({ id, offset, limit }) => ({
         url: `/users/${id}/following`,
-        method: "GET",
         params: { offset, limit },
       }),
-      providesTags: (result): { type: "User"; id: string }[] =>
-        result && result.jobPostings
+      providesTags: (result) =>
+        result
           ? [
-              ...result.jobPostings.map(({ id }: { id: string }) => ({
+              ...result.following.map(({ id }: { id: string }) => ({
                 type: "User" as const,
                 id,
               })),
-              { type: "User" as const, id: "LIST" },
+              { type: "Following", id: "LIST" },
             ]
-          : [{ type: "User" as const, id: "LIST" }],
+          : [{ type: "Following", id: "LIST" }],
     }),
   }),
 });

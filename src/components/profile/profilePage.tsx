@@ -43,7 +43,11 @@ const ProfilePage = ({ userId }: { userId: string }) => {
       isLoading={currentUserLoading}
     />
   ) : (
-    <UserProfile profileUser={profileUser} isLoading={profileLoading} />
+    <UserProfile
+      profileUser={profileUser}
+      isLoading={profileLoading}
+      currentUserId={currentUser?.id}
+    />
   );
 };
 
