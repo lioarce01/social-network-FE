@@ -65,7 +65,7 @@ const FollowWrapper = ({ loggedUserId, targetUserId }: FollowWrapperProps) => {
   return (
     <>
       <Button
-        variant={isFollowing ? "secondary" : "default"}
+        variant={isFollowing ? "default" : "default"}
         onClick={() => {
           setCurrentAction(isFollowing ? "unfollow" : "follow");
           setShowConfirmation(true);
