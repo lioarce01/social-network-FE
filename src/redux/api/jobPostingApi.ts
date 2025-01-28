@@ -9,7 +9,7 @@ type UpdateJobPostingData = Partial<
 export const jobPostingApi = createApi({
   reducerPath: "jobPostingApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
-  tagTypes: ["JobPosting"],
+  tagTypes: ["JobPosting", "User"],
   endpoints: (builder) => ({
     getJobs: builder.query({
       query: (params) => ({
@@ -94,18 +94,31 @@ export const jobPostingApi = createApi({
       invalidatesTags: (result, error, id) => [{ type: "JobPosting", id }],
     }),
     applyJob: builder.mutation({
-      query: (body) => ({
+      query: ({ userId, jobPostingId }) => ({
         url: "/jobapplications/applyjob",
         method: "POST",
-        body,
+        body: { userId, jobPostingId },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
+      invalidatesTags: (result, error, { userId, jobPostingId }) => [
+        { type: "JobPosting", id: jobPostingId },
+        { type: "User", id: userId },
+      ],
     }),
     getJobApplicants: builder.query({
       query: ({ id, offset, limit }) => ({
         url: `/jobpostings/${id}/applicants`,
         params: { offset, limit },
       }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.applications.map(({ id }: { id: string }) => ({
+                type: "JobPosting" as const,
+                id,
+              })),
+              { type: "JobPosting", id: "LIST" },
+            ]
+          : [{ type: "JobPosting", id: "LIST" }],
     }),
     rejectApplicant: builder.mutation({
       query: ({ id, userId }) => ({
@@ -113,7 +126,10 @@ export const jobPostingApi = createApi({
         method: "PUT",
         body: { userId },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "JobPosting", id }],
+      invalidatesTags: (result, error, { id, userId }) => [
+        { type: "JobPosting", id },
+        { type: "JobPosting", id: "LIST" },
+      ],
     }),
   }),
 });

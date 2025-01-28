@@ -24,13 +24,6 @@ const JobDetailCardComponent = () => {
     return <JobDetailSkeleton />;
   }
 
-  if (error || !jobDetails) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Job not found
-      </div>
-    );
-  }
   return (
     <>
       <Card>

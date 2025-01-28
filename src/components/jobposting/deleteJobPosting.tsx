@@ -11,17 +11,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDeleteJobPostingMutation } from "@/redux/api/jobPostingApi";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const DeleteJobPosting = ({ jobId }: any) => {
-  const [deleteJob] = useDeleteJobPostingMutation();
+  const [deleteJob, { isLoading: isDeleting }] = useDeleteJobPostingMutation();
   const router = useRouter();
 
   const handleDeleteJob = async () => {
     try {
-      await deleteJob(jobId)
-        .unwrap()
-        .finally(() => router.push("/jobpostings"));
-      console.log("Post deleted successfully:", jobId);
+      await deleteJob(jobId).unwrap();
+      router.push("/jobpostings");
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -41,8 +40,12 @@ const DeleteJobPosting = ({ jobId }: any) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="destructive" onClick={handleDeleteJob}>
-            Delete
+          <Button
+            variant="destructive"
+            onClick={handleDeleteJob}
+            disabled={isDeleting}
+          >
+            {isDeleting ? <Loader2 className="animate-spin" /> : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>
