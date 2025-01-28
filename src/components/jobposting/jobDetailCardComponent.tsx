@@ -41,8 +41,8 @@ const JobDetailCardContent = ({ jobDetails, currentUserId }: any) => {
     <CardContent className="space-y-6">
       <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-sm font-medium text-muted-foreground">
         <span className="flex items-center">
-          <DollarSign className="mr-1 h-4 w-4 text-primary" /> Budget: $
-          {jobDetails?.budget}
+          <DollarSign className="mr-1 h-4 w-4 text-primary" />
+          {jobDetails?.budget}/mo
         </span>
         <span className="flex items-center">
           <CalendarDays className="mr-1 h-4 w-4 text-primary" /> Deadline:{" "}

@@ -6,34 +6,23 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
-  tagTypes: ["Post"],
+  tagTypes: ["Post", "User"],
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: ({ offset, limit, sortBy, sortOrder }) => ({
         url: "/posts",
-        params: {
-          offset,
-          limit,
-          sortBy,
-          sortOrder,
-        },
+        params: { offset, limit, sortBy, sortOrder },
       }),
-      providesTags: (result): { type: "Post"; id: string }[] =>
-        result && result.posts
+      providesTags: (result) =>
+        result?.posts
           ? [
               ...result.posts.map(({ id }: { id: string }) => ({
                 type: "Post" as const,
                 id,
               })),
-              { type: "Post" as const, id: "LIST" },
+              { type: "Post", id: "LIST" },
             ]
-          : [{ type: "Post" as const, id: "LIST" }],
-      transformResponse: (response: { posts: Post[]; totalCount: number }) => {
-        return {
-          posts: response.posts,
-          totalCount: response.totalCount,
-        };
-      },
+          : [{ type: "Post", id: "LIST" }],
     }),
     getRecentPosts: builder.query({
       query: ({ lastPostDate, limit }) => ({
@@ -43,22 +32,16 @@ export const postApi = createApi({
           limit,
         },
       }),
-      providesTags: (result): { type: "Post"; id: string }[] =>
+      providesTags: (result) =>
         result && result.posts
           ? [
               ...result.posts.map(({ id }: { id: string }) => ({
-                type: "Post" as const,
+                type: "Post",
                 id,
               })),
-              { type: "Post" as const, id: "LIST" },
+              { type: "Post", id: "LIST" },
             ]
-          : [{ type: "Post" as const, id: "LIST" }],
-      transformResponse: (response: { posts: Post[]; totalCount: number }) => {
-        return {
-          posts: response.posts,
-          totalCount: response.totalCount,
-        };
-      },
+          : [{ type: "Post", id: "LIST" }],
     }),
     createPost: builder.mutation({
       query: (body) => ({
@@ -128,6 +111,7 @@ export const {
   useGetPostsQuery,
   useLazyGetPostsQuery,
   useGetRecentPostsQuery,
+  useLazyGetRecentPostsQuery,
   useGetPostByIdQuery,
   useCreatePostMutation,
   useDeletePostMutation,
