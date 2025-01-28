@@ -19,6 +19,7 @@ import {
 } from "@/redux/slices/commentSlice";
 import { Button } from "@/components/ui/button";
 import CommentSkeleton from "./commentSkeleton";
+import useGetLikedPosts from "@/hooks/useGetLikedPosts";
 
 interface CommentsProps {
   queryPost: any;
@@ -31,6 +32,7 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
   const { comments, totalCount } = useSelector(
     (state: RootState) => state.comments,
   );
+  const { likedPosts, isLoading } = useGetLikedPosts();
   const [page, setPage] = useState(0);
   const INITIAL_COMMENTS = 2;
   const COMMENTS_PER_PAGE = 10;
@@ -54,7 +56,7 @@ const Comments: React.FC<CommentsProps> = ({ queryPost, currentUser }) => {
     },
   ] = useLazyGetPostCommentsQuery();
 
-  const hasLiked = userLikedAPost(queryPost, currentUser?.id || "");
+  const hasLiked = userLikedAPost(queryPost, likedPosts);
 
   useEffect(() => {
     if (initial && initial.comments) {
