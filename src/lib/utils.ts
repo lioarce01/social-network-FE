@@ -11,6 +11,10 @@ export function formatDate(dateString: string): string {
   const datePosted = parseISO(dateString);
   const now = new Date();
 
+  if (datePosted > now) {
+    return "just now";
+  }
+
   const timeAgo = formatDistance(datePosted, now, { addSuffix: true });
 
   return timeAgo;
