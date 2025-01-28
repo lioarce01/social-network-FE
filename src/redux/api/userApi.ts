@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
-  tagTypes: ["User", "Followers", "Following"],
+  tagTypes: ["User", "Followers", "Following", "Post"],
   endpoints: (builder) => ({
     getUsers: builder.query({
       query: () => "/users",
@@ -22,7 +22,7 @@ export const userApi = createApi({
       query: (identifier) => `/users/${identifier}`,
       providesTags: (result, error, { id }) => [{ type: "User", id }],
     }),
-    //PROFILE SETTINGS
+    //PROFILE SETTINGSg
     updateUser: builder.mutation({
       query: ({ id, data }) => ({
         url: `/users/${id}/update`,
@@ -118,23 +118,7 @@ export const userApi = createApi({
             ]
           : [{ type: "User" as const, id: "LIST" }],
     }),
-    getUserLikedPosts: builder.query({
-      query: ({ id, offset, limit }) => ({
-        url: `/users/${id}/liked-posts`,
-        method: "GET",
-        params: { offset, limit },
-      }),
-      providesTags: (result): { type: "User"; id: string }[] =>
-        result && result.jobPostings
-          ? [
-              ...result.jobPostings.map(({ id }: { id: string }) => ({
-                type: "User" as const,
-                id,
-              })),
-              { type: "User" as const, id: "LIST" },
-            ]
-          : [{ type: "User" as const, id: "LIST" }],
-    }),
+
     getUserFollowers: builder.query({
       query: ({ id, offset, limit }) => ({
         url: `/users/${id}/followers`,
@@ -184,7 +168,6 @@ export const {
   useUnfollowUserMutation,
   useGetUserApplicationsQuery,
   useGetUserJobPostingsQuery,
-  useGetUserLikedPostsQuery,
   useGetUserFollowingQuery,
   useGetUserFollowersQuery,
 } = userApi;

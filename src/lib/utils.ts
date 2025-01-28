@@ -28,10 +28,9 @@ export function formatDateTime(dateString: string) {
   });
 }
 
-export function userLikedAPost(post: any | undefined, userId: string): boolean {
-  if (!post || !post.likes || post.likes.length === 0) return false;
-
-  return post.likes.some((like: any) => like.userId === userId);
+export function userLikedAPost(post: any, likedPosts: any[]): boolean {
+  if (!likedPosts) return false;
+  return likedPosts.some((likedPost) => likedPost.postId === post.id);
 }
 
 export function validateForm(formData: JobPostingFormData) {

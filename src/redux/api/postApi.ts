@@ -6,7 +6,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
-  tagTypes: ["Post", "User"],
+  tagTypes: ["Post", "User", "UserLikedPosts"],
   endpoints: (builder) => ({
     getPosts: builder.query({
       query: ({ offset, limit, sortBy, sortOrder }) => ({
@@ -81,15 +81,30 @@ export const postApi = createApi({
             ]
           : [{ type: "Post", id: "LIST" }],
     }),
+    getUserLikedPosts: builder.query({
+      query: ({ id, offset, limit }) => ({
+        url: `/users/${id}/liked-posts`,
+        params: { offset, limit },
+      }),
+      providesTags: (result, error, { id }) => [
+        { type: "UserLikedPosts", id },
+        ...(result?.likedPosts?.map(({ id }: { id: string }) => ({
+          type: "Post",
+          id,
+        })) || []),
+      ],
+    }),
     likePost: builder.mutation({
-      query: (body) => ({
+      query: ({ userId, postId }) => ({
         url: `/posts/like`,
         method: "PUT",
-        body,
+        body: { userId, postId },
       }),
-      invalidatesTags: (result, error, { postId }) => [
+      invalidatesTags: (result, error, { userId, postId }) => [
         { type: "Post", id: postId },
+        { type: "User", id: userId },
         { type: "Post", id: "LIST" },
+        { type: "UserLikedPosts", id: userId },
       ],
     }),
 
@@ -99,9 +114,11 @@ export const postApi = createApi({
         method: "PUT",
         body,
       }),
-      invalidatesTags: (result, error, { postId }) => [
+      invalidatesTags: (result, error, { userId, postId }) => [
         { type: "Post", id: postId },
+        { type: "User", id: userId },
         { type: "Post", id: "LIST" },
+        { type: "UserLikedPosts", id: userId },
       ],
     }),
   }),
@@ -119,4 +136,5 @@ export const {
   useLikePostMutation,
   useUnlikePostMutation,
   useGetUserPostsQuery,
+  useGetUserLikedPostsQuery,
 } = postApi;

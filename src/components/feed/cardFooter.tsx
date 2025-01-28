@@ -5,9 +5,16 @@ import { MessageSquare } from "lucide-react";
 import LikeButton from "./likeButton";
 import UnlikeButton from "./unlikeButton";
 import { userLikedAPost } from "@/lib/utils";
+import useGetLikedPosts from "@/hooks/useGetLikedPosts";
 
 const CardFooterComponent = ({ post, currentUser }: any) => {
-  const hasLiked = userLikedAPost(post, currentUser?.id || "");
+  const { likedPosts, isLoading } = useGetLikedPosts();
+
+  if (isLoading) {
+    <p>Loading...</p>;
+  }
+
+  const hasLiked = userLikedAPost(post, likedPosts);
 
   return (
     <CardFooter className="flex justify-between border-t py-2 sm:py-4">
