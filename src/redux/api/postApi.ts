@@ -1,11 +1,12 @@
 import { Post } from "@/types/Post";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "../../lib/Auth0Config"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
 export const postApi = createApi({
   reducerPath: "postApi",
-  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+  baseQuery,
   tagTypes: ["Post", "User", "UserLikedPosts"],
   endpoints: (builder) => ({
     getPosts: builder.query({
@@ -16,12 +17,12 @@ export const postApi = createApi({
       providesTags: (result) =>
         result?.posts
           ? [
-              ...result.posts.map(({ id }: { id: string }) => ({
-                type: "Post" as const,
-                id,
-              })),
-              { type: "Post", id: "LIST" },
-            ]
+            ...result.posts.map(({ id }: { id: string }) => ({
+              type: "Post" as const,
+              id,
+            })),
+            { type: "Post", id: "LIST" },
+          ]
           : [{ type: "Post", id: "LIST" }],
     }),
     getRecentPosts: builder.query({
@@ -35,12 +36,12 @@ export const postApi = createApi({
       providesTags: (result) =>
         result && result.posts
           ? [
-              ...result.posts.map(({ id }: { id: string }) => ({
-                type: "Post",
-                id,
-              })),
-              { type: "Post", id: "LIST" },
-            ]
+            ...result.posts.map(({ id }: { id: string }) => ({
+              type: "Post",
+              id,
+            })),
+            { type: "Post", id: "LIST" },
+          ]
           : [{ type: "Post", id: "LIST" }],
     }),
     createPost: builder.mutation({
@@ -76,9 +77,9 @@ export const postApi = createApi({
       providesTags: (result, error, id) =>
         result
           ? [
-              ...result.map(({ id }: { id: string }) => ({ type: "Post", id })),
-              { type: "Post", id: "LIST" },
-            ]
+            ...result.map(({ id }: { id: string }) => ({ type: "Post", id })),
+            { type: "Post", id: "LIST" },
+          ]
           : [{ type: "Post", id: "LIST" }],
     }),
     getUserLikedPosts: builder.query({

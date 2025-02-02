@@ -28,10 +28,10 @@ const WritePostComponent = ({
   const handleCreatePost = async () => {
     if (!content.trim()) return;
     try {
-      await createPost({ content, userId: currentUser?.id }).unwrap();
+      await createPost({content}).unwrap();
       setContent("");
       setIsOpen(false);
-      onPostCreated(); // Notifica que un nuevo post ha sido creado
+      onPostCreated();
       console.log("Post created successfully!");
     } catch (error) {
       console.error("Failed to create post:", error);

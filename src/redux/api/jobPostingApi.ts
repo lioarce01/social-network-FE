@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "../../lib/Auth0Config"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 type UpdateJobPostingData = Partial<
   Omit<any, "applicants" | "jobAuthor" | "id">
@@ -8,7 +8,7 @@ type UpdateJobPostingData = Partial<
 
 export const jobPostingApi = createApi({
   reducerPath: "jobPostingApi",
-  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+  baseQuery,
   tagTypes: ["JobPosting", "User"],
   endpoints: (builder) => ({
     getJobs: builder.query({
@@ -23,7 +23,8 @@ export const jobPostingApi = createApi({
           mode: params.mode,
         },
       }),
-      serializeQueryArgs: ({ queryArgs }) => {
+      serializeQueryArgs: ({ queryArgs }) =>
+      {
         return {
           searchTerm: queryArgs.searchTerm,
           mode: queryArgs.mode,
@@ -31,7 +32,8 @@ export const jobPostingApi = createApi({
           sortOrder: queryArgs.sortOrder,
         };
       },
-      merge: (currentCache, newItems) => {
+      merge: (currentCache, newItems) =>
+      {
         if (newItems.offset === 0) {
           return newItems;
         }
@@ -40,18 +42,19 @@ export const jobPostingApi = createApi({
           jobs: [...currentCache.jobs, ...newItems.jobs],
         };
       },
-      forceRefetch({ currentArg, previousArg }) {
+      forceRefetch({ currentArg, previousArg })
+      {
         return currentArg?.offset !== previousArg?.offset;
       },
       providesTags: (result) =>
         result.jobs
           ? [
-              ...result.jobs.map(({ id }: { id: string }) => ({
-                type: "JobPosting",
-                id,
-              })),
-              { type: "JobPosting", id: "LIST" },
-            ]
+            ...result.jobs.map(({ id }: { id: string }) => ({
+              type: "JobPosting",
+              id,
+            })),
+            { type: "JobPosting", id: "LIST" },
+          ]
           : [{ type: "JobPosting", id: "LIST" }],
     }),
     getJobByIdQuery: builder.query({
@@ -112,12 +115,12 @@ export const jobPostingApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.applications.map(({ id }: { id: string }) => ({
-                type: "JobPosting" as const,
-                id,
-              })),
-              { type: "JobPosting", id: "LIST" },
-            ]
+            ...result.applications.map(({ id }: { id: string }) => ({
+              type: "JobPosting" as const,
+              id,
+            })),
+            { type: "JobPosting", id: "LIST" },
+          ]
           : [{ type: "JobPosting", id: "LIST" }],
     }),
     rejectApplicant: builder.mutation({

@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "../../lib/Auth0Config"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const commentApi = createApi({
   reducerPath: "commentApi",
-  baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
+  baseQuery,
   tagTypes: ["Comment"],
   endpoints: (builder) => ({
     getPostComments: builder.query({
@@ -20,12 +20,12 @@ export const commentApi = createApi({
       providesTags: (result) =>
         result && result.comments
           ? [
-              ...result.comments.map(({ id }: { id: string }) => ({
-                type: "Comment",
-                id,
-              })),
-              { type: "Comment", id: "LIST" },
-            ]
+            ...result.comments.map(({ id }: { id: string }) => ({
+              type: "Comment",
+              id,
+            })),
+            { type: "Comment", id: "LIST" },
+          ]
           : [{ type: "Comment", id: "LIST" }],
     }),
     getAllComments: builder.query({
