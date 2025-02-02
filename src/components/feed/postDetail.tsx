@@ -34,7 +34,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ queryPost, currentUser }) => {
               {author.current_position || author.headline}
             </p>
             <p className="text-sm text-gray-500">
-              {formatDate(queryPost.updatedAt)}
+              {formatDate(queryPost.createdAt)}
             </p>
           </div>
         </div>

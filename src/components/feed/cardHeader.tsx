@@ -24,7 +24,7 @@ const CardHeaderComponent = ({ post }: any) => {
               {post.author?.current_position || post.author?.headline}
             </p>
             <p className="text-xs text-gray-500">
-              {formatDate(post.updatedAt)}
+              {formatDate(post.createdAt)}
             </p>
           </div>
         </div>
