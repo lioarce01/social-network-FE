@@ -1,43 +1,33 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useCallback } from "react";
-import {
+import
+{
+  auth0Client,
   useRegisterUserMutation,
-  useLazyGetUserBySubQuery,
-  userApi,
 } from "@/redux/api/userApi";
-import { useDispatch } from "react-redux";
 
-const useAuthSync = () => {
-  const { user, isAuthenticated } = useAuth0();
+const useAuthSync = () =>
+{
+  const { isAuthenticated } = useAuth0();
   const [registerUser] = useRegisterUserMutation();
-  const [getUserBySub] = useLazyGetUserBySubQuery();
-  const dispatch = useDispatch();
 
-  const syncUser = useCallback(async () => {
-    if (isAuthenticated && user) {
-      const { email, sub, name, picture } = user;
+  const syncUser = useCallback(async () =>
+  {
+    if (isAuthenticated) {
       try {
-        await getUserBySub(sub).unwrap();
-      } catch {
-        try {
-          await registerUser({
-            email,
-            sub,
-            name,
-            profile_pic: picture,
-          }).unwrap();
-
-          dispatch(userApi.util.invalidateTags(["User"]));
-        } catch (error) {
-          console.error("Failed to create user:", error);
+        await registerUser().unwrap();
+      } catch (error) {
+        if ((error as any).status === 401) {
+          await auth0Client.loginWithRedirect();
         }
       }
     }
-  }, [isAuthenticated, user, registerUser, getUserBySub]);
+  }, [isAuthenticated]);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     syncUser();
-  }, [syncUser]);
+  }, [isAuthenticated]);
 };
 
 export default useAuthSync;
