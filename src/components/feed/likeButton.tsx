@@ -6,13 +6,12 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { updatePost } from "@/redux/slices/postSlice";
 
-const LikeButton = ({ post, currentUser }: any) => {
+const LikeButton = ({ post }: any) => {
   const [likePost, { isLoading }] = useLikePostMutation();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleLikePost = async () => {
     const updatedPost = await likePost({
-      userId: currentUser?.id,
       postId: post.id,
     }).unwrap();
 

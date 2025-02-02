@@ -96,10 +96,10 @@ export const postApi = createApi({
       ],
     }),
     likePost: builder.mutation({
-      query: ({ userId, postId }) => ({
+      query: ({ postId }) => ({
         url: `/posts/like`,
         method: "PUT",
-        body: { userId, postId },
+        body: { postId },
       }),
       invalidatesTags: (result, error, { userId, postId }) => [
         { type: "Post", id: postId },
@@ -110,10 +110,10 @@ export const postApi = createApi({
     }),
 
     unlikePost: builder.mutation({
-      query: (body) => ({
+      query: ({ postId }) => ({
         url: `/posts/unlike`,
         method: "PUT",
-        body,
+        body: { postId },
       }),
       invalidatesTags: (result, error, { userId, postId }) => [
         { type: "Post", id: postId },

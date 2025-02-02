@@ -4,12 +4,12 @@ import CardHeaderComponent from "./cardHeader";
 import CardContentComponent from "./cardContent";
 import CardFooterComponent from "./cardFooter";
 
-const PostCard = ({ post, currentUser }: any) => {
+const PostCard = ({ post }: any) => {
   return (
     <Card className="bg-white w-full sm:max-w-[600px] mx-auto">
       <CardHeaderComponent post={post} />
       <CardContentComponent post={post} />
-      <CardFooterComponent post={post} currentUser={currentUser} />
+      <CardFooterComponent post={post} />
     </Card>
   );
 };

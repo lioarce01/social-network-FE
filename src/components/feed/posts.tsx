@@ -87,7 +87,7 @@ const Posts = ({ onPostCreated }: { onPostCreated: () => void }) => {
       <div className="space-y-4">
         {posts.length > 0 ? (
           posts.map((post: any) => (
-            <PostCard key={post.id} post={post} currentUser={currentUser} />
+            <PostCard key={post.id} post={post} />
           ))
         ) : (
           <div className="text-center text-gray-500">No posts found</div>
