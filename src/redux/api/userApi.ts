@@ -59,6 +59,10 @@ export const userApi = createApi({
       }),
       invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
+    getMe: builder.query({
+      query: () => `/users/me`,
+      providesTags: (result, error, { id }) => [{ type: "User", id }]
+    }),
     getUserBySub: builder.query({
       query: (identifier) => `/users/${identifier}`,
       providesTags: (result, error, { id }) => [{ type: "User", id }],
@@ -211,4 +215,5 @@ export const {
   useGetUserJobPostingsQuery,
   useGetUserFollowingQuery,
   useGetUserFollowersQuery,
+  useGetMeQuery
 } = userApi;

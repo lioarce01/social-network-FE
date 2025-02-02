@@ -19,11 +19,10 @@ import FollowingModal from "./followingModal";
 import { Button } from "@/components/ui/button";
 
 const OwnProfile = ({
-  userId,
+  
   profileUser,
   isLoading,
 }: {
-  userId: string;
   profileUser: any;
   isLoading: boolean;
 }) => {
@@ -73,7 +72,7 @@ const OwnProfile = ({
         city: formData.city,
         current_position: formData.current_position,
       };
-      await updateUser({ id: userId, data: updateData }).unwrap();
+      await updateUser({ id: profileUser?.id, data: updateData }).unwrap();
       toast({
         title: "Profile Updated",
         description: "Your profile has been successfully updated.",
@@ -119,18 +118,18 @@ const OwnProfile = ({
         />
       </CardContent>
       <CardFooter>
-        <DeleteAccount userId={userId} />
+        <DeleteAccount userId={profileUser?.id} />
       </CardFooter>
 
       <FollowersModal
         isOpen={isFollowersModalOpen}
         onClose={() => setIsFollowersModalOpen(false)}
-        userId={userId}
+        userId={profileUser?.id}
       />
       <FollowingModal
         isOpen={isFollowingModalOpen}
         onClose={() => setIsFollowingModalOpen(false)}
-        userId={userId}
+        userId={profileUser?.id}
       />
     </Card>
   );

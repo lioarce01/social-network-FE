@@ -38,7 +38,6 @@ const ProfilePage = ({ userId }: { userId: string }) => {
 
   return isOwnProfile ? (
     <OwnProfile
-      userId={userId}
       profileUser={currentUser}
       isLoading={currentUserLoading}
     />
