@@ -115,7 +115,7 @@ export const jobPostingApi = createApi({
       providesTags: (result) =>
         result
           ? [
-            ...result.applications.map(({ id }: { id: string }) => ({
+            ...result.jobApplicants?.applications?.map(({ id }: { id: string }) => ({
               type: "JobPosting" as const,
               id,
             })),
