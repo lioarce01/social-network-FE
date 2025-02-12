@@ -20,7 +20,7 @@ const UnlikeButton = ({ post }: any) => {
           variant="ghost"
           size="sm"
         >
-          <HeartOff className="h-4 w-4 " /> 
+          <HeartOff className="mr-2 h-4 w-4 " /> {post.likeCount} Likes
         </Button>
       </>
     </>

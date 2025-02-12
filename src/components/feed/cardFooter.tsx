@@ -14,33 +14,15 @@ const CardFooterComponent = ({ post }: any) => {
     <p>Loading...</p>;
   }
 
-  console.log("post:",post)
-
   const hasLiked = userLikedAPost(post, likedPosts);
-
-  console.log(hasLiked)
-
-  const userLikedPost = () => {
-    if (hasLiked) {
-      return (
-        <div className="flex items-center justify-center">
-          <UnlikeButton post={post}/>
-          <p className="text-xs">{post.likeCount} Likes</p>
-        </div>
-      )
-    } else {
-      return (
-        <div className="flex items-center justify-center">
-          <LikeButton post={post}/>
-          <p className="text-xs">{post.likeCount} Likes</p>
-        </div>
-      )
-    }
-  }
 
   return (
     <CardFooter className="flex justify-between border-t py-2 sm:py-4">
-      {userLikedPost()}
+      {hasLiked ? (
+        <UnlikeButton post={post} />
+      ) : (
+        <LikeButton post={post} />
+      )}
       <Link
         href={`/feed/${post?.id}`}
         className="text-xs sm:text-sm flex items-center"

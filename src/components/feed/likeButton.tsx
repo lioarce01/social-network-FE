@@ -20,7 +20,7 @@ const LikeButton = ({ post }: any) => {
         variant="ghost"
         size="sm"
       >
-        <Heart className="h-4 w-4" /> 
+        <Heart className="mr-2 h-4 w-4" /> {post.likeCount} Likes
       </Button>
     </>
   );
