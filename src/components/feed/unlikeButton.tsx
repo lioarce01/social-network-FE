@@ -2,20 +2,14 @@ import React from "react";
 import { Button } from "../ui/button";
 import { HeartOff } from "lucide-react";
 import { useUnlikePostMutation } from "@/redux/api/postApi";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import { updatePost } from "@/redux/slices/postSlice";
 
 const UnlikeButton = ({ post }: any) => {
   const [unlikePost, { isLoading }] = useUnlikePostMutation();
-  const dispatch = useDispatch<AppDispatch>();
 
   const handleUnlikePost = async () => {
-    const updatedPost = await unlikePost({
+    await unlikePost({
       postId: post.id,
     }).unwrap();
-
-    dispatch(updatePost(updatedPost));
   };
   return (
     <>
@@ -26,7 +20,7 @@ const UnlikeButton = ({ post }: any) => {
           variant="ghost"
           size="sm"
         >
-          <HeartOff className="mr-2 h-4 w-4 " /> {post.likeCount} Likes
+          <HeartOff className="h-4 w-4 " /> 
         </Button>
       </>
     </>
