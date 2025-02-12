@@ -8,7 +8,7 @@ import { auth0Client } from "@/lib/Auth0Config";
 
 const useAuthSync = () =>
 {
-  const { isAuthenticated } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   const [registerUser] = useRegisterUserMutation();
 
   const syncUser = useCallback(async () =>

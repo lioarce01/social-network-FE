@@ -21,7 +21,7 @@ const DeleteAccount = ({ userId }: any) => {
 
   const handleDeleteAccount = async () => {
     try {
-      await deleteUser(userId).unwrap();
+      await deleteUser().unwrap();
       console.log("deleting account with user id:", userId);
 
       await logout({

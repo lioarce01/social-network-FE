@@ -34,12 +34,11 @@ export const userApi = createApi({
       invalidatesTags: (result, error, id) => [{ type: "User", id }],
     }),
     //PROFILE SETTINGS
-    deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `/users/${id}`,
+    deleteUser: builder.mutation<void, void>({
+      query: () => ({
+        url: `/users/delete`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "User", id }],
     }),
     //ONLY ADMIN CAN DISABLE USER
     disableUser: builder.mutation({
