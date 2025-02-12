@@ -18,7 +18,8 @@ export const userApi = createApi({
     }),
     getMe: builder.query({
       query: () => `/users/me`,
-      providesTags: (result, error, { id }) => [{ type: "User", id }]
+      providesTags: (result) =>
+        result ? [{ type: "User", id: result.id }] : [],
     }),
     getUserBySub: builder.query({
       query: (identifier) => `/users/${identifier}`,
@@ -31,7 +32,7 @@ export const userApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (result, error, id) => [{ type: "User", id }],
+      invalidatesTags: ["User"]
     }),
     //PROFILE SETTINGS
     deleteUser: builder.mutation<void, void>({

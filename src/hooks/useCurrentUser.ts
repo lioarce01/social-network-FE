@@ -7,11 +7,12 @@ const useCurrentUser = () =>
     data,
     error,
     isLoading,
+    refetch
   } = useGetMeQuery({});
 
   const currentUser = data?.user
 
-  return { currentUser, isLoading, error };
+  return { currentUser, isLoading, error, refetch };
 };
 
 export default useCurrentUser;
