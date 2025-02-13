@@ -1,6 +1,7 @@
 import type React from "react";
 import { formatDate } from "@/lib/utils";
 import CommentSettings from "./commentSettings";
+import Link from "next/link";
 
 interface PostCommentsProps {
   comments: any[];
@@ -33,16 +34,18 @@ const PostComments: React.FC<PostCommentsProps> = ({
             </div>
             <div className="space-y-2 w-full">
               <div className="w-full">
-                <div className="flex justify-between w-full">
-                  <div className="flex flex-col">
-                    <p className="font-medium text-primary">
-                      {comment?.author?.name || "Anonymous"}
-                    </p>
-                    <p className="text-xs text-neutral-600">
-                      {comment?.author?.current_position ||
+                <div className="flex justify-between w-fulL">
+                  <Link href={`/profile/${comment?.author?.id}`}>
+                    <div className="flex flex-col">
+                      <p className="font-medium text-primary">
+                        {comment?.author?.name || "Anonymous"}
+                      </p>
+                      <p className="text-xs text-neutral-600">
+                        {comment?.author?.current_position ||
                         comment?.author?.headline}
-                    </p>
-                  </div>
+                      </p>
+                    </div>
+                  </Link>
                   <div className="flex items-center">
                     <p className="text-xs text-muted-foreground">
                       {formatDate(comment?.createdAt)}
