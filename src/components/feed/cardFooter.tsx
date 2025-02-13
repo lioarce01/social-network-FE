@@ -25,7 +25,7 @@ const CardFooterComponent = ({ post }: any) => {
       )}
       <Link
         href={`/feed/${post?.id}`}
-        className="text-xs sm:text-sm flex items-center"
+        className="text-xs sm:text-sm flex items-center hover:bg-neutral-100 p-2 rounded-lg"
       >
         <MessageSquare className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
         Comment
