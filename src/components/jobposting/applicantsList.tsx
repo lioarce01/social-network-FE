@@ -84,8 +84,8 @@ const ApplicantsList = () => {
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-[300px] w-full rounded-md border p-4">
-          {data?.applications && data?.applications.length > 0 ? (
-            data?.applications.map((applicant: Applicant) => (
+          {data?.jobApplicants?.applications && data?.jobApplicants?.applications.length > 0 ? (
+            data?.jobApplicants?.applications.map((applicant: Applicant) => (
               <div
                 key={applicant.user?.id}
                 className="mb-4 p-4 border-b last:border-b-0 flex items-center justify-between"

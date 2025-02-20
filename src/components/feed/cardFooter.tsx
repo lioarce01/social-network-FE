@@ -7,7 +7,7 @@ import UnlikeButton from "./unlikeButton";
 import { userLikedAPost } from "@/lib/utils";
 import useGetLikedPosts from "@/hooks/useGetLikedPosts";
 
-const CardFooterComponent = ({ post, currentUser }: any) => {
+const CardFooterComponent = ({ post }: any) => {
   const { likedPosts, isLoading } = useGetLikedPosts();
 
   if (isLoading) {
@@ -19,13 +19,13 @@ const CardFooterComponent = ({ post, currentUser }: any) => {
   return (
     <CardFooter className="flex justify-between border-t py-2 sm:py-4">
       {hasLiked ? (
-        <UnlikeButton post={post} currentUser={currentUser} />
+        <UnlikeButton post={post} />
       ) : (
-        <LikeButton post={post} currentUser={currentUser} />
+        <LikeButton post={post} />
       )}
       <Link
         href={`/feed/${post?.id}`}
-        className="text-xs sm:text-sm flex items-center"
+        className="text-xs sm:text-sm flex items-center hover:bg-neutral-100 p-2 rounded-lg"
       >
         <MessageSquare className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
         Comment

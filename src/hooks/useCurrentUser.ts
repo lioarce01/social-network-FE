@@ -1,19 +1,18 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { useGetUserBySubQuery } from "@/redux/api/userApi";
 
-const useCurrentUser = () => {
-  const { user, isAuthenticated } = useAuth0();
-  const sub = user?.sub;
+import { useGetMeQuery } from "@/redux/api/userApi";
 
+const useCurrentUser = () =>
+{
   const {
-    data: currentUser,
+    data,
     error,
     isLoading,
-  } = useGetUserBySubQuery(sub, {
-    skip: !isAuthenticated || !sub,
-  });
+    refetch
+  } = useGetMeQuery({});
 
-  return { currentUser, isLoading, error, isAuthenticated };
+  const currentUser = data?.user
+
+  return { currentUser, isLoading, error, refetch };
 };
 
 export default useCurrentUser;

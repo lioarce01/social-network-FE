@@ -12,7 +12,6 @@ const ApplyButtonComponent = ({ jobDetails, userId }: any) => {
   const handleApplyJob = async () => {
     try {
       await applyJob({
-        userId: userId,
         jobPostingId: jobDetails?.id,
       });
     } catch (error) {

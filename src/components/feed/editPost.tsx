@@ -28,8 +28,7 @@ const EditPost = ({
 
     try {
       await updatePost({
-        userId: currentUser?.id,
-        postId: postId,
+        id: postId,
         content,
       }).unwrap();
       onClose();

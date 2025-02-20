@@ -4,12 +4,10 @@ import { useCreateCommentMutation } from "@/redux/api/commentApi";
 import { Loader2 } from "lucide-react";
 
 interface CreateCommentProps {
-  currentUserId: string;
   postId: string;
 }
 
 const CreateComment: React.FC<CreateCommentProps> = ({
-  currentUserId,
   postId,
 }) => {
   const [content, setContent] = useState("");
@@ -22,7 +20,6 @@ const CreateComment: React.FC<CreateCommentProps> = ({
 
     try {
       await createComment({
-        userId: currentUserId,
         postId: postId,
         content: content.trim(),
       }).unwrap();

@@ -28,7 +28,6 @@ const EditComment = ({
 
     try {
       await updateComment({
-        userId: currentUser?.id,
         commentId: commentId,
         content,
       }).unwrap();

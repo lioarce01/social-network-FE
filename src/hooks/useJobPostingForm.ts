@@ -3,7 +3,8 @@ import { useCreateJobMutation } from "@/redux/api/jobPostingApi";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { validateForm } from "@/lib/utils";
 
-export enum ExperienceLevel {
+export enum ExperienceLevel
+{
   INTERNSHIP = "Internship",
   ENTRY_LEVEL = "Entry Level",
   JUNIOR = "Junior",
@@ -13,7 +14,8 @@ export enum ExperienceLevel {
   EXECUTIVE = "Executive",
 }
 
-export interface JobPostingFormData {
+export interface JobPostingFormData
+{
   title: string;
   description: string;
   budget: string;
@@ -25,8 +27,8 @@ export interface JobPostingFormData {
   experience_level: ExperienceLevel;
 }
 
-export function useJobPostingForm() {
-  const { currentUser } = useCurrentUser();
+export function useJobPostingForm()
+{
   const [createJob, { isLoading }] = useCreateJobMutation();
   const [formData, setFormData] = useState<JobPostingFormData>({
     title: "",
@@ -44,20 +46,23 @@ export function useJobPostingForm() {
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  ) =>
+  {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleDateChange = (date: Date | undefined) => {
+  const handleDateChange = (date: Date | undefined) =>
+  {
     if (date) {
       setFormData((prev) => ({ ...prev, deadline: date }));
       setErrors((prev) => ({ ...prev, deadline: "" }));
     }
   };
 
-  const addTech = () => {
+  const addTech = () =>
+  {
     if (techInput.trim() !== "") {
       setFormData((prev) => ({
         ...prev,
@@ -68,23 +73,27 @@ export function useJobPostingForm() {
     }
   };
 
-  const removeTech = (tech: string) => {
+  const removeTech = (tech: string) =>
+  {
     setFormData((prev) => ({
       ...prev,
       techRequired: prev.techRequired.filter((t) => t !== tech),
     }));
   };
 
-  const handleModeChange = (value: "REMOTE" | "HYBRID" | "ONSITE") => {
+  const handleModeChange = (value: "REMOTE" | "HYBRID" | "ONSITE") =>
+  {
     setFormData((prev) => ({ ...prev, mode: value }));
   };
 
-  const handleExperienceLevelChange = (value: ExperienceLevel) => {
+  const handleExperienceLevelChange = (value: ExperienceLevel) =>
+  {
     setFormData((prev) => ({ ...prev, experienceLevel: value }));
     setErrors((prev) => ({ ...prev, experienceLevel: "" }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) =>
+  {
     e.preventDefault();
     const newErrors = validateForm(formData);
     setErrors(newErrors);
@@ -92,7 +101,6 @@ export function useJobPostingForm() {
     if (Object.keys(newErrors).length === 0) {
       try {
         await createJob({
-          userId: currentUser?.id,
           ...formData,
           budget: Number(formData.budget),
         }).unwrap();
