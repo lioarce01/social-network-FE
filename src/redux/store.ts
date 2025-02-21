@@ -4,6 +4,7 @@ import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { userApi } from "./api/userApi";
 import { postApi } from "./api/postApi";
 import { commentApi } from "./api/commentApi";
+import { serviceApi } from "./api/serviceApi";
 import authReducer from "./slices/authSlice";
 import { jobPostingApi } from "./api/jobPostingApi";
 import jobReducer from "./slices/jobSlice";
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   [postApi.reducerPath]: postApi.reducer,
   [jobPostingApi.reducerPath]: jobPostingApi.reducer,
   [commentApi.reducerPath]: commentApi.reducer,
+  [serviceApi.reducerPath]: serviceApi.reducer,
   jobs: jobReducer,
   posts: postReducer,
   comments: commentReducer,
@@ -68,6 +70,7 @@ export const store = configureStore({
       postApi.middleware,
       jobPostingApi.middleware,
       commentApi.middleware,
+      serviceApi.middleware
     ),
 });
 
