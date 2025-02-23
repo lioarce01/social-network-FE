@@ -12,6 +12,7 @@ import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "../ui/card
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import SearchBarComponent from "../jobposting/searchBar";
+import ServicesSkeleton from "./servicesSkeleton";
 
 const ServiceListComponent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,7 +39,7 @@ const ServiceListComponent: React.FC = () => {
         console.log("searching for services")
       };
 
-    if (isLoading) return <div>Loading services...</div>
+    if (isLoading) return <ServicesSkeleton/>
 
     return (
         <div className="flex justify-center w-full p-2 sm:p-4 md:p-6 lg:p-8">
