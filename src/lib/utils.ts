@@ -2,12 +2,15 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { JobPostingFormData } from "@/hooks/useJobPostingForm";
 import { formatDistance, parseISO } from "date-fns";
+import { ServiceFormData } from "@/hooks/useServiceForm";
 
-export function cn(...inputs: ClassValue[]) {
+export function cn(...inputs: ClassValue[])
+{
   return twMerge(clsx(inputs));
 }
 
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string): string
+{
   const datePosted = parseISO(dateString);
   const now = new Date();
 
@@ -20,7 +23,8 @@ export function formatDate(dateString: string): string {
   return timeAgo;
 }
 
-export function formatDateTime(dateString: string) {
+export function formatDateTime(dateString: string)
+{
   return new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -28,12 +32,14 @@ export function formatDateTime(dateString: string) {
   });
 }
 
-export function userLikedAPost(post: any, likedPosts: any[]): boolean {
+export function userLikedAPost(post: any, likedPosts: any[]): boolean
+{
   if (!likedPosts) return false;
   return likedPosts.some((likedPost) => likedPost.postId === post.id);
 }
 
-export function validateForm(formData: JobPostingFormData) {
+export function validateForm(formData: JobPostingFormData)
+{
   const errors: Record<string, string> = {};
 
   if (formData.title.length < 5)
@@ -60,7 +66,23 @@ export function validateForm(formData: JobPostingFormData) {
   return errors;
 }
 
-export function hasApplied(userId: string, jobPosting: any): boolean {
+export function validateServiceForm(formData: ServiceFormData)
+{
+  const errors: Record<string, string> = {};
+
+  if (formData.title.length < 5)
+    errors.title = "Title must be at least 5 characters long";
+  if (formData.description.length < 20)
+    errors.description = "Description must be at least 20 characters long";
+  if (formData.skills.length === 0)
+    errors.skills = "At least one skill is required";
+  if (formData.price <= 0)
+    errors.price = "Price must be a positive number";
+  return errors
+}
+
+export function hasApplied(userId: string, jobPosting: any): boolean
+{
   const { applicants } = jobPosting;
 
   return (
@@ -68,7 +90,8 @@ export function hasApplied(userId: string, jobPosting: any): boolean {
   );
 }
 
-export function truncateText(text: string, maxLength: number): string {
+export function truncateText(text: string, maxLength: number): string
+{
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength) + "...";
 }

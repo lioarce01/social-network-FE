@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import {
-  useUpdateJobPostingMutation,
-  useGetJobByIdQueryQuery,
-} from "@/redux/api/jobPostingApi";
+import
+  {
+    useUpdateJobPostingMutation,
+    useGetJobByIdQueryQuery,
+  } from "@/redux/api/jobPostingApi";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { ExperienceLevel } from "./useJobPostingForm";
 
-export interface JobPostingFormData {
+export interface JobPostingFormData
+{
   title: string;
   description: string;
   budget: number;
@@ -19,7 +21,8 @@ export interface JobPostingFormData {
   experience_level: ExperienceLevel;
 }
 
-export function useEditJobPostingForm(jobId: string) {
+export function useEditJobPostingForm(jobId: string)
+{
   const router = useRouter();
   const { toast } = useToast();
   const [updateJobPosting, { isLoading: isUpdating }] =
@@ -42,7 +45,8 @@ export function useEditJobPostingForm(jobId: string) {
   const [techInput, setTechInput] = useState("");
 
   interface JobPostingFormErrors
-    extends Omit<Partial<JobPostingFormData>, "deadline" | "budget"> {
+    extends Omit<Partial<JobPostingFormData>, "deadline" | "budget">
+  {
     deadline?: string;
     budget?: string;
     experience_level?: ExperienceLevel;
@@ -50,7 +54,8 @@ export function useEditJobPostingForm(jobId: string) {
 
   const [errors, setErrors] = useState<JobPostingFormErrors>({});
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     if (jobDetails) {
       setFormData({
         title: jobDetails.title,
@@ -69,7 +74,8 @@ export function useEditJobPostingForm(jobId: string) {
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  ) =>
+  {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -78,7 +84,8 @@ export function useEditJobPostingForm(jobId: string) {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleDateChange = (date: Date | undefined) => {
+  const handleDateChange = (date: Date | undefined) =>
+  {
     if (date) {
       setFormData((prev) => ({
         ...prev,
@@ -88,7 +95,8 @@ export function useEditJobPostingForm(jobId: string) {
     }
   };
 
-  const addTech = () => {
+  const addTech = () =>
+  {
     if (techInput.trim() !== "") {
       setFormData((prev) => ({
         ...prev,
@@ -99,23 +107,27 @@ export function useEditJobPostingForm(jobId: string) {
     }
   };
 
-  const removeTech = (tech: string) => {
+  const removeTech = (tech: string) =>
+  {
     setFormData((prev) => ({
       ...prev,
       techRequired: prev.techRequired.filter((t) => t !== tech),
     }));
   };
 
-  const handleModeChange = (value: "REMOTE" | "HYBRID" | "ONSITE") => {
+  const handleModeChange = (value: "REMOTE" | "HYBRID" | "ONSITE") =>
+  {
     setFormData((prev) => ({ ...prev, mode: value }));
   };
 
-  const handleExperienceLevelChange = (value: ExperienceLevel) => {
+  const handleExperienceLevelChange = (value: ExperienceLevel) =>
+  {
     setFormData((prev) => ({ ...prev, experience_level: value }));
     setErrors((prev) => ({ ...prev, experience_level: undefined }));
   };
 
-  const validateForm = () => {
+  const validateForm = () =>
+  {
     const newErrors: JobPostingFormErrors = {};
     if (formData.title.length < 5)
       newErrors.title = "Title must be at least 5 characters long";
@@ -137,7 +149,8 @@ export function useEditJobPostingForm(jobId: string) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) =>
+  {
     e.preventDefault();
     if (validateForm()) {
       try {

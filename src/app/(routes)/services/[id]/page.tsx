@@ -9,7 +9,7 @@ export default function ServiceDetail() {
         <div className="w-full p-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <Button variant="ghost" asChild className="mb-6">
-          <Link href="/jobpostings">← Back to Services</Link>
+          <Link href="/services">← Back to Services</Link>
         </Button>
 
         <div className="w-full flex justify-center">

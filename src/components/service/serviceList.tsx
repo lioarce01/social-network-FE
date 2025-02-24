@@ -31,9 +31,7 @@ const ServiceListComponent: React.FC = () => {
     const handleLoadMore = () => setPage((prev) => prev + 1);
     const resetPagination = () => setPage(0);
 
-    const handleCreateService = () => {
-        console.log("creating new service")
-    }
+    const handleCreateService = () => router.push("services/create")
 
     const handleSearch = (searchTerm: string) => {
         console.log("searching for services")

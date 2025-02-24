@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useCreateJobMutation } from "@/redux/api/jobPostingApi";
-import useCurrentUser from "@/hooks/useCurrentUser";
 import { validateForm } from "@/lib/utils";
 
 export enum ExperienceLevel

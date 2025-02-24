@@ -102,7 +102,7 @@ const ServiceDetailComponent= () => {
 
                 <div>
                     <h3 className="font-semibold text-xl text-primary mb-4">
-                    Job Description
+                    Service Description
                     </h3>
                     <div className="prose prose-sm max-w-none">
                     <div className="whitespace-pre-line">
