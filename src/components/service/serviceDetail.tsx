@@ -26,8 +26,6 @@ const ServiceDetailComponent= () => {
         return <ServiceDetailSkeleton/>
     }
 
-    console.log(serviceDetails.data)
-
     const formatDescription = (text: string) => {
         const lines = text.split("\n");
     
@@ -113,7 +111,7 @@ const ServiceDetailComponent= () => {
 
                 <div>
                     <h3 className="font-semibold text-xl text-primary mb-2">
-                    Skills and Tech Stack
+                    Tech Stack
                     </h3>
                     <div className="flex flex-wrap gap-2">
                     {serviceDetails.data.skills.map((tech: string, index: number) => (

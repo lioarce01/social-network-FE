@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import DeleteService from './deleteService';
+import SwitchServiceStatus from './switchServiceStatus';
 
 interface ServiceCardDropdownProps {
     serviceDetails: any
@@ -36,7 +37,7 @@ const ServiceCardDropdown = ({serviceDetails, serviceId}: ServiceCardDropdownPro
         </DropdownMenuItem>
         <DropdownMenuItem>
           {/* SWITCH STATUS SERVICE */}
-          {/* <SwitchJobPostingStatus jobId={serviceId} jobDetails={serviceDetails} /> */}
+          <SwitchServiceStatus serviceId={serviceId} serviceDetails={serviceDetails} />
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
