@@ -38,7 +38,7 @@ const PostSettingsComponent = ({ post }: any) => {
               onClick={() => setIsEditOpen(true)}
               className="cursor-pointer"
             >
-              Edit Post
+              Edit
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <DeletePost postId={post.id} />
