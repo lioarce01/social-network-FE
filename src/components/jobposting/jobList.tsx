@@ -24,17 +24,17 @@ import SearchBarComponent from "./searchBar";
 import { cn } from "@/lib/utils";
 
 const JobListComponent: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [page, setPage] = useState(0);
-  const [sortConfig, setSortConfig] = useState<{
-    sortBy: string[];
-    sortOrder: "asc" | "desc";
-  }>({ sortBy: ["createdAt"], sortOrder: "desc" });
-
-  const searchParams = useSelector(
-    (state: RootState) => state.jobs?.searchParams,
-  );
+  const [searchParams, setSearchParams] = useState<{ searchTerm: string; mode?: any }>({
+    searchTerm: "",
+    mode: undefined,
+  });
+  const [mode, setMode] = useState<Mode | undefined>(undefined);
+  const [sortConfig, setSortConfig] = useState({
+    sortBy: ["createdAt"],
+    sortOrder: "desc" as "asc" | "desc",
+  });
 
   const {
     data: { jobs = [], totalCount = 0 } = {},
@@ -43,9 +43,9 @@ const JobListComponent: React.FC = () => {
   } = useGetJobsQuery({
     offset: page * 6,
     limit: 6,
+    searchTerm: searchParams.searchTerm,
+    mode: searchParams.mode,
     ...sortConfig,
-    searchTerm: searchParams?.searchTerm || "",
-    mode: searchParams?.mode,
   });
 
   const handleLoadMore = () => setPage((prev) => prev + 1);
@@ -57,8 +57,9 @@ const JobListComponent: React.FC = () => {
   };
 
   const handleSearch = (searchTerm: string, mode?: Mode) => {
-    dispatch(setSearchParams({ searchTerm, mode }));
-    resetPagination();
+    setSearchParams({searchTerm, mode});
+    setMode(mode);
+    setPage(0); 
   };
 
   const handleCreateJob = () => router.push("/createJobPosting");

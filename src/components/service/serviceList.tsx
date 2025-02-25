@@ -1,22 +1,27 @@
 'use client'
 
 import { useGetServicesQuery } from "@/redux/api/serviceApi";
-import { AppDispatch } from "@/redux/store";
 import { DollarSign, Loader2, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "../ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import SearchBarComponent from "../jobposting/searchBar";
 import ServicesSkeleton from "./servicesSkeleton";
+import ServiceFilters from "./serviceFilters";
 
 const ServiceListComponent: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const [searchParams, setSearchParams] = useState<{ searchTerm: string }>({
+      searchTerm: "",
+  });
+  const [sortConfig, setSortConfig] = useState({
+    sortBy: ["createdAt"],
+      sortOrder: "desc" as "asc" | "desc",
+  });
   const [page, setPage] = useState(0);
 
   const { 
@@ -26,6 +31,8 @@ const ServiceListComponent: React.FC = () => {
     } = useGetServicesQuery({
       offset: page * 6,
       limit: 6,
+      searchTerm: searchParams.searchTerm,
+      ...sortConfig,
     });
 
     const handleLoadMore = () => setPage((prev) => prev + 1);
@@ -33,8 +40,14 @@ const ServiceListComponent: React.FC = () => {
 
     const handleCreateService = () => router.push("services/create")
 
+    const handleSortChange = (sortBy: string[], sortOrder: "asc" | "desc") => {
+      setSortConfig({ sortBy, sortOrder });
+      resetPagination();
+    };
+
     const handleSearch = (searchTerm: string) => {
-        console.log("searching for services")
+        setSearchParams({searchTerm});
+        setPage(0); 
       };
 
     if (isLoading) return <ServicesSkeleton/>
@@ -43,11 +56,11 @@ const ServiceListComponent: React.FC = () => {
         <div className="flex justify-center w-full p-2 sm:p-4 md:p-6 lg:p-8">
       <div className="w-full max-w-[100%] sm:max-w-[1200px] grid grid-cols-1 md:grid-cols-4 gap-4">
         <aside className="md:col-span-1 flex flex-col space-y-2 items-center">
-          {/* <JobFilters
+          <ServiceFilters
             sortBy={sortConfig.sortBy}
             sortOrder={sortConfig.sortOrder}
             onSortChange={handleSortChange}
-          /> */}
+          />
           <Button onClick={handleCreateService} className="w-full">
             New service
           </Button>

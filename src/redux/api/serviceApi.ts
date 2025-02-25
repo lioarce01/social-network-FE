@@ -17,6 +17,9 @@ export const serviceApi = createApi({
                 params: {
                     offset: params.offset || 0,
                     limit: params.limit || 10,
+                    sortBy: params.sortBy || "createdAt",
+                    sortOrder: params.sortOrder || "desc",
+                    searchTerm: params.searchTerm,
                 },
             }),
             providesTags: (result) =>
