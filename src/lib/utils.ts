@@ -76,8 +76,9 @@ export function validateServiceForm(formData: ServiceFormData)
     errors.description = "Description must be at least 20 characters long";
   if (formData.skills.length === 0)
     errors.skills = "At least one skill is required";
-  if (formData.price <= 0)
+  if (Number(formData.price) <= 0) {
     errors.price = "Price must be a positive number";
+  }
   return errors
 }
 
