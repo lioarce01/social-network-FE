@@ -76,7 +76,7 @@ const JobListComponent: React.FC = () => {
             onSortChange={handleSortChange}
           />
           <Button onClick={handleCreateJob} className="w-full">
-            Post a Job
+            New Job
           </Button>
         </aside>
 
