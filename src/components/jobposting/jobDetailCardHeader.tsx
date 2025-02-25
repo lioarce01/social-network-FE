@@ -30,9 +30,7 @@ const JobDetailCardHeader: React.FC<JobDetailCardHeaderProps> = ({
             <CardTitle className="text-3xl font-bold text-primary mb-2 sm:mb-0">
               {jobDetails.title}
             </CardTitle>
-            <div className="sm:hidden">
-              <CardHeaderDropdown jobDetails={jobDetails} jobId={jobId} />
-            </div>
+            
           </div>
           <p className="text-lg font-medium text-muted-foreground">
             {jobDetails.category}

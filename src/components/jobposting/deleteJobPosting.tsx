@@ -35,7 +35,7 @@ const DeleteJobPosting = ({ jobId }: any) => {
         <DialogHeader>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this post? This action cannot be
+            Are you sure you want to delete this job post? This action cannot be
             undone.
           </DialogDescription>
         </DialogHeader>

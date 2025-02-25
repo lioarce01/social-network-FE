@@ -39,7 +39,7 @@ const EditJobPosting: React.FC<EditJobPostingProps> = ({ jobId }) => {
     addTech,
     removeTech,
     handleModeChange,
-    handleExperienceLevelChange, // Add this
+    handleExperienceLevelChange, 
     handleSubmit,
   } = useEditJobPostingForm(jobId);
 
