@@ -31,14 +31,14 @@ const NavbarLinksComponent = () => {
             </div>
           </Button>
         </Link>
-        <Link href="/meetings">
-          <Button variant="ghost">
+        <Button variant="ghost" disabled={true}>
+          <Link href="/meetings">
             <div className="flex flex-col items-center">
               <Video className="h-4 w-4" />
               <p>Meetings</p>
             </div>
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </nav>
     </>
   );
