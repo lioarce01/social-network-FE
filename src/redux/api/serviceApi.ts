@@ -68,6 +68,14 @@ export const serviceApi = createApi({
             }),
             invalidatesTags: ["Service"]
         }),
+
+        switchServiceStatus: builder.mutation({
+            query: (id) => ({
+                url: `services/${id}/switch`,
+                method: "PUT",
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: "Service", id }],
+        })
     })
 })
 
@@ -77,4 +85,5 @@ export const {
     useCreateServiceMutation,
     useUpdateServiceMutation,
     useDeleteServiceMutation,
+    useSwitchServiceStatusMutation
 } = serviceApi

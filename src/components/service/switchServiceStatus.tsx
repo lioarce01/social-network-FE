@@ -1,3 +1,4 @@
+import { useSwitchServiceStatusMutation } from '@/redux/api/serviceApi'
 import React from 'react'
 
 interface SwitchServiceStatusProps {
@@ -6,9 +7,11 @@ interface SwitchServiceStatusProps {
 }
 
 const SwitchServiceStatus = ({serviceId, serviceDetails}: SwitchServiceStatusProps) => {
+
+    const [switchStatus, { isLoading: isSwitching }] = useSwitchServiceStatusMutation()
   
     const handleStatus = async () => {
-        console.log("Switching status...")
+        await switchStatus(serviceId).unwrap()
     }
   
     return (

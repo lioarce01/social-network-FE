@@ -1,7 +1,11 @@
 import React from 'react'
 import { Button } from '../ui/button';
 
-const ContactServiceButton = () => {
+interface ContactServiceButtonProps {
+    serviceStatus: string
+}
+
+const ContactServiceButton = ({serviceStatus}: ContactServiceButtonProps) => {
 
     const getButtonLabel = () => {
         // if (isApplying) return "Applying...";
@@ -14,8 +18,7 @@ const ContactServiceButton = () => {
     <>
       <div>
         <Button
-        //   onClick={handleApplyJob}
-        //   disabled={jobDetails?.status === "CLOSED" || applied}
+          disabled={serviceStatus === "CLOSED"}
           className="w-full sm:w-auto"
         >
           {getButtonLabel()}

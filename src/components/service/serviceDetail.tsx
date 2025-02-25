@@ -96,7 +96,7 @@ const ServiceDetailComponent= () => {
                 </div>
 
                     {/* TODO */}
-                <ContactServiceButton/>
+                <ContactServiceButton serviceStatus={serviceDetails.data?.status}/>
 
                 <div>
                     <h3 className="font-semibold text-xl text-primary mb-4">

@@ -30,7 +30,6 @@ export const baseQuery = fetchBaseQuery({
             });
 
             if (token) {
-                console.log("token:", token.access_token)
                 headers.set("Authorization", `Bearer ${token.access_token}`);
                 headers.set('Content-Type', 'application/json');
             }
