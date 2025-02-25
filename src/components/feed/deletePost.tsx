@@ -34,7 +34,7 @@ const DeletePost = ({ postId }: { postId: string }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full text-left">Delete post</button>
+        <button className="w-full text-left text-red-500">Delete</button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
