@@ -9,9 +9,9 @@ import { Button } from "../ui/button";
 import { Card, CardHeader, CardContent, CardTitle, CardFooter } from "../ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import SearchBarComponent from "../jobposting/searchBar";
 import ServicesSkeleton from "./servicesSkeleton";
 import ServiceFilters from "./serviceFilters";
+import ServiceSearchBar from "./serviceSearchBar";
 
 const ServiceListComponent: React.FC = () => {
   const router = useRouter();
@@ -54,20 +54,20 @@ const ServiceListComponent: React.FC = () => {
 
     return (
         <div className="flex justify-center w-full p-2 sm:p-4 md:p-6 lg:p-8">
-      <div className="w-full max-w-[100%] sm:max-w-[1200px] grid grid-cols-1 md:grid-cols-4 gap-4">
-        <aside className="md:col-span-1 flex flex-col space-y-2 items-center">
-          <ServiceFilters
-            sortBy={sortConfig.sortBy}
-            sortOrder={sortConfig.sortOrder}
-            onSortChange={handleSortChange}
-          />
-          <Button onClick={handleCreateService} className="w-full">
-            New service
-          </Button>
-        </aside>
+          <div className="w-full max-w-[100%] sm:max-w-[1200px] grid grid-cols-1 md:grid-cols-4 gap-4">
+            <aside className="md:col-span-1 flex flex-col space-y-2 items-center">
+              <ServiceFilters
+                sortBy={sortConfig.sortBy}
+                sortOrder={sortConfig.sortOrder}
+                onSortChange={handleSortChange}
+              />
+              <Button onClick={handleCreateService} className="w-full">
+                New service
+              </Button>
+            </aside>
 
         <main className="md:col-span-3">
-          <SearchBarComponent onSearch={handleSearch} />
+          <ServiceSearchBar onSearch={handleSearch} />
 
           <div className="grid gap-4 sm:gap-6">
             {data.length > 0 ? (
@@ -84,7 +84,7 @@ const ServiceListComponent: React.FC = () => {
                       <div className="flex flex-col">
                         <div className="flex flex-col">
                             <span
-                            className="text-lg font-semibold truncate max-w-[200px] sm:max-w-[300px]"
+                            className="text-lg font-semibold truncate max-w-[250px] sm:max-w-[300px]"
                             title={service.title}
                             >
                             {service.title}
@@ -106,7 +106,7 @@ const ServiceListComponent: React.FC = () => {
 
                   <CardContent className="flex-1">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:gap-4 text-sm text-muted-foreground">
-                      <p className="truncate">{service.description}</p>
+                    <p className="line-clamp-2 sm:line-clamp-none">{service.description}</p>
                     </div>
                   </CardContent>
 
@@ -124,7 +124,7 @@ const ServiceListComponent: React.FC = () => {
             )}
           </div>
 
-          {data.length < totalCount && (
+          {data.length > 0 && data.length < totalCount && (
             <div className="flex justify-center mt-8 w-full lg:w-[78%]">
               <Button
                 onClick={handleLoadMore}
