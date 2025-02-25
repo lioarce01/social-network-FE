@@ -16,7 +16,7 @@ const SwitchServiceStatus = ({serviceId, serviceDetails}: SwitchServiceStatusPro
   
     return (
     <div>
-        <button onClick={handleStatus} disabled={false}>
+        <button onClick={handleStatus} disabled={isSwitching}>
             {serviceDetails?.status === "OPEN" ? "Close Service" : "Open Service"}
         </button>
     </div>
