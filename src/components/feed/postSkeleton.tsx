@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const PostSkeleton = () => {
   return (
-    <Card className="bg-white w-full sm:max-w-[600px] mx-auto">
+    <Card className="bg-white w-full mx-auto">
       <CardHeader className="flex flex-col sm:flex-row justify-between space-y-2 sm:space-y-0">
         <div className="flex flex-row items-center space-x-4">
           <Skeleton className="h-10 w-10 sm:h-12 sm:w-12 rounded-full" />
