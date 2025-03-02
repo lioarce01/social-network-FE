@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JobSeeker Connect
 
-## Getting Started
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Docker Ready](https://img.shields.io/badge/Docker-Ready-blueviolet)](docker-compose.yml)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+JobSeeker Connect is an all-in-one platform designed to connect tech professionals, employers, and freelancers in a vibrant digital ecosystem. Built with modern technologies for scalability and usability, it offers a dynamic job board, service marketplace, and social interaction tools to foster collaboration and opportunity.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Key Features
 
-## Learn More
+### Content Hub (Posts Feed)
+- **Create, Edit, Delete**: Users can post updates, job listings, or resources.
+- **Like/Comment**: Engage with posts and share feedback.
+- **Sorting/Filtering**: Organize content by category, keyword, or date.
+- **Pagination**: Navigate large datasets seamlessly.
 
-To learn more about Next.js, take a look at the following resources:
+### Advanced Job Board
+- **Job Creation**: Customize job listings with roles, locations, and skill requirements.
+- **Application Tracking**: Employers review candidate resumes and export data.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Service Marketplace
+- **Freelance Opportunities**: Tech freelancers offer services with hourly rates and portfolios.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Social Interaction
+- **Following System**: Curate feeds by following users and topics.
+- 
+---
 
-## Deploy on Vercel
+## Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Frontend
+- **Next.js (SSR)**: Server-side rendering for SEO and performance.
+- **TypeScript**: Strong typing for maintainable code.
+- **RTK Query**: Efficient state management and API handling.
+- **TailwindCSS**: Rapid UI development with utility-first classes.
+- **Shadcn UI**: Consistent, reusable component library.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Backend
+- **Node.js & Express**: RESTful APIs with TypeScript support.
+- **rate-limiter-flexible**: API rate limiting.
+- **Middleware**: Helmet.js for HTTP headers and security.
+
+### Persistence
+- **Redis**: Caching and session management.
+- **MongoDB**: Document-oriented storage for users, jobs, and posts.
+
+### DevOps & Security
+- **Docker**: Containerized deployment for consistency.
+- **Auth0**: JWT-based authentication and role management.
+- **GitHub Actions**: CI/CD pipeline for automated testing.
