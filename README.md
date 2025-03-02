@@ -1,7 +1,6 @@
 # JobSeeker Connect
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Docker Ready](https://img.shields.io/badge/Docker-Ready-blueviolet)](docker-compose.yml)
 
 ---
 
